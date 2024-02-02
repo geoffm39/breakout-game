@@ -38,3 +38,16 @@ class Ball(RawTurtle):
     def is_moving_west(self):
         direction = self.heading()
         return direction > NORTH or direction < SOUTH
+
+    @staticmethod
+    def is_vertical_surface(surface):
+        return surface == VERTICAL
+
+    @staticmethod
+    def is_horizontal_surface(surface):
+        return surface == HORIZONTAL
+
+    def calculate_vertical_bounce(self, surface):
+        if self.is_vertical_surface(surface):
+            return
+            # todo calculation here
