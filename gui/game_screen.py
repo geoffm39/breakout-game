@@ -17,6 +17,7 @@ class GameScreen(Canvas):
         self.configure_screen()
 
         self.paddle = Paddle(self.screen)
+        self.ball = Ball(self.screen)
 
         self.apply_mouse_controls()
 
@@ -28,7 +29,7 @@ class GameScreen(Canvas):
     def track_player_movement(self, event):
         x = event.x
         self.paddle.move_to(x)
-        self.screen.update()
+        # self.screen.update()
 
     def hide_mouse_cursor(self, event):
         self.config(cursor='none')
@@ -40,3 +41,11 @@ class GameScreen(Canvas):
         self.screen.tracer(0)
         self.screen.bgcolor('black')
         self.screen.listen()
+
+    def start_game(self):
+        self.update_game_screen()
+
+    def update_game_screen(self):
+        self.screen.update()
+        self.ball.move()
+        self.after(3, self.update_game_screen)
