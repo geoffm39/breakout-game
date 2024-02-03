@@ -1,6 +1,6 @@
 from turtle import RawTurtle
 
-from constants import BALL_START_POSITION, VERTICAL, HORIZONTAL, NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE
+from constants import BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE, NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE
 
 
 class Ball(RawTurtle):
@@ -14,7 +14,7 @@ class Ball(RawTurtle):
         self.color('white')
         self.shape('circle')
         self.setposition(BALL_START_POSITION)
-        self.setheading(45)
+        self.setheading(170)
 
     def move(self):
         self.forward(1)
@@ -54,16 +54,16 @@ class Ball(RawTurtle):
 
     @staticmethod
     def is_vertical_surface(surface):
-        return surface == VERTICAL
+        return surface == VERTICAL_SURFACE
 
     @staticmethod
     def is_horizontal_surface(surface):
-        return surface == HORIZONTAL
+        return surface == HORIZONTAL_SURFACE
 
     def calculate_vertical_movement(self, direction, surface):
         if self.is_vertical_surface(surface):
             return
-        if self.heading() == NORTH:
+        if direction == NORTH:
             self.set_ball_direction(SOUTH)
         else:
             self.set_ball_direction(NORTH)

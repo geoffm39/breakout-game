@@ -6,6 +6,7 @@ from ball import Ball
 from bricks import Bricks
 from powerup import Powerup
 from scores import Scores
+from constants import VERTICAL_SURFACE, HORIZONTAL_SURFACE
 
 
 class GameScreen(Canvas):
@@ -48,4 +49,9 @@ class GameScreen(Canvas):
     def update_game_screen(self):
         self.screen.update()
         self.ball.move()
+        if self.ball.ycor() >= 360 or self.ball.ycor() <= -360:
+            self.ball.bounce(HORIZONTAL_SURFACE)
+        if self.ball.xcor() >= 540 or self.ball.xcor() <= -540:
+            self.ball.bounce(VERTICAL_SURFACE)
+
         self.after(3, self.update_game_screen)
