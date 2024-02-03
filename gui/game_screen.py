@@ -6,7 +6,7 @@ from ball import Ball
 from bricks import Bricks
 from powerup import Powerup
 from scores import Scores
-from constants import VERTICAL_SURFACE, HORIZONTAL_SURFACE
+from constants import VERTICAL_SURFACE, HORIZONTAL_SURFACE, SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class GameScreen(Canvas):
@@ -18,7 +18,7 @@ class GameScreen(Canvas):
         self.configure_screen()
 
         self.paddle = Paddle(self.screen)
-        self.ball = Ball(self.screen)
+        self.balls = []
 
         self.apply_mouse_controls()
 
@@ -30,7 +30,6 @@ class GameScreen(Canvas):
     def track_player_movement(self, event):
         x = event.x
         self.paddle.move_to(x)
-        # self.screen.update()
 
     def hide_mouse_cursor(self, event):
         self.config(cursor='none')
@@ -44,14 +43,29 @@ class GameScreen(Canvas):
         self.screen.listen()
 
     def start_game(self):
+        self.balls.append(Ball(self.screen))
         self.update_game_screen()
 
     def update_game_screen(self):
         self.screen.update()
-        self.ball.move()
-        if self.ball.ycor() >= 360 or self.ball.ycor() <= -360:
-            self.ball.bounce(HORIZONTAL_SURFACE)
-        if self.ball.xcor() >= 540 or self.ball.xcor() <= -540:
-            self.ball.bounce(VERTICAL_SURFACE)
+        for ball in self.balls:
+            ball.move()
+            self.check_ball_for_wall_contact(ball)
+            if ball.ycor() <= -SCREEN_HEIGHT / 2 + 10:
+                return  # THIS IS WHERE GAME END CODE RUNS
 
         self.after(3, self.update_game_screen)
+
+    def check_ball_for_wall_contact(self, ball):
+        if self.ball_hit_side_wall(ball):
+            ball.bounce(VERTICAL_SURFACE)
+        if self.ball_hit_top_wall(ball):
+            ball.bounce(HORIZONTAL_SURFACE)
+
+    @staticmethod
+    def ball_hit_top_wall(ball):
+        return ball.ycor() >= SCREEN_HEIGHT / 2 - 10
+
+    @staticmethod
+    def ball_hit_side_wall(ball):
+        return ball.xcor() >= SCREEN_WIDTH / 2 - 10 or ball.xcor() <= -SCREEN_WIDTH / 2 + 10

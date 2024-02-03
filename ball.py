@@ -1,6 +1,10 @@
 from turtle import RawTurtle
+from random import randint
 
-from constants import BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE, NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE
+from constants import (
+    BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE,
+    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE
+)
 
 
 class Ball(RawTurtle):
@@ -14,7 +18,13 @@ class Ball(RawTurtle):
         self.color('white')
         self.shape('circle')
         self.setposition(BALL_START_POSITION)
-        self.setheading(170)
+        self.set_random_starting_direction()
+
+    def set_random_starting_direction(self):
+        min_angle = EAST + 20
+        max_angle = WEST - 20
+        random_angle = randint(min_angle, max_angle)
+        self.setheading(random_angle)
 
     def move(self):
         self.forward(1)
