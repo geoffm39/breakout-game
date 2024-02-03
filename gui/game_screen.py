@@ -6,7 +6,10 @@ from ball import Ball
 from bricks import Bricks
 from powerup import Powerup
 from scores import Scores
-from constants import VERTICAL_SURFACE, HORIZONTAL_SURFACE, SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import (
+    VERTICAL_SURFACE, HORIZONTAL_SURFACE, SCREEN_BOTTOM_EDGE,
+    SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE
+)
 
 
 class GameScreen(Canvas):
@@ -51,7 +54,7 @@ class GameScreen(Canvas):
         for ball in self.balls:
             ball.move()
             self.check_ball_for_wall_contact(ball)
-            if ball.ycor() <= -SCREEN_HEIGHT / 2 + 10:
+            if ball.ycor() <= SCREEN_BOTTOM_EDGE + 10:
                 return  # THIS IS WHERE GAME END CODE RUNS
 
         self.after(3, self.update_game_screen)
@@ -64,8 +67,8 @@ class GameScreen(Canvas):
 
     @staticmethod
     def ball_hit_top_wall(ball):
-        return ball.ycor() >= SCREEN_HEIGHT / 2 - 10
+        return ball.ycor() >= SCREEN_TOP_EDGE - 10
 
     @staticmethod
     def ball_hit_side_wall(ball):
-        return ball.xcor() >= SCREEN_WIDTH / 2 - 10 or ball.xcor() <= -SCREEN_WIDTH / 2 + 10
+        return ball.xcor() >= SCREEN_RIGHT_EDGE - 10 or ball.xcor() <= SCREEN_LEFT_EDGE + 10
