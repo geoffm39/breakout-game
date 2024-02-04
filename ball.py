@@ -46,7 +46,7 @@ class Ball(RawTurtle):
             print('bounce error')
             return  # add error throw here
         if paddle_angle_modifier:
-            pass
+            pass  # todo: make the angle the average of the modifier angle and reflection angle
         self.set_ball_direction(reflection_angle)
 
     @staticmethod
