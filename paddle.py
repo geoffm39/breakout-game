@@ -52,5 +52,6 @@ class Paddle(RawTurtle):
         paddle_centre_x = paddle_x1 + paddle_pixel_length/2
         modifier = paddle_centre_x - paddle_contact_x_coord
         print(paddle_contact_x_coord, paddle_x1, paddle_centre_x, paddle_x2, modifier)
-        modifier_angle = (modifier / paddle_pixel_length/2) * 180
+        modifier_angle = (modifier / (paddle_pixel_length/2)) * 180
+        print(modifier_angle)
         return modifier_angle
