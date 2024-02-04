@@ -7,7 +7,7 @@ from bricks import Bricks
 from powerup import Powerup
 from scores import Scores
 from constants import (
-    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS,
+    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, PADDLE_WIDTH,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE
 )
 
@@ -53,16 +53,35 @@ class GameScreen(Canvas):
         self.screen.update()
         for ball in self.balls:
             ball.move()
-            self.check_ball_for_wall_contact(ball)
+            self.check_for_paddle_contact(ball)
+            self.check_for_wall_contact(ball)
             if self.ball_missed(ball):
                 return
         self.after(3, self.update_game_screen)
 
-    def check_ball_for_wall_contact(self, ball):
+    def check_for_wall_contact(self, ball):
         if self.ball_hit_side_wall(ball):
             ball.bounce(VERTICAL_SURFACE)
         if self.ball_hit_top_wall(ball):
             ball.bounce(HORIZONTAL_SURFACE)
+
+    def check_for_paddle_contact(self, ball):
+        paddle_bbox = self.calculate_paddle_bbox()
+        if self.ball_hit_paddle(ball, paddle_bbox):
+            ball.bounce(HORIZONTAL_SURFACE)
+
+    def calculate_paddle_bbox(self):
+        paddle_x, paddle_y = self.paddle.pos()
+        paddle_left_x, paddle_right_x = self.paddle.get_paddle_x_coordinates()
+        paddle_bbox = (paddle_left_x, paddle_y + PADDLE_WIDTH / 2, paddle_right_x, paddle_y - PADDLE_WIDTH / 2)
+        return paddle_bbox
+
+    @staticmethod
+    def ball_hit_paddle(ball, paddle_bbox):
+        ball_x, ball_y = ball.pos()
+        ball_bottom_y = ball_y - BALL_RADIUS
+        paddle_x1, paddle_y1, paddle_x2 = paddle_bbox[:3]
+        return ball_bottom_y <= paddle_y1 and paddle_x1 < ball_x < paddle_x2
 
     @staticmethod
     def ball_missed(ball):
