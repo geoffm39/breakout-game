@@ -66,9 +66,10 @@ class GameScreen(Canvas):
             ball.bounce(HORIZONTAL_SURFACE)
 
     def check_for_paddle_contact(self, ball):
-        paddle_bbox = self.calculate_paddle_bbox()
+        paddle_bbox = self.paddle.get_paddle_bbox()
         if self.ball_hit_paddle(ball, paddle_bbox):
-            ball.bounce(HORIZONTAL_SURFACE)
+            paddle_angle_modifier = self.paddle.get_paddle_modifier_angle(ball.xcor())
+            ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
 
     def calculate_paddle_bbox(self):
         paddle_x, paddle_y = self.paddle.pos()
@@ -79,9 +80,9 @@ class GameScreen(Canvas):
     @staticmethod
     def ball_hit_paddle(ball, paddle_bbox):
         ball_x, ball_y = ball.pos()
-        ball_bottom_y = ball_y - BALL_RADIUS
+        ball_bottom_y = int(ball_y - BALL_RADIUS)
         paddle_x1, paddle_y1, paddle_x2 = paddle_bbox[:3]
-        return ball_bottom_y == paddle_y1 and paddle_x1 < ball_x < paddle_x2
+        return ball_bottom_y == paddle_y1 and paddle_x1 <= ball_x <= paddle_x2
 
     @staticmethod
     def ball_missed(ball):

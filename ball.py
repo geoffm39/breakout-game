@@ -18,7 +18,8 @@ class Ball(RawTurtle):
         self.color('white')
         self.shape('circle')
         self.setposition(BALL_START_POSITION)
-        self.set_random_starting_direction()
+        self.setheading(90)
+        # self.set_random_starting_direction()
 
     def set_random_starting_direction(self):
         min_angle = EAST + 20
@@ -29,18 +30,24 @@ class Ball(RawTurtle):
     def move(self):
         self.forward(1)
 
-    def bounce(self, surface):
+    def bounce(self, surface, paddle_angle_modifier=None):
         direction = self.heading()
         if self.is_moving_vertically(direction):
-            self.calculate_vertical_movement(direction, surface)
+            reflection_angle = self.calculate_vertical_movement(direction, surface)
         elif self.is_moving_north_east(direction):
-            self.calculate_north_east_movement(direction, surface)
+            reflection_angle = self.calculate_north_east_movement(direction, surface)
         elif self.is_moving_north_west(direction):
-            self.calculate_north_west_movement(direction, surface)
+            reflection_angle = self.calculate_north_west_movement(direction, surface)
         elif self.is_moving_south_west(direction):
-            self.calculate_south_west_movement(direction, surface)
+            reflection_angle = self.calculate_south_west_movement(direction, surface)
         elif self.is_moving_south_east(direction):
-            self.calculate_south_east_movement(direction, surface)
+            reflection_angle = self.calculate_south_east_movement(direction, surface)
+        else:
+            print('bounce error')
+            return  # add error throw here
+        if paddle_angle_modifier:
+            print(paddle_angle_modifier)
+        self.set_ball_direction(reflection_angle)
 
     @staticmethod
     def is_moving_vertically(direction):
@@ -72,51 +79,47 @@ class Ball(RawTurtle):
 
     def calculate_vertical_movement(self, direction, surface):
         if self.is_vertical_surface(surface):
-            return
+            return direction
         if direction == NORTH:
-            self.set_ball_direction(SOUTH)
+            return SOUTH
         else:
-            self.set_ball_direction(NORTH)
+            return NORTH
 
     def calculate_north_east_movement(self, direction, surface):
         if self.is_horizontal_surface(surface):
             incidence_angle = direction
             reflection_angle = COMPLETE_ANGLE - incidence_angle
-            self.set_ball_direction(reflection_angle)
         else:
             incidence_angle = NORTH - direction
             reflection_angle = NORTH + incidence_angle
-            self.set_ball_direction(reflection_angle)
+        return reflection_angle
 
     def calculate_north_west_movement(self, direction, surface):
         if self.is_horizontal_surface(surface):
             incidence_angle = WEST - direction
             reflection_angle = WEST + incidence_angle
-            self.set_ball_direction(reflection_angle)
         else:
             incidence_angle = direction - NORTH
             reflection_angle = NORTH - incidence_angle
-            self.set_ball_direction(reflection_angle)
+        return reflection_angle
 
     def calculate_south_west_movement(self, direction, surface):
         if self.is_horizontal_surface(surface):
             incidence_angle = direction - WEST
             reflection_angle = WEST - incidence_angle
-            self.set_ball_direction(reflection_angle)
         else:
             incidence_angle = SOUTH - direction
             reflection_angle = SOUTH + incidence_angle
-            self.set_ball_direction(reflection_angle)
+        return reflection_angle
 
     def calculate_south_east_movement(self, direction, surface):
         if self.is_horizontal_surface(surface):
             incidence_angle = COMPLETE_ANGLE - direction
             reflection_angle = incidence_angle
-            self.set_ball_direction(reflection_angle)
         else:
             incidence_angle = direction - SOUTH
             reflection_angle = SOUTH - incidence_angle
-            self.set_ball_direction(reflection_angle)
+        return reflection_angle
 
     def set_ball_direction(self, direction):
         self.setheading(direction)
