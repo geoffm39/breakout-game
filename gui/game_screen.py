@@ -81,7 +81,7 @@ class GameScreen(Canvas):
         ball_x, ball_y = ball.pos()
         ball_bottom_y = ball_y - BALL_RADIUS
         paddle_x1, paddle_y1, paddle_x2 = paddle_bbox[:3]
-        return ball_bottom_y <= paddle_y1 and paddle_x1 < ball_x < paddle_x2
+        return ball_bottom_y == paddle_y1 and paddle_x1 < ball_x < paddle_x2
 
     @staticmethod
     def ball_missed(ball):
