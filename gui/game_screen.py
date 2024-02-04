@@ -54,9 +54,8 @@ class GameScreen(Canvas):
         for ball in self.balls:
             ball.move()
             self.check_ball_for_wall_contact(ball)
-            if ball.ycor() <= SCREEN_BOTTOM_EDGE + BALL_RADIUS:
-                return  # THIS IS WHERE GAME END CODE RUNS
-
+            if self.ball_missed(ball):
+                return
         self.after(3, self.update_game_screen)
 
     def check_ball_for_wall_contact(self, ball):
@@ -64,6 +63,10 @@ class GameScreen(Canvas):
             ball.bounce(VERTICAL_SURFACE)
         if self.ball_hit_top_wall(ball):
             ball.bounce(HORIZONTAL_SURFACE)
+
+    @staticmethod
+    def ball_missed(ball):
+        return ball.ycor() <= SCREEN_BOTTOM_EDGE + BALL_RADIUS
 
     @staticmethod
     def ball_hit_top_wall(ball):
