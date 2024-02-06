@@ -3,7 +3,7 @@ from random import randint
 
 from constants import (
     BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE,
-    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE
+    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE
 )
 
 
@@ -18,8 +18,7 @@ class Ball(RawTurtle):
         self.color('white')
         self.shape('circle')
         self.setposition(BALL_START_POSITION)
-        self.setheading(90)
-        # self.set_random_starting_direction()
+        self.set_random_starting_direction()
 
     def set_random_starting_direction(self):
         min_angle = EAST + 20
@@ -46,8 +45,13 @@ class Ball(RawTurtle):
             print('bounce error')
             return  # add error throw here
         if paddle_angle_modifier:
-            pass  # todo: make the angle the average of the modifier angle and reflection angle
+            modified_paddle_angle = reflection_angle + paddle_angle_modifier
+            reflection_angle = self.clamp_angle_to_reflection_range(modified_paddle_angle)
         self.set_ball_direction(reflection_angle)
+
+    @staticmethod
+    def clamp_angle_to_reflection_range(angle):
+        return max(min(angle, MAX_PADDLE_ANGLE), MIN_PADDLE_ANGLE)
 
     @staticmethod
     def is_moving_vertically(direction):
