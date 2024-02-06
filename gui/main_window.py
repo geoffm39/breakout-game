@@ -10,6 +10,7 @@ class MainWindow:
         self.root = root
         self.root.title('Breakout!')
         self.root.iconbitmap('gui/arcade_icon.ico')
+        self.root.resizable(FALSE, FALSE)
 
         mainframe = ttk.Frame(self.root)
         mainframe.grid(column=0, row=0, sticky='nwes')

@@ -3,11 +3,11 @@ from turtle import TurtleScreen
 
 from paddle import Paddle
 from ball import Ball
-from bricks import Bricks
+from brick import Brick
 from powerup import Powerup
 from scores import Scores
 from constants import (
-    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, PADDLE_WIDTH,
+    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE
 )
 
@@ -22,6 +22,7 @@ class GameScreen(Canvas):
 
         self.paddle = Paddle(self.screen)
         self.balls = []
+        self.bricks = []
 
         self.apply_mouse_controls()
 
@@ -70,12 +71,6 @@ class GameScreen(Canvas):
         if self.ball_hit_paddle(ball, paddle_bbox):
             paddle_angle_modifier = self.paddle.get_paddle_modifier_angle(ball.xcor())
             ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
-
-    def calculate_paddle_bbox(self):
-        paddle_x, paddle_y = self.paddle.pos()
-        paddle_left_x, paddle_right_x = self.paddle.get_paddle_x_coordinates()
-        paddle_bbox = (paddle_left_x, paddle_y + PADDLE_WIDTH / 2, paddle_right_x, paddle_y - PADDLE_WIDTH / 2)
-        return paddle_bbox
 
     @staticmethod
     def ball_hit_paddle(ball, paddle_bbox):
