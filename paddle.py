@@ -2,7 +2,7 @@ from turtle import RawTurtle
 
 from constants import (
     SCREEN_WIDTH, PADDLE_START_POSITION, PADDLE_LENGTH, PADDLE_WIDTH,
-    SCREEN_LEFT_EDGE, SCREEN_RIGHT_EDGE
+    SCREEN_LEFT_EDGE, SCREEN_RIGHT_EDGE, PADDLE_COLOR, PADDLE_SHAPE
 )
 
 
@@ -25,8 +25,8 @@ class Paddle(RawTurtle):
 
     def set_default_paddle(self):
         self.penup()
-        self.color('blue')
-        self.shape('square')
+        self.color(PADDLE_COLOR)
+        self.shape(PADDLE_SHAPE)
         self.shapesize(stretch_len=self.paddle_length)
         self.setposition(PADDLE_START_POSITION)
 

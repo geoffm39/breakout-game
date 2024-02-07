@@ -2,7 +2,7 @@ from turtle import RawTurtle
 from random import randint
 
 from constants import (
-    BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE,
+    BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_COLOR, BALL_SHAPE,
     NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE
 )
 
@@ -11,12 +11,14 @@ class Ball(RawTurtle):
     def __init__(self, canvas, **kwargs):
         super().__init__(canvas, **kwargs)
 
+        self.move_speed = 1
+
         self.set_default_ball()
 
     def set_default_ball(self):
         self.penup()
-        self.color('white')
-        self.shape('circle')
+        self.color(BALL_COLOR)
+        self.shape(BALL_SHAPE)
         self.setposition(BALL_START_POSITION)
         self.set_random_starting_direction()
 
@@ -27,7 +29,7 @@ class Ball(RawTurtle):
         self.setheading(random_angle)
 
     def move(self):
-        self.forward(1)
+        self.forward(self.move_speed)
 
     def bounce(self, surface, paddle_angle_modifier=None):
         direction = self.heading()
