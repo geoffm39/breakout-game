@@ -7,7 +7,7 @@ from brick import Brick
 from powerup import Powerup
 from scores import Scores
 from constants import (
-    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS,
+    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE
 )
 

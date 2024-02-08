@@ -20,7 +20,14 @@ BALL_COLOR = 'white'
 BALL_SHAPE = 'circle'
 BALL_START_POSITION = (0, SCREEN_BOTTOM_EDGE + PADDLE_WIDTH + BALL_SIZE)
 
-BRICK_TYPE = 'brick_type'
+TYPE = 'type'
+NORMAL = 'normal'
+STRONG = 'strong'
+BARRIER = 'barrier'
+
+SPACING = 'spacing'
+SPACE_SIZE = 'space_size'
+
 BRICK_COLOR = 'brick_color'
 BRICK_LOCATION = 'brick_location'
 BRICK_SHAPE = 'square'
@@ -28,6 +35,7 @@ BRICK_WIDTH = 20
 BRICK_LENGTH = 3
 BARRIER_WIDTH = 20
 BARRIER_LENGTH = 1
+BRICK_SPACING = 5
 
 VERTICAL_SURFACE = 'vertical'
 HORIZONTAL_SURFACE = 'horizontal'
