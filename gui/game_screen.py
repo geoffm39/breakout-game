@@ -6,6 +6,7 @@ from ball import Ball
 from brick import Brick
 from powerup import Powerup
 from scores import Scores
+from levels import Levels
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE
@@ -21,9 +22,11 @@ class GameScreen(Canvas):
         self.configure_screen()
 
         self.paddle = Paddle(self.screen)
-        self.balls = []
+        self.levels = Levels()
         self.bricks = []
+        self.balls = []
 
+        self.current_level = 1
         self.apply_mouse_controls()
 
     def apply_mouse_controls(self):

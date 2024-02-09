@@ -1,14 +1,9 @@
-from constants import (
-    BRICK_COLOR, TYPE, NORMAL, STRONG, BARRIER, SPACING, SPACE_SIZE,
-    BLUE, GREEN, RED, YELLOW, ORANGE, PURPLE
-)
+from level_data import LEVELS
 
 
 class Levels:
     def __init__(self):
-        self.current_level = 1
+        self.levels = LEVELS
 
-        self.level_1 = [
-            [{TYPE: SPACING, SPACE_SIZE: 1080}],
-            [{TYPE: SPACING, SPACE_SIZE: 20}, {TYPE: NORMAL, BRICK_COLOR: BLUE}]  # add color constants
-        ]
+    def get_level(self, level_number):
+        return self.levels[level_number]
