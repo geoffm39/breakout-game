@@ -15,9 +15,9 @@ class Brick(RawTurtle):
         self.brick_length = None
         self.brick_location = None
 
-        self.setup_brick()
+        self.set_brick_properties()
 
-    def setup_brick(self):
+    def set_brick_properties(self):
         self.penup()
         self.shape(BRICK_SHAPE)
         if self.is_barrier():
@@ -27,7 +27,13 @@ class Brick(RawTurtle):
             self.shapesize(stretch_len=BRICK_LENGTH)
             self.brick_length = BRICK_WIDTH * BRICK_LENGTH
         self.color(self.brick_color)
+
+    def set_brick_location(self, brick_left_x, brick_top_y):
+        brick_x = brick_left_x + self.brick_length / 2
+        brick_y = brick_top_y - BRICK_WIDTH / 2
+        self.brick_location = (brick_x, brick_y)
         self.setposition(self.brick_location)
+
 
     def get_brick_bbox(self):
         brick_x, brick_y = self.brick_location

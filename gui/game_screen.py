@@ -57,15 +57,19 @@ class GameScreen(Canvas):
 
     def add_level_bricks(self):
         level_data = self.levels.get_level(self.current_level)
-        y_location = SCREEN_TOP_EDGE - BRICK_SPACING - BRICK_WIDTH / 2
+        y_location = SCREEN_TOP_EDGE - BRICK_SPACING
         for row in level_data:
             x_location = SCREEN_LEFT_EDGE + BRICK_SPACING
-            for position in row:
-                if self.is_spacing(position):
-                    x_location += position[SPACE_SIZE]
+            for item in row:
+                if self.is_spacing(item):
+                    x_location += item[SPACE_SIZE]
                     x_location += BRICK_SPACING
                 else:
-                    new_brick = Brick(self, position)
+                    new_brick = Brick(self, item)
+                    new_brick.set_brick_location(x_location, y_location)
+                    self.bricks.append(new_brick)
+                    x_location += BRICK_SPACING
+            y_location -= BRICK_WIDTH
 
     @staticmethod
     def is_spacing(position):
