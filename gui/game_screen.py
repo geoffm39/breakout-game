@@ -8,8 +8,9 @@ from powerup import Powerup
 from scores import Scores
 from levels import Levels
 from constants import (
-    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE
+    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE,
+    BRICK_LOCATION, BARRIER, BARRIER_LENGTH, BRICK_WIDTH, BRICK_LENGTH,
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE,
 )
 
 
@@ -50,8 +51,25 @@ class GameScreen(Canvas):
         self.screen.listen()
 
     def start_game(self):
+        self.add_level_bricks()
         self.balls.append(Ball(self.screen))
         self.update_game_screen()
+
+    def add_level_bricks(self):
+        level_data = self.levels.get_level(self.current_level)
+        y_location = SCREEN_TOP_EDGE - BRICK_SPACING - BRICK_WIDTH / 2
+        for row in level_data:
+            x_location = SCREEN_LEFT_EDGE + BRICK_SPACING
+            for position in row:
+                if self.is_spacing(position):
+                    x_location += position[SPACE_SIZE]
+                    x_location += BRICK_SPACING
+                else:
+                    new_brick = Brick(self, position)
+
+    @staticmethod
+    def is_spacing(position):
+        return position[TYPE] == SPACING
 
     def update_game_screen(self):
         self.screen.update()

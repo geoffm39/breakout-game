@@ -12,8 +12,8 @@ class Brick(RawTurtle):
 
         self.brick_type = brick_attributes[TYPE]
         self.brick_color = brick_attributes[BRICK_COLOR]
-        self.brick_location = brick_attributes[BRICK_LOCATION]
         self.brick_length = None
+        self.brick_location = None
 
         self.setup_brick()
 
@@ -30,7 +30,7 @@ class Brick(RawTurtle):
         self.setposition(self.brick_location)
 
     def get_brick_bbox(self):
-        brick_x, brick_y = self.pos()
+        brick_x, brick_y = self.brick_location
         brick_left_x = brick_x - self.brick_length / 2
         brick_right_x = brick_x + self.brick_length / 2
         brick_top_y = brick_y + BRICK_WIDTH / 2
