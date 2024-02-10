@@ -68,8 +68,10 @@ class GameScreen(Canvas):
                     new_brick = Brick(self, item)
                     new_brick.set_brick_location(x_location, y_location)
                     self.bricks.append(new_brick)
+                    x_location += new_brick.get_brick_length()
                     x_location += BRICK_SPACING
             y_location -= BRICK_WIDTH
+            y_location -= BRICK_SPACING
 
     @staticmethod
     def is_spacing(position):

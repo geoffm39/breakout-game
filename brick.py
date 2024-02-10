@@ -34,6 +34,8 @@ class Brick(RawTurtle):
         self.brick_location = (brick_x, brick_y)
         self.setposition(self.brick_location)
 
+    def get_brick_length(self):
+        return self.brick_length
 
     def get_brick_bbox(self):
         brick_x, brick_y = self.brick_location
