@@ -1,4 +1,4 @@
-from turtle import RawTurtle
+from turtle import Turtle
 
 from constants import (
     SCREEN_WIDTH, PADDLE_START_POSITION, PADDLE_LENGTH, PADDLE_WIDTH,
@@ -6,9 +6,9 @@ from constants import (
 )
 
 
-class Paddle(RawTurtle):
-    def __init__(self, canvas, **kwargs):
-        super().__init__(canvas, **kwargs)
+class Paddle(Turtle):
+    def __init__(self,**kwargs):
+        super().__init__(**kwargs)
 
         self.paddle_length = PADDLE_LENGTH
 

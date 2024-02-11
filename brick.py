@@ -1,4 +1,4 @@
-from turtle import RawTurtle
+from turtle import Turtle
 
 from constants import (
     BRICK_LOCATION, TYPE, NORMAL, STRONG, BARRIER, BRICK_COLOR, BRICK_SHAPE,
@@ -6,9 +6,9 @@ from constants import (
 )
 
 
-class Brick(RawTurtle):
-    def __init__(self, canvas, brick_attributes: dict, **kwargs):
-        super().__init__(canvas, **kwargs)
+class Brick(Turtle):
+    def __init__(self, brick_attributes: dict, **kwargs):
+        super().__init__(**kwargs)
 
         self.brick_type = brick_attributes[TYPE]
         self.brick_color = brick_attributes[BRICK_COLOR]

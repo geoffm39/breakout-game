@@ -1,6 +1,6 @@
-from turtle import RawTurtle
+from turtle import Turtle
 
 
-class Powerup(RawTurtle):
-    def __init__(self, canvas, **kwargs):
-        super().__init__(canvas, **kwargs)
+class Powerup(Turtle):
+    def __init__(self,**kwargs):
+        super().__init__(**kwargs)

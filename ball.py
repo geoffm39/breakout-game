@@ -1,4 +1,4 @@
-from turtle import RawTurtle
+from turtle import Turtle
 from random import randint
 
 from constants import (
@@ -7,9 +7,9 @@ from constants import (
 )
 
 
-class Ball(RawTurtle):
-    def __init__(self, canvas, **kwargs):
-        super().__init__(canvas, **kwargs)
+class Ball(Turtle):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.move_speed = 1
 
