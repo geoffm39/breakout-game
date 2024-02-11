@@ -64,7 +64,7 @@ class GameScreen(Canvas):
                     x_location += item[SPACE_SIZE]
                     x_location += BRICK_SPACING
                 else:
-                    new_brick = Brick(self, item)
+                    new_brick = Brick(self.screen, item)
                     new_brick.set_brick_location(x_location, y_location)
                     self.bricks.append(new_brick)
                     x_location += new_brick.get_brick_length()
