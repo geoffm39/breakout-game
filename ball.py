@@ -11,7 +11,7 @@ class Ball(RawTurtle):
     def __init__(self, canvas, **kwargs):
         super().__init__(canvas, **kwargs)
 
-        self.move_speed = 1
+        self.move_speed = 2.5
 
         self.set_default_ball()
 
