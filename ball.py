@@ -3,7 +3,7 @@ from random import randint
 
 from constants import (
     BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_COLOR, BALL_SHAPE,
-    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE
+    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE, BALL_SPEED
 )
 
 
@@ -11,7 +11,7 @@ class Ball(RawTurtle):
     def __init__(self, canvas, **kwargs):
         super().__init__(canvas, **kwargs)
 
-        self.move_speed = 2.5
+        self.move_speed = BALL_SPEED
 
         self.set_default_ball()
 
