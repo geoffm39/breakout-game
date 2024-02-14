@@ -91,7 +91,9 @@ class GameScreen(Canvas):
         self.check_for_wall_contact(ball)
 
     def check_for_brick_contact(self, ball):
-        pass
+        for brick in self.bricks:
+            if self.ball_hit_brick(ball, brick):
+                pass
 
     def check_for_wall_contact(self, ball):
         if self.ball_hit_side_wall(ball):
@@ -106,8 +108,8 @@ class GameScreen(Canvas):
             ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
 
     @staticmethod
-    def ball_hit_brick(ball, brick_bbox):
-        pass
+    def ball_hit_brick(ball, brick):
+        brick_bbox = brick.get_brick_bbox()
 
     @staticmethod
     def ball_hit_paddle(ball, paddle_bbox):
