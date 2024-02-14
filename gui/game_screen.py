@@ -80,11 +80,18 @@ class GameScreen(Canvas):
         self.screen.update()
         for ball in self.balls:
             ball.move()
-            self.check_for_paddle_contact(ball)
-            self.check_for_wall_contact(ball)
+            self.check_for_ball_contact(ball)
             if self.ball_missed(ball):
                 return
         self.after(3, self.update_game_screen)
+
+    def check_for_ball_contact(self, ball):
+        self.check_for_paddle_contact(ball)
+        self.check_for_brick_contact(ball)
+        self.check_for_wall_contact(ball)
+
+    def check_for_brick_contact(self, ball):
+        pass
 
     def check_for_wall_contact(self, ball):
         if self.ball_hit_side_wall(ball):
