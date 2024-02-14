@@ -106,6 +106,10 @@ class GameScreen(Canvas):
             ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
 
     @staticmethod
+    def ball_hit_brick(ball, brick_bbox):
+        pass
+
+    @staticmethod
     def ball_hit_paddle(ball, paddle_bbox):
         ball_x, ball_y = ball.pos()
         ball_bottom_y = int(ball_y - BALL_RADIUS)
