@@ -9,7 +9,7 @@ from scores import Scores
 from levels import Levels
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE,
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED
 )
 
 
@@ -85,47 +85,48 @@ class GameScreen(Canvas):
                 return
         self.after(3, self.update_game_screen)
 
-    def check_for_ball_contact(self, ball):
+    def check_for_ball_contact(self, ball: Ball):
         self.check_for_paddle_contact(ball)
         self.check_for_brick_contact(ball)
         self.check_for_wall_contact(ball)
 
-    def check_for_brick_contact(self, ball):
+    def check_for_brick_contact(self, ball: Ball):
         for brick in self.bricks:
             if self.ball_hit_brick(ball, brick):
                 pass
 
-    def check_for_wall_contact(self, ball):
+    def check_for_wall_contact(self, ball: Ball):
         if self.ball_hit_side_wall(ball):
             ball.bounce(VERTICAL_SURFACE)
         if self.ball_hit_top_wall(ball):
             ball.bounce(HORIZONTAL_SURFACE)
 
-    def check_for_paddle_contact(self, ball):
+    def check_for_paddle_contact(self, ball: Ball):
         paddle_bbox = self.paddle.get_paddle_bbox()
         if self.ball_hit_paddle(ball, paddle_bbox):
             paddle_angle_modifier = self.paddle.get_paddle_modifier_angle(ball.xcor())
             ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
 
     @staticmethod
-    def ball_hit_brick(ball, brick):
+    def ball_hit_brick(ball: Ball, brick: Brick):
         brick_bbox = brick.get_brick_bbox()
+        ball_x1, ball_y1, ball_x2, ball_y2 = ball.get_ball_bbox()
 
     @staticmethod
-    def ball_hit_paddle(ball, paddle_bbox):
-        ball_x, ball_y = ball.pos()
-        ball_bottom_y = int(ball_y - BALL_RADIUS)
+    def ball_hit_paddle(ball: Ball, paddle_bbox):
+        ball_x = ball.xcor()
+        ball_bottom_y = ball.get_ball_bbox()[3]
         paddle_x1, paddle_y1, paddle_x2 = paddle_bbox[:3]
-        return ball_bottom_y == paddle_y1 and paddle_x1 <= ball_x <= paddle_x2
+        return paddle_y1 >= ball_bottom_y >= paddle_y1 - BALL_SPEED and paddle_x1 <= ball_x <= paddle_x2
 
     @staticmethod
-    def ball_missed(ball):
+    def ball_missed(ball: Ball):
         return ball.ycor() <= SCREEN_BOTTOM_EDGE + BALL_RADIUS
 
     @staticmethod
-    def ball_hit_top_wall(ball):
+    def ball_hit_top_wall(ball: Ball):
         return ball.ycor() >= SCREEN_TOP_EDGE - BALL_RADIUS
 
     @staticmethod
-    def ball_hit_side_wall(ball):
+    def ball_hit_side_wall(ball: Ball):
         return ball.xcor() >= SCREEN_RIGHT_EDGE - BALL_RADIUS or ball.xcor() <= SCREEN_LEFT_EDGE + BALL_RADIUS

@@ -41,7 +41,7 @@ class Paddle(RawTurtle):
         return left_x_loc, right_x_loc
 
     def get_paddle_bbox(self):
-        paddle_x, paddle_y = self.pos()
+        paddle_x, paddle_y = self.xcor(), self.ycor()
         paddle_left_x, paddle_right_x = self.get_paddle_x_coordinates()
         paddle_bbox = (paddle_left_x, paddle_y + PADDLE_WIDTH / 2, paddle_right_x, paddle_y - PADDLE_WIDTH / 2)
         return paddle_bbox

@@ -2,7 +2,7 @@ from turtle import RawTurtle
 from random import randint
 
 from constants import (
-    BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_COLOR, BALL_SHAPE,
+    BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_COLOR, BALL_SHAPE, BALL_RADIUS,
     NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE, BALL_SPEED
 )
 
@@ -30,6 +30,10 @@ class Ball(RawTurtle):
 
     def move(self):
         self.forward(self.move_speed)
+
+    def get_ball_bbox(self):
+        ball_x, ball_y = self.xcor(), self.ycor()
+        return ball_x - BALL_RADIUS, ball_y + BALL_RADIUS, ball_x + BALL_RADIUS, ball_y - BALL_RADIUS
 
     def bounce(self, surface, paddle_angle_modifier=None):
         direction = self.heading()
