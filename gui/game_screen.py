@@ -107,9 +107,13 @@ class GameScreen(Canvas):
         for brick in self.bricks:
             brick_bbox = brick.get_brick_bbox()
             if self.ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
+                brick.hideturtle()
+                self.remove_brick(brick)
                 ball.bounce(HORIZONTAL_SURFACE)
                 break
             if self.ball_hit_left_or_right_of_brick(ball_bbox, brick_bbox):
+                brick.hideturtle()
+                self.remove_brick(brick)
                 ball.bounce(VERTICAL_SURFACE)
                 break
 
@@ -119,9 +123,11 @@ class GameScreen(Canvas):
         ball_y1, ball_y2 = ball_bbox[1::2]
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
         if brick_x1 <= ball_x <= brick_x2:
-            pass
-        else:
-            return False
+            if brick_y1 >= ball_y2 >= brick_y1 - BALL_SPEED:
+                return True
+            if brick_y2 <= ball_y1 <= brick_y2 + BALL_SPEED:
+                return True
+        return False
 
     @staticmethod
     def ball_hit_left_or_right_of_brick(ball_bbox, brick_bbox):
@@ -129,9 +135,14 @@ class GameScreen(Canvas):
         ball_x1, ball_x2 = ball_bbox[::2]
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
         if brick_y1 >= ball_y >= brick_y2:
-            pass
-        else:
-            return False
+            if brick_x1 <= ball_x2 <= brick_x1 + BALL_SPEED:
+                return True
+            if brick_x2 >= ball_x1 >= brick_x2 - BALL_SPEED:
+                return True
+        return False
+
+    def remove_brick(self, brick):
+        self.bricks.remove(brick)
 
     @staticmethod
     def ball_hit_paddle(ball: Ball, paddle_bbox):
