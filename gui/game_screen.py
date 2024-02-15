@@ -122,7 +122,7 @@ class GameScreen(Canvas):
         ball_x = ball_bbox[0] + BALL_RADIUS
         ball_y1, ball_y2 = ball_bbox[1::2]
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
-        if brick_x1 <= ball_x <= brick_x2:
+        if brick_x1 - BRICK_SPACING / 2 <= ball_x <= brick_x2 + BRICK_SPACING / 2:
             if brick_y1 >= ball_y2 >= brick_y1 - BALL_SPEED:
                 return True
             if brick_y2 <= ball_y1 <= brick_y2 + BALL_SPEED:
@@ -134,7 +134,7 @@ class GameScreen(Canvas):
         ball_y = ball_bbox[1] - BALL_RADIUS
         ball_x1, ball_x2 = ball_bbox[::2]
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
-        if brick_y1 >= ball_y >= brick_y2:
+        if brick_y1 + BRICK_SPACING / 2 >= ball_y >= brick_y2 - BRICK_SPACING / 2:
             if brick_x1 <= ball_x2 <= brick_x1 + BALL_SPEED:
                 return True
             if brick_x2 >= ball_x1 >= brick_x2 - BALL_SPEED:
