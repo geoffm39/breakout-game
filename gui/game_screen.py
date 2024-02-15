@@ -115,11 +115,23 @@ class GameScreen(Canvas):
 
     @staticmethod
     def ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
-        pass
+        ball_x = ball_bbox[0] + BALL_RADIUS
+        ball_y1, ball_y2 = ball_bbox[1::2]
+        brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
+        if brick_x1 <= ball_x <= brick_x2:
+            pass
+        else:
+            return False
 
     @staticmethod
     def ball_hit_left_or_right_of_brick(ball_bbox, brick_bbox):
-        pass
+        ball_y = ball_bbox[1] - BALL_RADIUS
+        ball_x1, ball_x2 = ball_bbox[::2]
+        brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
+        if brick_y1 >= ball_y >= brick_y2:
+            pass
+        else:
+            return False
 
     @staticmethod
     def ball_hit_paddle(ball: Ball, paddle_bbox):
