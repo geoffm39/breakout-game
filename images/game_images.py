@@ -12,4 +12,7 @@ class GameImages:
 
     def load_images(self):
         for filename in os.listdir(IMAGE_DIRECTORY):
-            print(filename)
+            image_path = os.path.join(IMAGE_DIRECTORY, filename)
+            with Image.open(image_path) as image:
+                photo_image = ImageTk.PhotoImage(image)
+            self.images[filename] = photo_image

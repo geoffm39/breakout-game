@@ -7,6 +7,7 @@ from brick import Brick
 from powerup import Powerup
 from scores import Scores
 from levels import Levels
+from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED
@@ -20,6 +21,8 @@ class GameScreen(Canvas):
 
         self.screen = TurtleScreen(self)
         self.configure_screen()
+
+        self.game_images = GameImages()
 
         self.paddle = Paddle(self.screen)
         self.levels = Levels()
