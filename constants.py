@@ -1,3 +1,5 @@
+IMAGE_DIRECTORY = 'images/image-files'
+
 SCREEN_HEIGHT = 720
 SCREEN_WIDTH = 1080
 
