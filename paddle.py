@@ -20,7 +20,7 @@ class Paddle(RawTurtle):
             self.setx(screen_x_coord)
 
     def paddle_reached_screen_edge(self, x_coord):
-        left_x_loc, right_x_loc = self.get_paddle_x_coordinates(x_coord)
+        left_x_loc, right_x_loc = self.get_x_coordinates(x_coord)
         return left_x_loc < SCREEN_LEFT_EDGE or right_x_loc > SCREEN_RIGHT_EDGE
 
     def set_default_paddle(self):
@@ -30,7 +30,7 @@ class Paddle(RawTurtle):
         self.shapesize(stretch_len=self.paddle_length)
         self.setposition(PADDLE_START_POSITION)
 
-    def get_paddle_x_coordinates(self, x_coord=None):
+    def get_x_coordinates(self, x_coord=None):
         if x_coord:
             paddle_x_loc = x_coord
         else:
@@ -40,14 +40,14 @@ class Paddle(RawTurtle):
         right_x_loc = paddle_x_loc + paddle_pixel_length / 2
         return left_x_loc, right_x_loc
 
-    def get_paddle_bbox(self):
+    def get_bbox(self):
         paddle_x, paddle_y = self.xcor(), self.ycor()
-        paddle_left_x, paddle_right_x = self.get_paddle_x_coordinates()
+        paddle_left_x, paddle_right_x = self.get_x_coordinates()
         paddle_bbox = (paddle_left_x, paddle_y + PADDLE_WIDTH / 2, paddle_right_x, paddle_y - PADDLE_WIDTH / 2)
         return paddle_bbox
 
-    def get_paddle_modifier_angle(self, paddle_contact_x_coord):
-        paddle_x1, _, paddle_x2, _ = self.get_paddle_bbox()
+    def get_modifier_angle(self, paddle_contact_x_coord):
+        paddle_x1, _, paddle_x2, _ = self.get_bbox()
         paddle_pixel_length = self.paddle_length * PADDLE_WIDTH
         paddle_centre_x = paddle_x1 + paddle_pixel_length/2
         relative_position = paddle_centre_x - paddle_contact_x_coord

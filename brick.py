@@ -1,7 +1,7 @@
 from turtle import RawTurtle
 
 from constants import (
-    BRICK_LOCATION, TYPE, NORMAL, STRONG, BARRIER, BRICK_COLOR, BRICK_SHAPE,
+    BRICK_LOCATION, TYPE, NORMAL, STRONG, BROKEN, BARRIER, BRICK_COLOR, BRICK_SHAPE,
     BRICK_WIDTH, BRICK_LENGTH, BARRIER_LENGTH
 )
 
@@ -15,9 +15,9 @@ class Brick(RawTurtle):
         self.brick_length = None
         self.brick_location = None
 
-        self.set_brick_properties()
+        self.set_properties()
 
-    def set_brick_properties(self):
+    def set_properties(self):
         self.penup()
         self.shape(BRICK_SHAPE)
         if self.is_barrier():
@@ -28,16 +28,22 @@ class Brick(RawTurtle):
             self.brick_length = BRICK_WIDTH * BRICK_LENGTH
         self.color(self.brick_color)
 
-    def set_brick_location(self, brick_left_x, brick_top_y):
+    def set_location(self, brick_left_x, brick_top_y):
         brick_x = brick_left_x + self.brick_length / 2
         brick_y = brick_top_y - BRICK_WIDTH / 2
         self.brick_location = (brick_x, brick_y)
         self.setposition(self.brick_location)
 
-    def get_brick_length(self):
+    def get_length(self):
         return self.brick_length
 
-    def get_brick_bbox(self):
+    def get_color(self):
+        return self.brick_color
+
+    def get_type(self):
+        return self.brick_type
+
+    def get_bbox(self):
         brick_x, brick_y = self.brick_location
         brick_left_x = brick_x - self.brick_length / 2
         brick_right_x = brick_x + self.brick_length / 2

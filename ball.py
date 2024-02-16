@@ -31,7 +31,7 @@ class Ball(RawTurtle):
     def move(self):
         self.forward(self.move_speed)
 
-    def get_ball_bbox(self):
+    def get_bbox(self):
         ball_x, ball_y = self.xcor(), self.ycor()
         return ball_x - BALL_RADIUS, ball_y + BALL_RADIUS, ball_x + BALL_RADIUS, ball_y - BALL_RADIUS
 
@@ -53,7 +53,7 @@ class Ball(RawTurtle):
         if paddle_angle_modifier:
             modified_paddle_angle = reflection_angle + paddle_angle_modifier
             reflection_angle = self.clamp_angle_to_reflection_range(modified_paddle_angle)
-        self.set_ball_direction(reflection_angle)
+        self.set_direction(reflection_angle)
 
     @staticmethod
     def clamp_angle_to_reflection_range(angle):
@@ -131,5 +131,5 @@ class Ball(RawTurtle):
             reflection_angle = SOUTH - incidence_angle
         return reflection_angle
 
-    def set_ball_direction(self, direction):
+    def set_direction(self, direction):
         self.setheading(direction)

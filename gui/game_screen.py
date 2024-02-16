@@ -68,9 +68,9 @@ class GameScreen(Canvas):
                     x_location += BRICK_SPACING
                 else:
                     new_brick = Brick(self.screen, item)
-                    new_brick.set_brick_location(x_location, y_location)
+                    new_brick.set_location(x_location, y_location)
                     self.bricks.append(new_brick)
-                    x_location += new_brick.get_brick_length()
+                    x_location += new_brick.get_length()
                     x_location += BRICK_SPACING
             y_location -= BRICK_WIDTH
             y_location -= BRICK_SPACING
@@ -100,15 +100,15 @@ class GameScreen(Canvas):
             ball.bounce(HORIZONTAL_SURFACE)
 
     def check_for_paddle_contact(self, ball: Ball):
-        paddle_bbox = self.paddle.get_paddle_bbox()
+        paddle_bbox = self.paddle.get_bbox()
         if self.ball_hit_paddle(ball, paddle_bbox):
-            paddle_angle_modifier = self.paddle.get_paddle_modifier_angle(ball.xcor())
+            paddle_angle_modifier = self.paddle.get_modifier_angle(ball.xcor())
             ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
 
     def check_for_brick_contact(self, ball: Ball):
-        ball_bbox = ball.get_ball_bbox()
+        ball_bbox = ball.get_bbox()
         for brick in self.bricks:
-            brick_bbox = brick.get_brick_bbox()
+            brick_bbox = brick.get_bbox()
             if self.ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
                 brick.hideturtle()
                 self.remove_brick(brick)

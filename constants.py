@@ -29,6 +29,7 @@ SPACE_SIZE = 'space_size'
 TYPE = 'type'
 NORMAL = 'normal'
 STRONG = 'strong'
+BROKEN = 'broken'
 BARRIER = 'barrier'
 
 BRICK_COLOR = 'brick_color'
