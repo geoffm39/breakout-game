@@ -31,12 +31,18 @@ class GameScreen(Canvas):
         self.balls = []
 
         self.current_level = 1
+
         self.apply_mouse_controls()
+        self.apply_background_image()
 
     def apply_mouse_controls(self):
         self.bind('<Motion>', self.track_player_movement)
         self.bind('<Enter>', self.hide_mouse_cursor)
         self.bind('<Leave>', self.show_mouse_cursor)
+
+    def apply_background_image(self):
+        background = self.game_images.get_background()
+        self.create_image(0, 0, image=background)
 
     def track_player_movement(self, event):
         x = event.x

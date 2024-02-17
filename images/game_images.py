@@ -24,3 +24,6 @@ class GameImages:
         brick_color = brick.get_color()
         image_key = f'brick-{brick_color}-{brick_type}.png'
         return self.images[image_key]
+
+    def get_background(self):
+        return self.images['background.jpg']

@@ -27,6 +27,7 @@ class Brick(RawTurtle):
             self.shapesize(stretch_len=BRICK_LENGTH)
             self.brick_length = BRICK_WIDTH * BRICK_LENGTH
         self.color(self.brick_color)
+        self.hideturtle()
 
     def set_location(self, brick_left_x, brick_top_y):
         brick_x = brick_left_x + self.brick_length / 2
