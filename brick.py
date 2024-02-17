@@ -43,6 +43,9 @@ class Brick(RawTurtle):
     def get_type(self):
         return self.brick_type
 
+    def get_location(self):
+        return self.brick_location
+
     def get_bbox(self):
         brick_x, brick_y = self.brick_location
         brick_left_x = brick_x - self.brick_length / 2

@@ -10,7 +10,7 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT
 )
 
 
@@ -27,6 +27,7 @@ class GameScreen(Canvas):
         self.paddle = Paddle(self.screen)
         self.levels = Levels()
         self.bricks = []
+        self.brick_images = []
         self.balls = []
 
         self.current_level = 1
@@ -70,10 +71,19 @@ class GameScreen(Canvas):
                     new_brick = Brick(self.screen, item)
                     new_brick.set_location(x_location, y_location)
                     self.bricks.append(new_brick)
+                    self.add_brick_image(new_brick)
                     x_location += new_brick.get_length()
                     x_location += BRICK_SPACING
             y_location -= BRICK_WIDTH
             y_location -= BRICK_SPACING
+
+    def add_brick_image(self, brick):
+        image = self.game_images.get_brick_image(brick)
+        screen_x, screen_y = brick.get_location()
+        canvas_x = screen_x
+        canvas_y = screen_y * -1
+        canvas_image = self.create_image(canvas_x, canvas_y, image=image)
+        self.brick_images.append(canvas_image)
 
     @staticmethod
     def is_spacing(position):

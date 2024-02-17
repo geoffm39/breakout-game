@@ -1,7 +1,7 @@
 from PIL import Image, ImageTk
 import os
 
-from constants import IMAGE_DIRECTORY
+from constants import IMAGE_DIRECTORY, STRONG, NORMAL, BARRIER
 
 
 class GameImages:
@@ -19,5 +19,8 @@ class GameImages:
 
     def get_brick_image(self, brick):
         brick_type = brick.get_type()
+        if brick_type == STRONG or brick_type == BARRIER:
+            brick_type = NORMAL
         brick_color = brick.get_color()
         image_key = f'brick-{brick_color}-{brick_type}.png'
+        return self.images[image_key]
