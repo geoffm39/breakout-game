@@ -20,3 +20,4 @@ class GameImages:
     def get_brick_image(self, brick):
         brick_type = brick.get_type()
         brick_color = brick.get_color()
+        image_key = f'brick-{brick_color}-{brick_type}.png'
