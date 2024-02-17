@@ -19,7 +19,7 @@ class GameImages:
 
     def get_brick_image(self, brick):
         brick_type = brick.get_type()
-        if brick_type == STRONG or brick_type == BARRIER:
+        if brick_type == STRONG:
             brick_type = NORMAL
         brick_color = brick.get_color()
         image_key = f'brick-{brick_color}-{brick_type}.png'
