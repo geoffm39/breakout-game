@@ -41,11 +41,9 @@ ORANGE = 'orange'
 GREEN = 'green'
 PURPLE = 'purple'
 
-BRICK_LOCATION = 'brick_location'
 BRICK_SHAPE = 'square'
 BRICK_WIDTH = 20
 BRICK_LENGTH = 3
-BARRIER_LENGTH = 3
 
 BRICK_SPACING = 5
 

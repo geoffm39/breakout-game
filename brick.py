@@ -1,8 +1,8 @@
 from turtle import RawTurtle
 
 from constants import (
-    BRICK_LOCATION, TYPE, NORMAL, STRONG, BROKEN, BARRIER, BRICK_COLOR, BRICK_SHAPE,
-    BRICK_WIDTH, BRICK_LENGTH, BARRIER_LENGTH
+    TYPE, NORMAL, STRONG, BROKEN, BARRIER, BRICK_COLOR, BRICK_SHAPE,
+    BRICK_WIDTH, BRICK_LENGTH
 )
 
 
@@ -20,12 +20,8 @@ class Brick(RawTurtle):
     def set_properties(self):
         self.penup()
         self.shape(BRICK_SHAPE)
-        if self.is_barrier():
-            self.shapesize(stretch_len=BARRIER_LENGTH)
-            self.brick_length = BRICK_WIDTH * BARRIER_LENGTH
-        else:
-            self.shapesize(stretch_len=BRICK_LENGTH)
-            self.brick_length = BRICK_WIDTH * BRICK_LENGTH
+        self.shapesize(stretch_len=BRICK_LENGTH)
+        self.brick_length = BRICK_WIDTH * BRICK_LENGTH
         self.color(self.brick_color)
         self.hideturtle()
 
