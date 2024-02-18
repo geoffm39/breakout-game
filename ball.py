@@ -35,8 +35,11 @@ class Ball(RawTurtle):
         ball_x, ball_y = self.xcor(), self.ycor()
         return ball_x - BALL_RADIUS, ball_y + BALL_RADIUS, ball_x + BALL_RADIUS, ball_y - BALL_RADIUS
 
+    def get_direction(self):
+        return self.heading()
+
     def bounce(self, surface, paddle_angle_modifier=None):
-        direction = self.heading()
+        direction = self.get_direction()
         if self.is_moving_vertically(direction):
             reflection_angle = self.calculate_vertical_movement(direction, surface)
         elif self.is_moving_north_east(direction):

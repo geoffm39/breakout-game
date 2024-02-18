@@ -116,10 +116,12 @@ class GameScreen(Canvas):
             ball.bounce(HORIZONTAL_SURFACE)
 
     def check_for_paddle_collision(self, ball: Ball):
-        paddle_bbox = self.paddle.get_bbox()
-        if self.ball_hit_paddle(ball, paddle_bbox):
-            paddle_angle_modifier = self.paddle.get_modifier_angle(ball.xcor())
-            ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
+        ball_direction = ball.get_direction()
+        if ball.is_moving_south_west(ball_direction) or ball.is_moving_south_east(ball_direction):
+            paddle_bbox = self.paddle.get_bbox()
+            if self.ball_hit_paddle(ball, paddle_bbox):
+                paddle_angle_modifier = self.paddle.get_modifier_angle(ball.xcor())
+                ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
 
     def check_for_brick_collision(self, ball: Ball):
         ball_bbox = ball.get_bbox()
