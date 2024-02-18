@@ -41,9 +41,6 @@ class Brick(RawTurtle):
     def get_color(self):
         return self.brick_color
 
-    def get_type(self):
-        return self.brick_type
-
     def get_location(self):
         return self.brick_location
 
@@ -55,11 +52,20 @@ class Brick(RawTurtle):
         brick_bottom_y = brick_y - BRICK_WIDTH / 2
         return brick_left_x, brick_top_y, brick_right_x, brick_bottom_y
 
-    def is_barrier(self):
-        return self.brick_type == BARRIER
+    def get_type(self):
+        return self.brick_type
+
+    def set_type(self, brick_type):
+        self.brick_type = brick_type
 
     def is_normal(self):
         return self.brick_type == NORMAL
 
     def is_strong(self):
         return self.brick_type == STRONG
+
+    def is_broken(self):
+        return self.brick_type == BROKEN
+
+    def is_barrier(self):
+        return self.brick_type == BARRIER

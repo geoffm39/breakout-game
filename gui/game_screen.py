@@ -10,7 +10,7 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED, BROKEN
 )
 
 
@@ -99,40 +99,40 @@ class GameScreen(Canvas):
         self.screen.update()
         for ball in self.balls:
             ball.move()
-            self.check_for_ball_contact(ball)
+            self.check_for_ball_collision(ball)
             if self.ball_missed(ball):
                 return
         self.after(3, self.update_game_screen)
 
-    def check_for_ball_contact(self, ball: Ball):
-        self.check_for_paddle_contact(ball)
-        self.check_for_brick_contact(ball)
-        self.check_for_wall_contact(ball)
+    def check_for_ball_collision(self, ball: Ball):
+        self.check_for_paddle_collision(ball)
+        self.check_for_brick_collision(ball)
+        self.check_for_wall_collision(ball)
 
-    def check_for_wall_contact(self, ball: Ball):
+    def check_for_wall_collision(self, ball: Ball):
         if self.ball_hit_side_wall(ball):
             ball.bounce(VERTICAL_SURFACE)
         if self.ball_hit_top_wall(ball):
             ball.bounce(HORIZONTAL_SURFACE)
 
-    def check_for_paddle_contact(self, ball: Ball):
+    def check_for_paddle_collision(self, ball: Ball):
         paddle_bbox = self.paddle.get_bbox()
         if self.ball_hit_paddle(ball, paddle_bbox):
             paddle_angle_modifier = self.paddle.get_modifier_angle(ball.xcor())
             ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
 
-    def check_for_brick_contact(self, ball: Ball):
+    def check_for_brick_collision(self, ball: Ball):
         ball_bbox = ball.get_bbox()
         for brick in self.bricks:
             brick_bbox = brick.get_bbox()
             if self.ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
                 brick.hideturtle()
-                self.remove_brick(brick)
+                self.handle_brick_collision(brick)
                 ball.bounce(HORIZONTAL_SURFACE)
                 break
             if self.ball_hit_left_or_right_of_brick(ball_bbox, brick_bbox):
                 brick.hideturtle()
-                self.remove_brick(brick)
+                self.handle_brick_collision(brick)
                 ball.bounce(VERTICAL_SURFACE)
                 break
 
@@ -160,7 +160,24 @@ class GameScreen(Canvas):
                 return True
         return False
 
+    def handle_brick_collision(self, brick):
+        if brick.is_barrier():
+            return
+        elif brick.is_normal() or brick.is_broken():
+            self.remove_brick(brick)
+        elif brick.is_strong():
+            self.handle_strong_brick_collision(brick)
+
+    def handle_strong_brick_collision(self, brick):
+        brick_index = self.bricks.index(brick)
+        brick.set_type(BROKEN)
+        updated_image = self.game_images.get_brick_image(brick)
+        self.itemconfig(self.brick_images[brick_index], image=updated_image)
+
     def remove_brick(self, brick):
+        brick_index = self.bricks.index(brick)
+        self.delete(self.brick_images[brick_index])
+        self.brick_images.pop(brick_index)
         self.bricks.remove(brick)
 
     @staticmethod

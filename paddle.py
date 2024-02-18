@@ -46,11 +46,11 @@ class Paddle(RawTurtle):
         paddle_bbox = (paddle_left_x, paddle_y + PADDLE_WIDTH / 2, paddle_right_x, paddle_y - PADDLE_WIDTH / 2)
         return paddle_bbox
 
-    def get_modifier_angle(self, paddle_contact_x_coord):
+    def get_modifier_angle(self, paddle_collision_x_coord):
         paddle_x1, _, paddle_x2, _ = self.get_bbox()
         paddle_pixel_length = self.paddle_length * PADDLE_WIDTH
         paddle_centre_x = paddle_x1 + paddle_pixel_length/2
-        relative_position = paddle_centre_x - paddle_contact_x_coord
+        relative_position = paddle_centre_x - paddle_collision_x_coord
         normalised_position = relative_position / (paddle_pixel_length / 2)
         modifier_angle = normalised_position * 90
         return modifier_angle
