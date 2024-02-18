@@ -1,5 +1,5 @@
 from tkinter import *
-from turtle import TurtleScreen
+from turtle import TurtleScreen, RawTurtle
 
 from paddle import Paddle
 from ball import Ball
@@ -10,7 +10,7 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED, BROKEN
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED, BROKEN, SCREEN_WIDTH
 )
 
 
@@ -163,12 +163,13 @@ class GameScreen(Canvas):
         return False
 
     def handle_brick_collision(self, brick):
-        if brick.is_barrier():
-            return
-        elif brick.is_normal() or brick.is_broken():
+        if brick.is_normal() or brick.is_broken():
             self.remove_brick(brick)
         elif brick.is_strong():
             self.handle_strong_brick_collision(brick)
+
+    def level_is_complete(self):
+        pass
 
     def handle_strong_brick_collision(self, brick):
         brick_index = self.bricks.index(brick)

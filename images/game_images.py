@@ -1,7 +1,7 @@
 from PIL import Image, ImageTk
 import os
 
-from constants import IMAGE_DIRECTORY, STRONG, NORMAL, BARRIER
+from constants import IMAGE_DIRECTORY, STRONG, NORMAL, BARRIER, BACKGROUND_FILENAME
 
 
 class GameImages:
@@ -26,4 +26,4 @@ class GameImages:
         return self.images[image_key]
 
     def get_background(self):
-        return self.images['background.jpg']
+        return self.images[BACKGROUND_FILENAME]
