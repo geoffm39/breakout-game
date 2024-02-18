@@ -167,9 +167,16 @@ class GameScreen(Canvas):
             self.remove_brick(brick)
         elif brick.is_strong():
             self.handle_strong_brick_collision(brick)
+        if self.level_is_complete():
+            pass
 
     def level_is_complete(self):
-        pass
+        if len(self.bricks) == 0:
+            return True
+        for brick in self.bricks:
+            if not brick.is_barrier():
+                return False
+        return True
 
     def handle_strong_brick_collision(self, brick):
         brick_index = self.bricks.index(brick)
