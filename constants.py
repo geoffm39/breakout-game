@@ -47,6 +47,15 @@ BRICK_LENGTH = 3
 
 BRICK_SPACING = 5
 
+MULTIBALL = 'multiball'
+FIREBALL = 'fireball'
+SLOW_BALL = 'slow_ball'
+FAST_BALL = 'fast_ball'
+LASERS = 'lasers'
+SMALL_PADDLE = 'small_paddle'
+BIG_PADDLE = 'big_paddle'
+EXTRA_LIFE = 'extra_life'
+
 VERTICAL_SURFACE = 'vertical'
 HORIZONTAL_SURFACE = 'horizontal'
 EAST = 0
