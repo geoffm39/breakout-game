@@ -136,3 +136,6 @@ class Ball(RawTurtle):
 
     def set_direction(self, direction):
         self.setheading(direction)
+
+    def remove_ball(self):
+        self.hideturtle()

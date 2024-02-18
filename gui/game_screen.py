@@ -168,7 +168,7 @@ class GameScreen(Canvas):
         elif brick.is_strong():
             self.handle_strong_brick_collision(brick)
         if self.level_is_complete():
-            pass
+            self.progress_to_next_level()
 
     def level_is_complete(self):
         if len(self.bricks) == 0:
@@ -177,6 +177,15 @@ class GameScreen(Canvas):
             if not brick.is_barrier():
                 return False
         return True
+
+    def progress_to_next_level(self):
+        self.current_level += 1
+        for brick in self.bricks:
+            self.remove_brick(brick)
+        for ball in self.balls:
+            self.remove_ball(ball)
+        self.add_level_bricks()
+        self.balls.append(Ball(self.screen))
 
     def handle_strong_brick_collision(self, brick):
         brick_index = self.bricks.index(brick)
@@ -189,6 +198,10 @@ class GameScreen(Canvas):
         self.delete(self.brick_images[brick_index])
         self.brick_images.pop(brick_index)
         self.bricks.remove(brick)
+
+    def remove_ball(self, ball):
+        ball.remove_ball()
+        self.balls.remove(ball)
 
     @staticmethod
     def ball_hit_paddle(ball: Ball, paddle_bbox):
