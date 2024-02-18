@@ -61,8 +61,11 @@ class GameScreen(Canvas):
 
     def start_game(self):
         self.add_level_bricks()
-        self.balls.append(Ball(self.screen))
+        self.add_ball()
         self.update_game_screen()
+
+    def add_ball(self):
+        self.balls.append(Ball(self.screen))
 
     def add_level_bricks(self):
         level_data = self.levels.get_level(self.current_level)
