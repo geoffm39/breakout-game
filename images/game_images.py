@@ -1,7 +1,7 @@
 from PIL import Image, ImageTk
 import os
 
-from constants import IMAGE_DIRECTORY, STRONG, NORMAL, BARRIER, BACKGROUND_FILENAME
+from constants import IMAGE_DIRECTORY, STRONG, NORMAL, BACKGROUND_FILENAME
 
 
 class GameImages:
