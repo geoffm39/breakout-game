@@ -157,44 +157,31 @@ class GameScreen(Canvas):
         if self.powerup_missed(powerup):
             self.remove_powerup(powerup)
 
-    def activate_powerup(self, powerup: Powerup):
-        powerup_type = powerup.get_type()
-        powerup_actions = {
-            PowerupType.MULTIBALL: self.activate_multiball,
-            PowerupType.FIREBALL: self.activate_fireball,
-            PowerupType.SLOW_BALL: self.activate_slow_ball,
-            PowerupType.FAST_BALL: self.activate_fast_ball,
-            PowerupType.LASERS: self.activate_lasers,
-            PowerupType.SMALL_PADDLE: self.activate_small_paddle,
-            PowerupType.BIG_PADDLE: self.activate_big_paddle,
-            PowerupType.EXTRA_LIFE: self.activate_extra_life
-        }
-        if powerup_type in powerup_actions:
-            powerup_actions[powerup_type]()
+    def ball_hit_paddle(self, ball: Ball):
+        ball_x = ball.xcor()
+        ball_bottom_y = ball.ycor() - BALL_RADIUS
+        paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
+        return paddle_y1 >= ball_bottom_y >= paddle_y1 - BALL_SPEED and paddle_x1 <= ball_x <= paddle_x2
 
-    def activate_multiball(self):
-        self.add_ball()
+    @staticmethod
+    def ball_missed(ball: Ball):
+        return ball.ycor() <= SCREEN_BOTTOM_EDGE + BALL_RADIUS
 
-    def activate_fireball(self):
-        pass
+    @staticmethod
+    def ball_hit_top_wall(ball: Ball):
+        return ball.ycor() >= SCREEN_TOP_EDGE - BALL_RADIUS
 
-    def activate_slow_ball(self):
-        pass
+    @staticmethod
+    def ball_hit_side_wall(ball: Ball):
+        return ball.xcor() >= SCREEN_RIGHT_EDGE - BALL_RADIUS or ball.xcor() <= SCREEN_LEFT_EDGE + BALL_RADIUS
 
-    def activate_fast_ball(self):
-        pass
+    def remove_ball(self, ball):
+        ball.remove()
+        self.balls.remove(ball)
+        del ball
 
-    def activate_lasers(self):
-        pass
-
-    def activate_small_paddle(self):
-        pass
-
-    def activate_big_paddle(self):
-        pass
-
-    def activate_extra_life(self):
-        pass
+    def no_more_balls(self):
+        return len(self.balls) == 0
 
     @staticmethod
     def ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
@@ -298,11 +285,6 @@ class GameScreen(Canvas):
         powerup_index = self.powerups.index(powerup)
         self.move(self.powerup_images[powerup_index], 0, POWERUP_SPEED)
 
-    def remove_ball(self, ball):
-        ball.remove()
-        self.balls.remove(ball)
-        del ball
-
     def powerup_hit_paddle(self, powerup: Powerup):
         powerup_x = powerup.xcor()
         powerup_bottom_y = powerup.ycor() - POWERUP_WIDTH / 2
@@ -313,23 +295,41 @@ class GameScreen(Canvas):
     def powerup_missed(powerup: Powerup):
         return powerup.ycor() <= SCREEN_BOTTOM_EDGE + POWERUP_WIDTH / 2
 
-    def ball_hit_paddle(self, ball: Ball):
-        ball_x = ball.xcor()
-        ball_bottom_y = ball.ycor() - BALL_RADIUS
-        paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
-        return paddle_y1 >= ball_bottom_y >= paddle_y1 - BALL_SPEED and paddle_x1 <= ball_x <= paddle_x2
+    def activate_powerup(self, powerup: Powerup):
+        powerup_type = powerup.get_type()
+        powerup_actions = {
+            PowerupType.MULTIBALL: self.activate_multiball,
+            PowerupType.FIREBALL: self.activate_fireball,
+            PowerupType.SLOW_BALL: self.activate_slow_ball,
+            PowerupType.FAST_BALL: self.activate_fast_ball,
+            PowerupType.LASERS: self.activate_lasers,
+            PowerupType.SMALL_PADDLE: self.activate_small_paddle,
+            PowerupType.BIG_PADDLE: self.activate_big_paddle,
+            PowerupType.EXTRA_LIFE: self.activate_extra_life
+        }
+        if powerup_type in powerup_actions:
+            powerup_actions[powerup_type]()
 
-    @staticmethod
-    def ball_missed(ball: Ball):
-        return ball.ycor() <= SCREEN_BOTTOM_EDGE + BALL_RADIUS
+    def activate_multiball(self):
+        self.add_ball()
 
-    @staticmethod
-    def ball_hit_top_wall(ball: Ball):
-        return ball.ycor() >= SCREEN_TOP_EDGE - BALL_RADIUS
+    def activate_fireball(self):
+        pass
 
-    @staticmethod
-    def ball_hit_side_wall(ball: Ball):
-        return ball.xcor() >= SCREEN_RIGHT_EDGE - BALL_RADIUS or ball.xcor() <= SCREEN_LEFT_EDGE + BALL_RADIUS
+    def activate_slow_ball(self):
+        pass
 
-    def no_more_balls(self):
-        return len(self.balls) == 0
+    def activate_fast_ball(self):
+        pass
+
+    def activate_lasers(self):
+        pass
+
+    def activate_small_paddle(self):
+        pass
+
+    def activate_big_paddle(self):
+        pass
+
+    def activate_extra_life(self):
+        pass
