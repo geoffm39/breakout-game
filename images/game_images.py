@@ -1,7 +1,8 @@
 from PIL import Image, ImageTk
 import os
 
-from constants import IMAGE_DIRECTORY, STRONG, NORMAL, BACKGROUND_FILENAME
+from brick import Brick
+from constants import IMAGE_DIRECTORY, STRONG, NORMAL, BACKGROUND_FILENAME, POWERUP_FILENAME
 
 
 class GameImages:
@@ -17,7 +18,7 @@ class GameImages:
                 photo_image = ImageTk.PhotoImage(image)
             self.images[filename] = photo_image
 
-    def get_brick_image(self, brick):
+    def get_brick_image(self, brick: Brick):
         brick_type = brick.get_type()
         if brick_type == STRONG:
             brick_type = NORMAL
@@ -27,3 +28,6 @@ class GameImages:
 
     def get_background(self):
         return self.images[BACKGROUND_FILENAME]
+
+    def get_powerup(self):
+        return self.images[POWERUP_FILENAME]

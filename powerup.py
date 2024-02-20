@@ -6,7 +6,7 @@ from constants import (
 
 
 class Powerup(RawTurtle):
-    def __init__(self, canvas, powerup_type, location, **kwargs):
+    def __init__(self, canvas, powerup_type: PowerupType, location, **kwargs):
         super().__init__(canvas, **kwargs)
 
         self.type = powerup_type
@@ -20,7 +20,7 @@ class Powerup(RawTurtle):
         self.color(POWERUP_COLOR)
         self.setheading(SOUTH)
         self.setposition(self.location)
-        # self.hideturtle()
+        self.hideturtle()
 
     def move(self):
         self.forward(POWERUP_SPEED)
@@ -30,3 +30,6 @@ class Powerup(RawTurtle):
 
     def get_type(self):
         return self.type
+
+    def get_location(self):
+        return self.location
