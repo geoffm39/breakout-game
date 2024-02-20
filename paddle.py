@@ -29,6 +29,7 @@ class Paddle(RawTurtle):
         self.shape(PADDLE_SHAPE)
         self.shapesize(stretch_len=self.paddle_length)
         self.setposition(PADDLE_START_POSITION)
+        self.hideturtle()
 
     def get_x_coordinates(self, x_coord=None):
         if x_coord:
@@ -45,6 +46,14 @@ class Paddle(RawTurtle):
         paddle_left_x, paddle_right_x = self.get_x_coordinates()
         paddle_bbox = (paddle_left_x, paddle_y + PADDLE_WIDTH / 2, paddle_right_x, paddle_y - PADDLE_WIDTH / 2)
         return paddle_bbox
+
+    def get_location(self) -> tuple:
+        x_location = self.xcor()
+        y_location = self.ycor()
+        return x_location, y_location
+
+    def get_length(self):
+        return self.paddle_length
 
     def get_modifier_angle(self, paddle_collision_x_coord):
         paddle_x1, _, paddle_x2, _ = self.get_bbox()

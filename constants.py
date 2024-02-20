@@ -4,6 +4,7 @@ from enum import Enum
 IMAGE_DIRECTORY = 'images/image-files'
 BACKGROUND_FILENAME = 'background.jpg'
 POWERUP_FILENAME = 'powerup.png'
+PADDLE_FILENAME = 'paddle.png'
 
 SCREEN_HEIGHT = 720
 SCREEN_WIDTH = 1080

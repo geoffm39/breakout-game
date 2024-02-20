@@ -27,6 +27,7 @@ class GameScreen(Canvas):
         self.game_images = GameImages()
 
         self.paddle = Paddle(self.screen)
+        self.paddle_image = None
         self.levels = Levels()
         self.bricks = []
         self.brick_images = []
@@ -38,6 +39,7 @@ class GameScreen(Canvas):
 
         self.apply_mouse_controls()
         self.apply_background_image()
+        self.add_paddle_image()
 
     def apply_mouse_controls(self):
         self.bind('<Motion>', self.track_player_movement)
@@ -48,9 +50,25 @@ class GameScreen(Canvas):
         background = self.game_images.get_background()
         self.create_image(0, 0, image=background)
 
+    def add_paddle_image(self):
+        image = self.game_images.get_paddle()
+        screen_x, screen_y = self.paddle.get_location()
+        canvas_x = screen_x
+        canvas_y = screen_y * -1
+        self.paddle_image = self.create_image(canvas_x, canvas_y, image=image)
+
+    def move_paddle_image(self):
+        paddle_x, paddle_y = self.paddle.get_location()
+        self.coords(self.paddle_image, (paddle_x, paddle_y * -1))
+
+    def resize_paddle_image(self):
+        resized_image = self.game_images.get_resized_paddle(self.paddle.get_length())
+        self.itemconfig(self.paddle_image, image=resized_image)
+
     def track_player_movement(self, event):
         x = event.x
         self.paddle.move_to(x)
+        self.move_paddle_image()
 
     def hide_mouse_cursor(self, event):
         self.config(cursor='none')
@@ -332,9 +350,11 @@ class GameScreen(Canvas):
 
     def activate_small_paddle(self):
         self.paddle.decrease_size()
+        self.resize_paddle_image()
 
     def activate_big_paddle(self):
         self.paddle.increase_size()
+        self.resize_paddle_image()
 
     def activate_extra_life(self):
         pass
