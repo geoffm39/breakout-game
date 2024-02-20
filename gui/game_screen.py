@@ -31,6 +31,7 @@ class GameScreen(Canvas):
         self.bricks = []
         self.brick_images = []
         self.balls = []
+        self.powerups = []
 
         self.current_level = 1
 

@@ -58,6 +58,10 @@ WEST = 180
 SOUTH = 270
 COMPLETE_ANGLE = 360
 
+POWERUP_SHAPE = 'arrow'
+POWERUP_COLOR = 'white'
+POWERUP_SPEED = 2
+
 
 class PowerupType(Enum):
     MULTIBALL = 'multiball'
