@@ -1,7 +1,7 @@
 from turtle import RawTurtle
 
 from constants import (
-    SCREEN_WIDTH, PADDLE_START_POSITION, PADDLE_LENGTH, PADDLE_WIDTH,
+    SCREEN_WIDTH, PADDLE_START_POSITION, DEFAULT_PADDLE_LENGTH, PADDLE_WIDTH,
     SCREEN_LEFT_EDGE, SCREEN_RIGHT_EDGE, PADDLE_COLOR, PADDLE_SHAPE
 )
 
@@ -10,7 +10,7 @@ class Paddle(RawTurtle):
     def __init__(self, canvas, **kwargs):
         super().__init__(canvas, **kwargs)
 
-        self.paddle_length = PADDLE_LENGTH
+        self.paddle_length = DEFAULT_PADDLE_LENGTH
 
         self.set_default_paddle()
 
@@ -54,3 +54,17 @@ class Paddle(RawTurtle):
         normalised_position = relative_position / (paddle_pixel_length / 2)
         modifier_angle = normalised_position * 90
         return modifier_angle
+
+    def increase_size(self):
+        if self.paddle_length <= 10:
+            self.paddle_length += 1
+        self.shapesize(stretch_len=self.paddle_length)
+
+    def decrease_size(self):
+        if self.paddle_length > 1:
+            self.paddle_length -= 1
+        self.shapesize(stretch_len=self.paddle_length)
+
+    def reset_size(self):
+        self.paddle_length = DEFAULT_PADDLE_LENGTH
+        self.shapesize(stretch_len=self.paddle_length)

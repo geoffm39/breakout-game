@@ -11,7 +11,7 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED, BROKEN,
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, BROKEN,
     PowerupType, POWERUP_WIDTH, POWERUP_SPEED
 )
 
@@ -142,12 +142,14 @@ class GameScreen(Canvas):
             if self.ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
                 brick.hideturtle()
                 self.handle_brick_collision(brick)
-                ball.bounce(HORIZONTAL_SURFACE)
+                if not ball.is_fireball():
+                    ball.bounce(HORIZONTAL_SURFACE)
                 break
             if self.ball_hit_left_or_right_of_brick(ball_bbox, brick_bbox):
                 brick.hideturtle()
                 self.handle_brick_collision(brick)
-                ball.bounce(VERTICAL_SURFACE)
+                if not ball.is_fireball():
+                    ball.bounce(VERTICAL_SURFACE)
                 break
 
     def check_for_powerup_collision(self, powerup: Powerup):
@@ -161,7 +163,7 @@ class GameScreen(Canvas):
         ball_x = ball.xcor()
         ball_bottom_y = ball.ycor() - BALL_RADIUS
         paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
-        return paddle_y1 >= ball_bottom_y >= paddle_y1 - BALL_SPEED and paddle_x1 <= ball_x <= paddle_x2
+        return paddle_y1 >= ball_bottom_y >= paddle_y1 - DEFAULT_BALL_SPEED and paddle_x1 <= ball_x <= paddle_x2
 
     @staticmethod
     def ball_missed(ball: Ball):
@@ -189,9 +191,9 @@ class GameScreen(Canvas):
         ball_y1, ball_y2 = ball_bbox[1::2]
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
         if brick_x1 - BRICK_SPACING / 2 <= ball_x <= brick_x2 + BRICK_SPACING / 2:
-            if brick_y1 >= ball_y2 >= brick_y1 - BALL_SPEED:
+            if brick_y1 >= ball_y2 >= brick_y1 - DEFAULT_BALL_SPEED:
                 return True
-            if brick_y2 <= ball_y1 <= brick_y2 + BALL_SPEED:
+            if brick_y2 <= ball_y1 <= brick_y2 + DEFAULT_BALL_SPEED:
                 return True
         return False
 
@@ -201,9 +203,9 @@ class GameScreen(Canvas):
         ball_x1, ball_x2 = ball_bbox[::2]
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
         if brick_y1 + BRICK_SPACING / 2 >= ball_y >= brick_y2 - BRICK_SPACING / 2:
-            if brick_x1 <= ball_x2 <= brick_x1 + BALL_SPEED:
+            if brick_x1 <= ball_x2 <= brick_x1 + DEFAULT_BALL_SPEED:
                 return True
-            if brick_x2 >= ball_x1 >= brick_x2 - BALL_SPEED:
+            if brick_x2 >= ball_x1 >= brick_x2 - DEFAULT_BALL_SPEED:
                 return True
         return False
 
@@ -314,22 +316,25 @@ class GameScreen(Canvas):
         self.add_ball()
 
     def activate_fireball(self):
-        pass
+        for ball in self.balls:
+            ball.activate_fireball()
 
     def activate_slow_ball(self):
-        pass
+        for ball in self.balls:
+            ball.decrease_speed()
 
     def activate_fast_ball(self):
-        pass
+        for ball in self.balls:
+            ball.increase_speed()
 
     def activate_lasers(self):
         pass
 
     def activate_small_paddle(self):
-        pass
+        self.paddle.decrease_size()
 
     def activate_big_paddle(self):
-        pass
+        self.paddle.increase_size()
 
     def activate_extra_life(self):
         pass

@@ -3,7 +3,7 @@ from random import randint
 
 from constants import (
     BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_COLOR, BALL_SHAPE, BALL_RADIUS,
-    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE, BALL_SPEED
+    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE, DEFAULT_BALL_SPEED
 )
 
 
@@ -11,7 +11,8 @@ class Ball(RawTurtle):
     def __init__(self, canvas, **kwargs):
         super().__init__(canvas, **kwargs)
 
-        self.move_speed = BALL_SPEED
+        self.move_speed = DEFAULT_BALL_SPEED
+        self.fireball = False
 
         self.set_default_ball()
 
@@ -136,6 +137,22 @@ class Ball(RawTurtle):
 
     def set_direction(self, direction):
         self.setheading(direction)
+
+    def increase_speed(self):
+        self.move_speed += 0.25
+
+    def decrease_speed(self):
+        if self.move_speed > 0.5:
+            self.move_speed -= 0.25
+
+    def reset_speed(self):
+        self.move_speed = DEFAULT_BALL_SPEED
+
+    def activate_fireball(self):
+        self.fireball = True
+
+    def is_fireball(self):
+        return self.fireball
 
     def remove(self):
         self.hideturtle()
