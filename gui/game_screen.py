@@ -108,7 +108,9 @@ class GameScreen(Canvas):
             ball.move()
             self.check_for_ball_collision(ball)
             if self.ball_missed(ball):
-                return
+                self.remove_ball(ball)
+                if self.no_more_balls():
+                    return
         for powerup in self.powerups:
             powerup.move()
             self.move_powerup_image(powerup)
@@ -150,9 +152,49 @@ class GameScreen(Canvas):
 
     def check_for_powerup_collision(self, powerup: Powerup):
         if self.powerup_hit_paddle(powerup):
-            pass
+            self.activate_powerup(powerup)
+            self.remove_powerup(powerup)
         if self.powerup_missed(powerup):
             self.remove_powerup(powerup)
+
+    def activate_powerup(self, powerup: Powerup):
+        powerup_type = powerup.get_type()
+        powerup_actions = {
+            PowerupType.MULTIBALL: self.activate_multiball,
+            PowerupType.FIREBALL: self.activate_fireball,
+            PowerupType.SLOW_BALL: self.activate_slow_ball,
+            PowerupType.FAST_BALL: self.activate_fast_ball,
+            PowerupType.LASERS: self.activate_lasers,
+            PowerupType.SMALL_PADDLE: self.activate_small_paddle,
+            PowerupType.BIG_PADDLE: self.activate_big_paddle,
+            PowerupType.EXTRA_LIFE: self.activate_extra_life
+        }
+        if powerup_type in powerup_actions:
+            powerup_actions[powerup_type]()
+
+    def activate_multiball(self):
+        self.add_ball()
+
+    def activate_fireball(self):
+        pass
+
+    def activate_slow_ball(self):
+        pass
+
+    def activate_fast_ball(self):
+        pass
+
+    def activate_lasers(self):
+        pass
+
+    def activate_small_paddle(self):
+        pass
+
+    def activate_big_paddle(self):
+        pass
+
+    def activate_extra_life(self):
+        pass
 
     @staticmethod
     def ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
@@ -205,7 +247,7 @@ class GameScreen(Canvas):
         self.add_level_bricks()
         self.balls.append(Ball(self.screen))
 
-    def handle_strong_brick_collision(self, brick):
+    def handle_strong_brick_collision(self, brick: Brick):
         brick_index = self.bricks.index(brick)
         brick.set_type(BROKEN)
         updated_image = self.game_images.get_brick_image(brick)
@@ -288,3 +330,6 @@ class GameScreen(Canvas):
     @staticmethod
     def ball_hit_side_wall(ball: Ball):
         return ball.xcor() >= SCREEN_RIGHT_EDGE - BALL_RADIUS or ball.xcor() <= SCREEN_LEFT_EDGE + BALL_RADIUS
+
+    def no_more_balls(self):
+        return len(self.balls) == 0
