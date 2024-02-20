@@ -3,7 +3,7 @@ from random import randint
 
 from constants import (
     BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_COLOR, BALL_SHAPE, BALL_RADIUS,
-    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE, DEFAULT_BALL_SPEED
+    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE, DEFAULT_BALL_SPEED, RED
 )
 
 
@@ -150,6 +150,7 @@ class Ball(RawTurtle):
 
     def activate_fireball(self):
         self.fireball = True
+        self.color(RED)
 
     def is_fireball(self):
         return self.fireball
