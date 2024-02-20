@@ -12,6 +12,8 @@ class Powerup(RawTurtle):
         self.type = powerup_type
         self.location = location
 
+        self.set_properties()
+
     def set_properties(self):
         self.penup()
         self.shape(POWERUP_SHAPE)
@@ -22,3 +24,6 @@ class Powerup(RawTurtle):
 
     def move(self):
         self.forward(POWERUP_SPEED)
+
+    def remove(self):
+        self.hideturtle()

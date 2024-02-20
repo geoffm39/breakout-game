@@ -60,7 +60,7 @@ COMPLETE_ANGLE = 360
 
 POWERUP_SHAPE = 'arrow'
 POWERUP_COLOR = 'white'
-POWERUP_SPEED = 2
+POWERUP_SPEED = 1.5
 
 
 class PowerupType(Enum):

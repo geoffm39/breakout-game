@@ -108,6 +108,8 @@ class GameScreen(Canvas):
             self.check_for_ball_collision(ball)
             if self.ball_missed(ball):
                 return
+        for powerup in self.powerups:
+            powerup.move()
         self.after(3, self.update_game_screen)
 
     def check_for_ball_collision(self, ball: Ball):
@@ -190,6 +192,8 @@ class GameScreen(Canvas):
             self.remove_brick(brick)
         for ball in self.balls:
             self.remove_ball(ball)
+        for powerup in self.powerups:
+            self.remove_powerup(powerup)
         self.add_level_bricks()
         self.balls.append(Ball(self.screen))
 
@@ -214,11 +218,20 @@ class GameScreen(Canvas):
     def brick_has_powerup():
         return randint(1, 6) == 1
 
-    def drop_powerup(self, brick):
+    def drop_powerup(self, brick: Brick):
         random_powerup_type = choice(list(PowerupType))
+        location = brick.get_location()
+        self.add_powerup(random_powerup_type, location)
+
+    def add_powerup(self, powerup_type, location):
+        self.powerups.append(Powerup(self.screen, powerup_type, location))
+
+    def remove_powerup(self, powerup):
+        powerup.remove()
+        self.powerups.remove(powerup)
 
     def remove_ball(self, ball):
-        ball.remove_ball()
+        ball.remove()
         self.balls.remove(ball)
 
     @staticmethod
