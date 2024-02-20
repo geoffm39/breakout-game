@@ -12,7 +12,7 @@ from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED, BROKEN,
-    PowerupType
+    PowerupType, POWERUP_WIDTH, POWERUP_SPEED
 )
 
 
@@ -110,6 +110,7 @@ class GameScreen(Canvas):
                 return
         for powerup in self.powerups:
             powerup.move()
+            self.check_for_powerup_collision(powerup)
         self.after(3, self.update_game_screen)
 
     def check_for_ball_collision(self, ball: Ball):
@@ -126,8 +127,7 @@ class GameScreen(Canvas):
     def check_for_paddle_collision(self, ball: Ball):
         ball_direction = ball.get_direction()
         if ball.is_moving_south_west(ball_direction) or ball.is_moving_south_east(ball_direction):
-            paddle_bbox = self.paddle.get_bbox()
-            if self.ball_hit_paddle(ball, paddle_bbox):
+            if self.ball_hit_paddle(ball):
                 paddle_angle_modifier = self.paddle.get_modifier_angle(ball.xcor())
                 ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
 
@@ -145,6 +145,12 @@ class GameScreen(Canvas):
                 self.handle_brick_collision(brick)
                 ball.bounce(VERTICAL_SURFACE)
                 break
+
+    def check_for_powerup_collision(self, powerup: Powerup):
+        if self.powerup_hit_paddle(powerup):
+            pass
+        if self.powerup_missed(powerup):
+            self.remove_powerup(powerup)
 
     @staticmethod
     def ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
@@ -209,6 +215,7 @@ class GameScreen(Canvas):
         self.delete(self.brick_images[brick_index])
         self.brick_images.pop(brick_index)
         self.bricks.remove(brick)
+        del brick
 
     def check_powerup_drop(self, brick):
         if self.brick_has_powerup():
@@ -216,7 +223,7 @@ class GameScreen(Canvas):
 
     @staticmethod
     def brick_has_powerup():
-        return randint(1, 6) == 1
+        return randint(1, 1) == 1
 
     def drop_powerup(self, brick: Brick):
         random_powerup_type = choice(list(PowerupType))
@@ -229,16 +236,27 @@ class GameScreen(Canvas):
     def remove_powerup(self, powerup):
         powerup.remove()
         self.powerups.remove(powerup)
+        del powerup
 
     def remove_ball(self, ball):
         ball.remove()
         self.balls.remove(ball)
+        del ball
+
+    def powerup_hit_paddle(self, powerup: Powerup):
+        powerup_x = powerup.xcor()
+        powerup_bottom_y = powerup.ycor() - POWERUP_WIDTH / 2
+        paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
+        return paddle_y1 >= powerup_bottom_y >= paddle_y1 - POWERUP_SPEED and paddle_x1 <= powerup_x <= paddle_x2
 
     @staticmethod
-    def ball_hit_paddle(ball: Ball, paddle_bbox):
+    def powerup_missed(powerup: Powerup):
+        return powerup.ycor() <= SCREEN_BOTTOM_EDGE + POWERUP_WIDTH / 2
+
+    def ball_hit_paddle(self, ball: Ball):
         ball_x = ball.xcor()
         ball_bottom_y = ball.ycor() - BALL_RADIUS
-        paddle_x1, paddle_y1, paddle_x2 = paddle_bbox[:3]
+        paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
         return paddle_y1 >= ball_bottom_y >= paddle_y1 - BALL_SPEED and paddle_x1 <= ball_x <= paddle_x2
 
     @staticmethod

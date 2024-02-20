@@ -27,3 +27,6 @@ class Powerup(RawTurtle):
 
     def remove(self):
         self.hideturtle()
+
+    def get_type(self):
+        return self.type
