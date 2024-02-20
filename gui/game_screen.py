@@ -1,5 +1,6 @@
 from tkinter import *
 from turtle import TurtleScreen
+from random import randint, choice
 
 from paddle import Paddle
 from ball import Ball
@@ -10,7 +11,8 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED, BROKEN
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, BALL_SPEED, BROKEN,
+    PowerupType
 )
 
 
@@ -197,10 +199,22 @@ class GameScreen(Canvas):
         self.itemconfig(self.brick_images[brick_index], image=updated_image)
 
     def remove_brick(self, brick):
+        self.check_powerup_drop(brick)
         brick_index = self.bricks.index(brick)
         self.delete(self.brick_images[brick_index])
         self.brick_images.pop(brick_index)
         self.bricks.remove(brick)
+
+    def check_powerup_drop(self, brick):
+        if self.brick_has_powerup():
+            self.drop_powerup(brick)
+
+    @staticmethod
+    def brick_has_powerup():
+        return randint(1, 6) == 1
+
+    def drop_powerup(self, brick):
+        random_powerup_type = choice(list(PowerupType))
 
     def remove_ball(self, ball):
         ball.remove_ball()

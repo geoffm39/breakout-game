@@ -1,7 +1,7 @@
 from turtle import RawTurtle
 
 from constants import (
-   MULTIBALL, FIREBALL, SLOW_BALL, FAST_BALL, LASERS, SMALL_PADDLE, BIG_PADDLE, EXTRA_LIFE
+   PowerupType
 )
 
 
