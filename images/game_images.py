@@ -42,7 +42,7 @@ class GameImages:
     def get_resized_paddle(self, paddle_length):
         paddle_pixel_length = paddle_length * PADDLE_WIDTH
         resized_image = self.paddle_image.copy()
-        resized_image.resize((paddle_pixel_length, PADDLE_WIDTH))
+        resized_image = resized_image.resize((paddle_pixel_length, PADDLE_WIDTH))
         self.images[PADDLE_FILENAME] = ImageTk.PhotoImage(resized_image)
         return self.images[PADDLE_FILENAME]
 
