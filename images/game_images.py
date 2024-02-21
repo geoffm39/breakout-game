@@ -1,6 +1,5 @@
 from PIL import Image, ImageTk
 import os
-import copy
 
 from brick import Brick
 from constants import (
@@ -12,6 +11,7 @@ from constants import (
 class GameImages:
     def __init__(self):
         self.images = {}
+        self.paddle_image = None
 
         self.load_images()
 
@@ -34,14 +34,17 @@ class GameImages:
         return self.images[BACKGROUND_FILENAME]
 
     def get_paddle(self):
+        image_path = os.path.join(IMAGE_DIRECTORY, PADDLE_FILENAME)
+        with Image.open(image_path) as image:
+            self.paddle_image = image.copy()
         return self.images[PADDLE_FILENAME]
 
     def get_resized_paddle(self, paddle_length):
-        original_image = self.images[PADDLE_FILENAME]
         paddle_pixel_length = paddle_length * PADDLE_WIDTH
-        resized_image = original_image.copy()
+        resized_image = self.paddle_image.copy()
         resized_image.resize((paddle_pixel_length, PADDLE_WIDTH))
-        return resized_image
+        self.images[PADDLE_FILENAME] = ImageTk.PhotoImage(resized_image)
+        return self.images[PADDLE_FILENAME]
 
     def get_powerup(self):
         return self.images[POWERUP_FILENAME]

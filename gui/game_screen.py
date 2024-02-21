@@ -28,6 +28,7 @@ class GameScreen(Canvas):
 
         self.paddle = Paddle(self.screen)
         self.paddle_image = None
+        self.resized_paddle = None
         self.levels = Levels()
         self.bricks = []
         self.brick_images = []
