@@ -2,7 +2,7 @@ from turtle import RawTurtle
 
 from constants import (
     SCREEN_WIDTH, PADDLE_START_POSITION, DEFAULT_PADDLE_LENGTH, PADDLE_WIDTH,
-    SCREEN_LEFT_EDGE, SCREEN_RIGHT_EDGE, PADDLE_COLOR, PADDLE_SHAPE
+    SCREEN_LEFT_EDGE, SCREEN_RIGHT_EDGE, PADDLE_COLOR, PADDLE_SHAPE, PADDLE_LASER_COLOR
 )
 
 
@@ -58,9 +58,11 @@ class Paddle(RawTurtle):
 
     def activate_lasers(self):
         self.lasers = True
+        self.color(PADDLE_LASER_COLOR)
 
     def deactivate_lasers(self):
         self.lasers = False
+        self.color(PADDLE_COLOR)
 
     def is_laser_paddle(self):
         return self.lasers
