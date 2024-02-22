@@ -11,6 +11,7 @@ class Paddle(RawTurtle):
         super().__init__(canvas, **kwargs)
 
         self.paddle_length = DEFAULT_PADDLE_LENGTH
+        self.lasers = False
 
         self.set_default_paddle()
 
@@ -54,6 +55,15 @@ class Paddle(RawTurtle):
 
     def get_length(self):
         return self.paddle_length
+
+    def activate_lasers(self):
+        self.lasers = True
+
+    def deactivate_lasers(self):
+        self.lasers = False
+
+    def is_laser_paddle(self):
+        return self.lasers
 
     def get_modifier_angle(self, paddle_collision_x_coord):
         paddle_x1, _, paddle_x2, _ = self.get_bbox()

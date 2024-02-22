@@ -39,7 +39,7 @@ class GameScreen(Canvas):
 
         self.apply_mouse_controls()
         self.apply_background_image()
-        self.add_paddle_image()
+        self.set_paddle_image()
 
     def apply_mouse_controls(self):
         self.bind('<Motion>', self.track_player_movement)
@@ -50,8 +50,8 @@ class GameScreen(Canvas):
         background = self.game_images.get_background()
         self.create_image(0, 0, image=background)
 
-    def add_paddle_image(self):
-        image = self.game_images.get_paddle()
+    def set_paddle_image(self):
+        image = self.game_images.get_paddle(self.paddle)
         screen_x, screen_y = self.paddle.get_location()
         canvas_x = screen_x
         canvas_y = screen_y * -1
@@ -61,13 +61,13 @@ class GameScreen(Canvas):
         paddle_x, paddle_y = self.paddle.get_location()
         self.coords(self.paddle_canvas_image, (paddle_x, paddle_y * -1))
 
-    def resize_paddle_image(self):
-        resized_image = self.game_images.get_resized_paddle(self.paddle.get_length())
-        self.itemconfig(self.paddle_canvas_image, image=resized_image)
+    def update_paddle_image(self):
+        updated_image = self.game_images.get_paddle(self.paddle)
+        self.itemconfig(self.paddle_canvas_image, image=updated_image)
 
     def reset_paddle(self):
         self.paddle.reset_size()
-        image = self.game_images.get_paddle()
+        image = self.game_images.set_paddle_images()
         self.itemconfig(self.paddle_canvas_image, image=image)
 
     def track_player_movement(self, event):
@@ -352,15 +352,16 @@ class GameScreen(Canvas):
             ball.increase_speed()
 
     def activate_lasers(self):
-        pass
+        self.paddle.activate_lasers()
+        self.update_paddle_image()
 
     def activate_small_paddle(self):
         self.paddle.decrease_size()
-        self.resize_paddle_image()
+        self.update_paddle_image()
 
     def activate_big_paddle(self):
         self.paddle.increase_size()
-        self.resize_paddle_image()
+        self.update_paddle_image()
 
     def activate_extra_life(self):
         pass
