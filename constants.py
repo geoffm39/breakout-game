@@ -67,6 +67,11 @@ POWERUP_COLOR = 'white'
 POWERUP_SPEED = 1.5
 POWERUP_WIDTH = 20
 
+LASER_SHAPE = 'arrow'
+LASER_COLOR = 'white'
+LASER_SPEED = 1.5
+LASER_WIDTH = 20
+
 
 class PowerupType(Enum):
     MULTIBALL = 'multiball'

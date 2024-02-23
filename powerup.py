@@ -12,9 +12,9 @@ class Powerup(RawTurtle):
         self.type = powerup_type
         self.location = location
 
-        self.set_properties()
+        self.set_default_powerup()
 
-    def set_properties(self):
+    def set_default_powerup(self):
         self.penup()
         self.shape(POWERUP_SHAPE)
         self.color(POWERUP_COLOR)
