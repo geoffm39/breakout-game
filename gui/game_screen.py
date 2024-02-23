@@ -84,6 +84,8 @@ class GameScreen(Canvas):
         right_laser = Laser(self.screen, (right_laser_x, laser_y))
         self.lasers.append(right_laser)
         self.add_laser_image(right_laser)
+        if not self.paddle.is_laser_paddle():
+            return
         self.after(2000, self.fire_paddle_lasers)
 
     def add_laser_image(self, laser: Laser):
@@ -399,6 +401,11 @@ class GameScreen(Canvas):
         self.paddle.activate_lasers()
         self.update_paddle_image()
         self.fire_paddle_lasers()
+        self.after(20000, self.deactivate_lasers)
+
+    def deactivate_lasers(self):
+        self.paddle.deactivate_lasers()
+        self.update_paddle_image()
 
     def activate_small_paddle(self):
         self.paddle.decrease_size()
