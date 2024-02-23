@@ -72,7 +72,8 @@ LASER_SHAPE = 'arrow'
 LASER_COLOR = 'white'
 LASER_SPEED = 1.5
 LASER_WIDTH = 20
-
+LASER_TIME_LIMIT = 20000
+LASER_FREQUENCY = 2000
 
 class PowerupType(Enum):
     MULTIBALL = 'multiball'
