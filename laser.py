@@ -19,7 +19,7 @@ class Laser(RawTurtle):
         self.shape(LASER_SHAPE)
         self.setheading(NORTH)
         self.setposition(self.location)
-        self.hideturtle()
+        # self.hideturtle()
 
     def move(self):
         self.forward(LASER_SPEED)

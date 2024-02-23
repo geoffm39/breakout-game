@@ -5,7 +5,7 @@ from brick import Brick
 from paddle import Paddle
 from constants import (
     IMAGE_DIRECTORY, STRONG, NORMAL, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME,
-    PADDLE_WIDTH, PADDLE_LASERS_FILENAME
+    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME
 )
 
 
@@ -43,7 +43,7 @@ class GameImages:
         self.photo_images[PADDLE_FILENAME] = ImageTk.PhotoImage(image)
         return self.photo_images[PADDLE_FILENAME]
 
-    def get_brick_image(self, brick: Brick):
+    def get_brick(self, brick: Brick):
         brick_type = brick.get_type()
         if brick_type == STRONG:
             brick_type = NORMAL
@@ -54,6 +54,8 @@ class GameImages:
     def get_background(self):
         return self.photo_images[BACKGROUND_FILENAME]
 
-
     def get_powerup(self):
         return self.photo_images[POWERUP_FILENAME]
+
+    def get_laser(self):
+        return self.photo_images[LASER_FILENAME]

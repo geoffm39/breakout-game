@@ -6,13 +6,14 @@ from paddle import Paddle
 from ball import Ball
 from brick import Brick
 from powerup import Powerup
+from laser import Laser
 from scores import Scores
 from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, BROKEN,
-    PowerupType, POWERUP_WIDTH, POWERUP_SPEED
+    PowerupType, POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH
 )
 
 
@@ -34,6 +35,8 @@ class GameScreen(Canvas):
         self.balls = []
         self.powerups = []
         self.powerup_images = []
+        self.lasers = []
+        self.laser_images = []
 
         self.current_level = 1
 
@@ -69,6 +72,16 @@ class GameScreen(Canvas):
         self.paddle.reset_size()
         image = self.game_images.set_paddle_images()
         self.itemconfig(self.paddle_canvas_image, image=image)
+
+    def fire_paddle_lasers(self):
+        paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
+        laser_y = paddle_y1 + LASER_WIDTH / 2
+        left_laser_x = paddle_x1 + LASER_WIDTH / 2
+        right_laser_x = paddle_x2 - LASER_WIDTH / 2
+        left_laser = Laser(self.screen, (left_laser_x, laser_y))
+        self.lasers.append(left_laser)
+        right_laser = Laser(self.screen, (right_laser_x, laser_y))
+        self.lasers.append(right_laser)
 
     def track_player_movement(self, event):
         x = event.x
@@ -114,7 +127,7 @@ class GameScreen(Canvas):
             y_location -= BRICK_SPACING
 
     def add_brick_image(self, brick: Brick):
-        image = self.game_images.get_brick_image(brick)
+        image = self.game_images.get_brick(brick)
         screen_x, screen_y = brick.get_location()
         canvas_x = screen_x
         canvas_y = screen_y * -1
@@ -263,7 +276,7 @@ class GameScreen(Canvas):
     def handle_strong_brick_collision(self, brick: Brick):
         brick_index = self.bricks.index(brick)
         brick.set_type(BROKEN)
-        updated_image = self.game_images.get_brick_image(brick)
+        updated_image = self.game_images.get_brick(brick)
         self.itemconfig(self.brick_images[brick_index], image=updated_image)
 
     def remove_brick(self, brick):

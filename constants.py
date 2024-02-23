@@ -6,6 +6,7 @@ BACKGROUND_FILENAME = 'background.jpg'
 POWERUP_FILENAME = 'powerup.png'
 PADDLE_FILENAME = 'paddle.png'
 PADDLE_LASERS_FILENAME = 'paddle-lasers.png'
+LASER_FILENAME = 'laser.png'
 
 SCREEN_HEIGHT = 720
 SCREEN_WIDTH = 1080
