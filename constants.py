@@ -75,6 +75,7 @@ LASER_WIDTH = 20
 LASER_TIME_LIMIT = 20000
 LASER_FREQUENCY = 2000
 
+
 class PowerupType(Enum):
     MULTIBALL = 'multiball'
     FIREBALL = 'fireball'
