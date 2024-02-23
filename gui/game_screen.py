@@ -84,7 +84,7 @@ class GameScreen(Canvas):
         right_laser = Laser(self.screen, (right_laser_x, laser_y))
         self.lasers.append(right_laser)
         self.add_laser_image(right_laser)
-        self.after(1000, self.fire_paddle_lasers)
+        self.after(2000, self.fire_paddle_lasers)
 
     def add_laser_image(self, laser: Laser):
         image = self.game_images.get_laser()
