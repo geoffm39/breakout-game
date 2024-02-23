@@ -107,6 +107,17 @@ class GameScreen(Canvas):
         laser_index = self.lasers.index(laser)
         self.move(self.laser_images[laser_index], 0, LASER_SPEED * -1)
 
+    def check_for_laser_collision(self, laser: Laser):
+        self.check_laser_for_brick_collision(laser)
+        if self.laser_hit_top_wall(laser):
+            self.remove_laser(laser)
+
+    def check_laser_for_brick_collision(self, laser: Laser):
+        pass
+
+    def laser_hit_brick(self, laser_bbox, brick_bbox):
+        pass
+
     @staticmethod
     def laser_hit_top_wall(laser: Laser):
         return laser.ycor() >= SCREEN_TOP_EDGE - LASER_WIDTH / 2

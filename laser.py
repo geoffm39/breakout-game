@@ -1,7 +1,7 @@
 from turtle import RawTurtle
 
 from constants import (
-    LASER_COLOR, LASER_SHAPE, LASER_SPEED, NORTH
+    LASER_COLOR, LASER_SHAPE, LASER_SPEED, LASER_WIDTH, NORTH
 )
 
 
@@ -29,3 +29,11 @@ class Laser(RawTurtle):
 
     def get_location(self):
         return self.location
+
+    def get_bbox(self):
+        laser_x, laser_y = self.xcor(), self.ycor()
+        laser_x1 = laser_x - LASER_WIDTH / 4
+        laser_y1 = laser_y + LASER_WIDTH / 2
+        laser_x2 = laser_x + LASER_WIDTH / 4
+        laser_y2 = laser_y - LASER_WIDTH / 2
+        return laser_x1, laser_y1, laser_x2, laser_y2
