@@ -12,8 +12,8 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, BROKEN,
-    PowerupType, POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH, LASER_SPEED, LASER_TIME_LIMIT, LASER_FREQUENCY
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, BROKEN, PowerupType,
+    POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH, LASER_SPEED, LASER_TIME_LIMIT, LASER_FREQUENCY, SCREEN_HEIGHT
 )
 
 
@@ -404,6 +404,14 @@ class GameScreen(Canvas):
         }
         if powerup_type in powerup_actions:
             powerup_actions[powerup_type]()
+            self.show_powerup_type_image(powerup_type)
+
+    def show_powerup_type_image(self, powerup_type: PowerupType):
+        image = self.game_images.get_powerup_type(powerup_type)
+        canvas_x = 0
+        canvas_y = SCREEN_HEIGHT / 2 - 150
+        canvas_image = self.create_image(canvas_x, canvas_y, image=image)
+        self.after(2000, lambda: self.delete(canvas_image))
 
     def activate_multiball(self):
         self.add_ball()

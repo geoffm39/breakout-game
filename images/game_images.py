@@ -5,7 +5,7 @@ from brick import Brick
 from paddle import Paddle
 from constants import (
     IMAGE_DIRECTORY, STRONG, NORMAL, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME,
-    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME
+    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, PowerupType
 )
 
 
@@ -49,6 +49,10 @@ class GameImages:
             brick_type = NORMAL
         brick_color = brick.get_color()
         image_key = f'brick-{brick_color}-{brick_type}.png'
+        return self.photo_images[image_key]
+
+    def get_powerup_type(self, powerup_type: PowerupType):
+        image_key = f'powerup-{powerup_type.value}.png'
         return self.photo_images[image_key]
 
     def get_background(self):
