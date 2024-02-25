@@ -13,7 +13,8 @@ from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, BROKEN, PowerupType,
-    POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH, LASER_SPEED, LASER_TIME_LIMIT, LASER_FREQUENCY, SCREEN_HEIGHT
+    POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH, LASER_SPEED, LASER_TIME_LIMIT, LASER_FREQUENCY, SCREEN_HEIGHT,
+    POWERUP_IMAGE_TIME_LIMIT, POWERUP_IMAGE_SPEED
 )
 
 
@@ -35,6 +36,7 @@ class GameScreen(Canvas):
         self.balls = []
         self.powerups = []
         self.powerup_images = []
+        self.powerup_type_images = []
         self.lasers = []
         self.laser_images = []
 
@@ -203,6 +205,8 @@ class GameScreen(Canvas):
             powerup.move()
             self.move_powerup_image(powerup)
             self.check_for_powerup_collision(powerup)
+        for powerup_type_image in self.powerup_type_images:
+            self.move_powerup_type_image(powerup_type_image)
         for laser in self.lasers:
             laser.move()
             self.move_laser_image(laser)
@@ -404,14 +408,23 @@ class GameScreen(Canvas):
         }
         if powerup_type in powerup_actions:
             powerup_actions[powerup_type]()
-            self.show_powerup_type_image(powerup_type)
+            self.add_powerup_type_image(powerup_type)
 
-    def show_powerup_type_image(self, powerup_type: PowerupType):
+    def add_powerup_type_image(self, powerup_type: PowerupType):
         image = self.game_images.get_powerup_type(powerup_type)
-        canvas_x = 0
-        canvas_y = SCREEN_HEIGHT / 2 - 150
+        canvas_x = self.paddle.xcor()
+        canvas_y = SCREEN_HEIGHT / 2 - 50
         canvas_image = self.create_image(canvas_x, canvas_y, image=image)
-        self.after(2000, lambda: self.delete(canvas_image))
+        self.powerup_type_images.append(canvas_image)
+        self.after(POWERUP_IMAGE_TIME_LIMIT, lambda: self.remove_powerup_type_image(canvas_image))
+
+    def move_powerup_type_image(self, canvas_image):
+        if canvas_image:
+            self.move(canvas_image, 0, POWERUP_IMAGE_SPEED)
+
+    def remove_powerup_type_image(self, canvas_image):
+        self.delete(canvas_image)
+        self.powerup_type_images.remove(canvas_image)
 
     def activate_multiball(self):
         self.add_ball()
