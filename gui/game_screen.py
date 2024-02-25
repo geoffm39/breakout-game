@@ -113,10 +113,23 @@ class GameScreen(Canvas):
             self.remove_laser(laser)
 
     def check_laser_for_brick_collision(self, laser: Laser):
-        pass
+        laser_bbox = laser.get_bbox()
+        for brick in self.bricks:
+            brick_bbox = brick.get_bbox()
+            if self.laser_hit_brick(laser_bbox, brick_bbox):
+                brick.hideturtle()
+                self.handle_brick_collision(brick)
+                self.remove_laser(laser)
 
-    def laser_hit_brick(self, laser_bbox, brick_bbox):
-        pass
+    @staticmethod
+    def laser_hit_brick(laser_bbox, brick_bbox):
+        laser_x = laser_bbox[0] + LASER_WIDTH / 2
+        laser_y1 = laser_bbox[1]
+        brick_x1, _, brick_x2, brick_y2 = brick_bbox
+        if (brick_x1 - BRICK_SPACING / 2 <= laser_x <= brick_x2 + BRICK_SPACING / 2 and
+                brick_y2 <= laser_y1 <= brick_y2 + DEFAULT_BALL_SPEED):
+            return True
+        return False
 
     @staticmethod
     def laser_hit_top_wall(laser: Laser):
@@ -193,8 +206,7 @@ class GameScreen(Canvas):
         for laser in self.lasers:
             laser.move()
             self.move_laser_image(laser)
-            if self.laser_hit_top_wall(laser):
-                self.remove_laser(laser)
+            self.check_for_laser_collision(laser)
         self.after(3, self.update_game_screen)
 
     def check_for_ball_collision(self, ball: Ball):
