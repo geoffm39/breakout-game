@@ -99,11 +99,14 @@ class GameScreen(Canvas):
         self.laser_images.append(canvas_image)
 
     def remove_laser(self, laser: Laser):
-        laser_index = self.lasers.index(laser)
-        self.delete(self.laser_images[laser_index])
-        self.laser_images.pop(laser_index)
-        self.lasers.remove(laser)
-        del laser
+        try:
+            laser_index = self.lasers.index(laser)
+            self.delete(self.laser_images[laser_index])
+            self.laser_images.pop(laser_index)
+            self.lasers.remove(laser)
+            del laser
+        except ValueError:
+            pass
 
     def move_laser_image(self, laser: Laser):
         laser_index = self.lasers.index(laser)
