@@ -22,6 +22,7 @@ class Ball(RawTurtle):
         self.shape(BALL_SHAPE)
         self.setposition(BALL_START_POSITION)
         self.set_random_starting_direction()
+        self.hideturtle()
 
     def set_random_starting_direction(self):
         min_angle = EAST + 20
@@ -35,6 +36,10 @@ class Ball(RawTurtle):
     def get_bbox(self):
         ball_x, ball_y = self.xcor(), self.ycor()
         return ball_x - BALL_RADIUS, ball_y + BALL_RADIUS, ball_x + BALL_RADIUS, ball_y - BALL_RADIUS
+
+    def get_location(self):
+        ball_x, ball_y = self.xcor(), self.ycor()
+        return ball_x, ball_y
 
     def get_direction(self):
         return self.heading()

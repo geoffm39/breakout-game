@@ -1,11 +1,11 @@
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageSequence
 import os
 
 from brick import Brick
 from paddle import Paddle
 from constants import (
     IMAGE_DIRECTORY, STRONG, NORMAL, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME,
-    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, PowerupType
+    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, PowerupType, FIREBALL_FILENAME
 )
 
 
@@ -14,6 +14,7 @@ class GameImages:
         self.photo_images = {}
         self.paddle_image = None
         self.laser_paddle_image = None
+        self.fireball_frames = []
 
         self.load_images()
 
@@ -24,6 +25,7 @@ class GameImages:
                 photo_image = ImageTk.PhotoImage(image)
             self.photo_images[filename] = photo_image
         self.set_paddle_images()
+        self.set_fireball_frames()
 
     def set_paddle_images(self):
         paddle_image_path = os.path.join(IMAGE_DIRECTORY, PADDLE_FILENAME)
@@ -50,6 +52,15 @@ class GameImages:
         brick_color = brick.get_color()
         image_key = f'brick-{brick_color}-{brick_type}.png'
         return self.photo_images[image_key]
+
+    def set_fireball_frames(self):
+        fireball_image_path = os.path.join(IMAGE_DIRECTORY, FIREBALL_FILENAME)
+        with Image.open(fireball_image_path) as image:
+            self.fireball_frames = [ImageTk.PhotoImage(frame) for frame in ImageSequence.Iterator(image)]
+
+    def get_fireball_frame(self, frame_index=0):
+        frame_index = frame_index % len(self.fireball_frames)
+        return self.fireball_frames[frame_index]
 
     def get_powerup_type(self, powerup_type: PowerupType):
         image_key = f'powerup-{powerup_type.value}.png'

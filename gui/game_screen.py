@@ -34,6 +34,7 @@ class GameScreen(Canvas):
         self.bricks = []
         self.brick_images = []
         self.balls = []
+        self.ball_animations = []
         self.powerups = []
         self.powerup_images = []
         self.powerup_type_images = []
@@ -162,7 +163,29 @@ class GameScreen(Canvas):
         self.update_game_screen()
 
     def add_ball(self):
-        self.balls.append(Ball(self.screen))
+        ball = Ball(self.screen)
+        self.balls.append(ball)
+        self.add_ball_animation(ball)
+
+    def add_ball_animation(self, ball: Ball):
+        frame = self.game_images.get_fireball_frame()
+        screen_x, screen_y = ball.get_location()
+        canvas_x = screen_x
+        canvas_y = screen_y * -1
+        canvas_image = self.create_image(canvas_x, canvas_y, image=frame)
+        self.ball_animations.append(canvas_image)
+
+    def move_ball_animation(self, ball: Ball):
+        ball_x, ball_y = ball.get_location()
+        ball_index = self.balls.index(ball)
+        self.coords(self.ball_animations[ball_index], (ball_x, ball_y * -1))
+
+    def remove_ball(self, ball: Ball):
+        ball_index = self.balls.index(ball)
+        self.delete(self.ball_animations[ball_index])
+        self.ball_animations.pop(ball_index)
+        self.balls.remove(ball)
+        del ball
 
     def add_level_bricks(self):
         level_data = self.levels.get_level(self.current_level)
@@ -199,6 +222,7 @@ class GameScreen(Canvas):
         self.screen.update()
         for ball in self.balls:
             ball.move()
+            self.move_ball_animation(ball)
             self.check_for_ball_collision(ball)
             if self.ball_missed(ball):
                 self.remove_ball(ball)
@@ -275,11 +299,6 @@ class GameScreen(Canvas):
     @staticmethod
     def ball_hit_side_wall(ball: Ball):
         return ball.xcor() >= SCREEN_RIGHT_EDGE - BALL_RADIUS or ball.xcor() <= SCREEN_LEFT_EDGE + BALL_RADIUS
-
-    def remove_ball(self, ball):
-        ball.remove()
-        self.balls.remove(ball)
-        del ball
 
     def no_more_balls(self):
         return len(self.balls) == 0
