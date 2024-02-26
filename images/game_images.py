@@ -56,11 +56,15 @@ class GameImages:
     def set_fireball_frames(self):
         fireball_image_path = os.path.join(IMAGE_DIRECTORY, FIREBALL_FILENAME)
         with Image.open(fireball_image_path) as image:
-            self.fireball_frames = [ImageTk.PhotoImage(frame) for frame in ImageSequence.Iterator(image)]
+            self.fireball_frames = [ImageTk.PhotoImage(frame.convert('RGBA')) for frame in ImageSequence.Iterator(image)]
+            # FRAMES ALL THE SAME HERE!! FIX
 
     def get_fireball_frame(self, frame_index=0):
         frame_index = frame_index % len(self.fireball_frames)
         return self.fireball_frames[frame_index]
+
+    def get_number_of_fireball_frames(self):
+        return len(self.fireball_frames)
 
     def get_powerup_type(self, powerup_type: PowerupType):
         image_key = f'powerup-{powerup_type.value}.png'
