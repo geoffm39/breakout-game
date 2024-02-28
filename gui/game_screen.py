@@ -186,7 +186,7 @@ class GameScreen(Canvas):
             frame_index = (frame_index + 1) % self.game_images.get_number_of_fireball_frames()
             ball_index = self.balls.index(ball)
             self.itemconfig(self.ball_animations[ball_index], image=self.game_images.get_fireball_frame(frame_index))
-            self.after(10, self.cycle_ball_animation_frames, ball, ball_index)
+            self.after(50, self.cycle_ball_animation_frames, ball, frame_index)
 
     def move_ball_animation(self, ball: Ball):
         ball_x, ball_y = ball.get_location()
