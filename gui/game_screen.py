@@ -190,16 +190,10 @@ class GameScreen(Canvas):
         if ball in self.balls:
             ball_x, ball_y = ball.get_location()
             ball_index = self.balls.index(ball)
-            try:
-                self.coords(self.ball_animations[ball_index], (ball_x, ball_y * -1))
-            except IndexError:
-                pass
+            self.coords(self.ball_animations[ball_index], (ball_x, ball_y * -1))
 
     def remove_ball(self, ball: Ball):
-        print(ball)
         ball_index = self.balls.index(ball)
-        print(ball_index)
-        print(len(self.ball_animations))
         self.delete(self.ball_animations[ball_index])
         self.balls.remove(ball)
         self.ball_animations.pop(ball_index)
