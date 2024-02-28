@@ -196,7 +196,10 @@ class GameScreen(Canvas):
                 pass
 
     def remove_ball(self, ball: Ball):
+        print(ball)
         ball_index = self.balls.index(ball)
+        print(ball_index)
+        print(len(self.ball_animations))
         self.delete(self.ball_animations[ball_index])
         self.balls.remove(ball)
         self.ball_animations.pop(ball_index)
@@ -368,7 +371,7 @@ class GameScreen(Canvas):
             self.remove_powerup(powerup)
         self.reset_paddle()
         self.add_level_bricks()
-        self.balls.append(Ball(self.screen))
+        self.add_ball()
 
     def handle_strong_brick_collision(self, brick: Brick):
         brick_index = self.bricks.index(brick)
