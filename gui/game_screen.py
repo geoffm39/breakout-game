@@ -100,14 +100,12 @@ class GameScreen(Canvas):
         self.laser_images.append(canvas_image)
 
     def remove_laser(self, laser: Laser):
-        try:
+        if laser in self.lasers:
             laser_index = self.lasers.index(laser)
             self.delete(self.laser_images[laser_index])
             self.laser_images.pop(laser_index)
             self.lasers.remove(laser)
             del laser
-        except ValueError:
-            pass
 
     def move_laser_image(self, laser: Laser):
         laser_index = self.lasers.index(laser)
@@ -181,7 +179,7 @@ class GameScreen(Canvas):
         self.itemconfig(self.ball_animations[ball_index], image=self.game_images.get_fireball_frame())
 
     def cycle_ball_animation_frames(self, ball: Ball, frame_index):
-        if ball:
+        if ball in self.balls:
             # if ball.is_fireball():
             frame_index = (frame_index + 1) % self.game_images.get_number_of_fireball_frames()
             ball_index = self.balls.index(ball)
@@ -189,15 +187,19 @@ class GameScreen(Canvas):
             self.after(50, self.cycle_ball_animation_frames, ball, frame_index)
 
     def move_ball_animation(self, ball: Ball):
-        ball_x, ball_y = ball.get_location()
-        ball_index = self.balls.index(ball)
-        self.coords(self.ball_animations[ball_index], (ball_x, ball_y * -1))
+        if ball in self.balls:
+            ball_x, ball_y = ball.get_location()
+            ball_index = self.balls.index(ball)
+            try:
+                self.coords(self.ball_animations[ball_index], (ball_x, ball_y * -1))
+            except IndexError:
+                pass
 
     def remove_ball(self, ball: Ball):
         ball_index = self.balls.index(ball)
         self.delete(self.ball_animations[ball_index])
-        self.ball_animations.pop(ball_index)
         self.balls.remove(ball)
+        self.ball_animations.pop(ball_index)
         del ball
 
     def add_level_bricks(self):
