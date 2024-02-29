@@ -44,6 +44,23 @@ STRONG = 'strong'
 BROKEN = 'broken'
 BARRIER = 'barrier'
 
+
+class BrickType(Enum):
+    NORMAL = 'normal'
+    STRONG = 'strong'
+    BROKEN = 'broken'
+    BARRIER = 'barrier'
+
+
+class BrickColor(Enum):
+    BLUE = 'blue'
+    RED = 'red'
+    YELLOW = 'yellow'
+    ORANGE = 'orange'
+    GREEN = 'green'
+    PURPLE = 'purple'
+
+
 BRICK_COLOR = 'brick_color'
 BLUE = 'blue'
 RED = 'red'

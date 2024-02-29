@@ -4,8 +4,8 @@ import os
 from brick import Brick
 from paddle import Paddle
 from constants import (
-    IMAGE_DIRECTORY, STRONG, NORMAL, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME,
-    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, PowerupType, FIREBALL_FILENAME, BALL_FILENAME
+    IMAGE_DIRECTORY, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME, BrickType, PowerupType,
+    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME
 )
 
 
@@ -49,10 +49,10 @@ class GameImages:
 
     def get_brick(self, brick: Brick):
         brick_type = brick.get_type()
-        if brick_type == STRONG:
-            brick_type = NORMAL
+        if brick_type == BrickType.STRONG:
+            brick_type = BrickType.NORMAL
         brick_color = brick.get_color()
-        image_key = f'brick-{brick_color}-{brick_type}.png'
+        image_key = f'brick-{brick_color}-{brick_type.value}.png'
         return self.photo_images[image_key]
 
     def set_ball_frames(self):

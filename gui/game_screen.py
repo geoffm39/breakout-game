@@ -12,9 +12,9 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, BROKEN, PowerupType,
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, PowerupType,
     POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH, LASER_SPEED, LASER_TIME_LIMIT, LASER_FREQUENCY, SCREEN_HEIGHT,
-    POWERUP_IMAGE_TIME_LIMIT, POWERUP_IMAGE_SPEED, BALL_ANIMATION_SPEED
+    POWERUP_IMAGE_TIME_LIMIT, POWERUP_IMAGE_SPEED, BALL_ANIMATION_SPEED, BrickType
 )
 
 
@@ -377,7 +377,7 @@ class GameScreen(Canvas):
 
     def handle_strong_brick_collision(self, brick: Brick):
         brick_index = self.bricks.index(brick)
-        brick.set_type(BROKEN)
+        brick.set_type(BrickType.BROKEN)
         updated_image = self.game_images.get_brick(brick)
         self.itemconfig(self.brick_images[brick_index], image=updated_image)
 

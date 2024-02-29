@@ -1,8 +1,8 @@
 from turtle import RawTurtle
 
 from constants import (
-    TYPE, NORMAL, STRONG, BROKEN, BARRIER, BRICK_COLOR, BRICK_SHAPE,
-    BRICK_WIDTH, BRICK_LENGTH
+    TYPE, BRICK_COLOR, BRICK_SHAPE,
+    BRICK_WIDTH, BRICK_LENGTH, BrickType
 )
 
 
@@ -11,7 +11,7 @@ class Brick(RawTurtle):
         super().__init__(canvas, **kwargs)
 
         self.brick_type = brick_attributes[TYPE]
-        self.brick_color = brick_attributes[BRICK_COLOR]
+        self.brick_color = brick_attributes[BRICK_COLOR].value
         self.brick_length = None
         self.brick_location = None
 
@@ -51,17 +51,17 @@ class Brick(RawTurtle):
     def get_type(self):
         return self.brick_type
 
-    def set_type(self, brick_type):
+    def set_type(self, brick_type: BrickType):
         self.brick_type = brick_type
 
     def is_normal(self):
-        return self.brick_type == NORMAL
+        return self.brick_type == BrickType.NORMAL
 
     def is_strong(self):
-        return self.brick_type == STRONG
+        return self.brick_type == BrickType.STRONG
 
     def is_broken(self):
-        return self.brick_type == BROKEN
+        return self.brick_type == BrickType.BROKEN
 
     def is_barrier(self):
-        return self.brick_type == BARRIER
+        return self.brick_type == BrickType.BARRIER
