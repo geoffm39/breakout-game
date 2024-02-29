@@ -8,6 +8,7 @@ PADDLE_FILENAME = 'paddle.png'
 PADDLE_LASERS_FILENAME = 'paddle-lasers.png'
 LASER_FILENAME = 'laser.png'
 FIREBALL_FILENAME = 'fireball.gif'
+BALL_FILENAME = 'ball.gif'
 
 SCREEN_HEIGHT = 720
 SCREEN_WIDTH = 1080

@@ -5,7 +5,7 @@ from brick import Brick
 from paddle import Paddle
 from constants import (
     IMAGE_DIRECTORY, STRONG, NORMAL, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME,
-    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, PowerupType, FIREBALL_FILENAME
+    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, PowerupType, FIREBALL_FILENAME, BALL_FILENAME
 )
 
 
@@ -14,6 +14,7 @@ class GameImages:
         self.photo_images = {}
         self.paddle_image = None
         self.laser_paddle_image = None
+        self.ball_frames = []
         self.fireball_frames = []
 
         self.load_images()
@@ -25,6 +26,7 @@ class GameImages:
                 photo_image = ImageTk.PhotoImage(image)
             self.photo_images[filename] = photo_image
         self.set_paddle_images()
+        self.set_ball_frames()
         self.set_fireball_frames()
 
     def set_paddle_images(self):
@@ -53,14 +55,26 @@ class GameImages:
         image_key = f'brick-{brick_color}-{brick_type}.png'
         return self.photo_images[image_key]
 
+    def set_ball_frames(self):
+        ball_image_path = os.path.join(IMAGE_DIRECTORY, BALL_FILENAME)
+        with Image.open(ball_image_path) as image:
+            self.ball_frames = [ImageTk.PhotoImage(frame.convert('RGBA')) for frame in ImageSequence.Iterator(image)]
+
     def set_fireball_frames(self):
         fireball_image_path = os.path.join(IMAGE_DIRECTORY, FIREBALL_FILENAME)
         with Image.open(fireball_image_path) as image:
             self.fireball_frames = [ImageTk.PhotoImage(frame.convert('RGBA')) for frame in ImageSequence.Iterator(image)]
 
+    def get_ball_frame(self, frame_index=0):
+        frame_index = frame_index % self.get_number_of_ball_frames()
+        return self.ball_frames[frame_index]
+
     def get_fireball_frame(self, frame_index=0):
-        frame_index = frame_index % len(self.fireball_frames)
+        frame_index = frame_index % self.get_number_of_fireball_frames()
         return self.fireball_frames[frame_index]
+
+    def get_number_of_ball_frames(self):
+        return len(self.ball_frames)
 
     def get_number_of_fireball_frames(self):
         return len(self.fireball_frames)

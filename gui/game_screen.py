@@ -166,7 +166,10 @@ class GameScreen(Canvas):
         self.add_ball_animation(ball)
 
     def add_ball_animation(self, ball: Ball):
-        frame = self.game_images.get_fireball_frame()
+        if ball.is_fireball():
+            frame = self.game_images.get_fireball_frame()
+        else:
+            frame = self.game_images.get_ball_frame()
         screen_x, screen_y = ball.get_location()
         canvas_x = screen_x
         canvas_y = screen_y * -1
@@ -180,11 +183,14 @@ class GameScreen(Canvas):
 
     def cycle_ball_animation_frames(self, ball: Ball, frame_index):
         if ball in self.balls:
-            # if ball.is_fireball():
             frame_index = (frame_index + 1) % self.game_images.get_number_of_fireball_frames()
             ball_index = self.balls.index(ball)
-            self.itemconfig(self.ball_animations[ball_index], image=self.game_images.get_fireball_frame(frame_index))
-            self.after(50, self.cycle_ball_animation_frames, ball, frame_index)
+            if ball.is_fireball():
+                frame = self.game_images.get_fireball_frame(frame_index)
+            else:
+                frame = self.game_images.get_ball_frame(frame_index)
+            self.itemconfig(self.ball_animations[ball_index], image=frame)
+            self.after(100, self.cycle_ball_animation_frames, ball, frame_index)
 
     def move_ball_animation(self, ball: Ball):
         if ball in self.balls:
