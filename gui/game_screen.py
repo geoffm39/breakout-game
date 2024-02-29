@@ -365,6 +365,10 @@ class GameScreen(Canvas):
             self.current_level = 1
         for brick in self.bricks:
             self.remove_brick(brick)
+            print(len(self.bricks))
+            print(len(self.brick_images))
+        print(len(self.bricks))
+        print(len(self.brick_images))
         for ball in self.balls:
             self.remove_ball(ball)
         for powerup in self.powerups:
@@ -389,12 +393,14 @@ class GameScreen(Canvas):
         del brick
 
     def check_powerup_drop(self, brick):
-        if self.brick_has_powerup():
+        if self.brick_has_powerup(brick):
             self.drop_powerup(brick)
 
     @staticmethod
-    def brick_has_powerup():
-        return randint(1, 1) == 1
+    def brick_has_powerup(brick: Brick):
+        if not brick.is_barrier():
+            return randint(1, 1) == 1
+        return False
 
     def drop_powerup(self, brick: Brick):
         random_powerup_type = choice(list(PowerupType))
