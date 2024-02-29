@@ -14,7 +14,7 @@ from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, BROKEN, PowerupType,
     POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH, LASER_SPEED, LASER_TIME_LIMIT, LASER_FREQUENCY, SCREEN_HEIGHT,
-    POWERUP_IMAGE_TIME_LIMIT, POWERUP_IMAGE_SPEED
+    POWERUP_IMAGE_TIME_LIMIT, POWERUP_IMAGE_SPEED, BALL_ANIMATION_SPEED
 )
 
 
@@ -190,7 +190,7 @@ class GameScreen(Canvas):
             else:
                 frame = self.game_images.get_ball_frame(frame_index)
             self.itemconfig(self.ball_animations[ball_index], image=frame)
-            self.after(100, self.cycle_ball_animation_frames, ball, frame_index)
+            self.after(BALL_ANIMATION_SPEED, self.cycle_ball_animation_frames, ball, frame_index)
 
     def move_ball_animation(self, ball: Ball):
         if ball in self.balls:
