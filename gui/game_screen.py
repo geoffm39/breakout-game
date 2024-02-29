@@ -281,13 +281,11 @@ class GameScreen(Canvas):
         for brick in self.bricks:
             brick_bbox = brick.get_bbox()
             if self.ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
-                brick.hideturtle()
                 self.handle_brick_collision(brick)
                 if not ball.is_fireball():
                     ball.bounce(HORIZONTAL_SURFACE)
                 break
             if self.ball_hit_left_or_right_of_brick(ball_bbox, brick_bbox):
-                brick.hideturtle()
                 self.handle_brick_collision(brick)
                 if not ball.is_fireball():
                     ball.bounce(VERTICAL_SURFACE)
@@ -381,7 +379,8 @@ class GameScreen(Canvas):
         updated_image = self.game_images.get_brick(brick)
         self.itemconfig(self.brick_images[brick_index], image=updated_image)
 
-    def remove_brick(self, brick):
+    def remove_brick(self, brick: Brick):
+        brick.hideturtle()
         self.check_powerup_drop(brick)
         brick_index = self.bricks.index(brick)
         self.delete(self.brick_images[brick_index])
