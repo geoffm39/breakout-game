@@ -363,6 +363,8 @@ class GameScreen(Canvas):
 
     def progress_to_next_level(self):
         self.current_level += 1
+        if self.current_level >= self.levels.get_number_of_levels():
+            self.current_level = 1
         for brick in self.bricks:
             self.remove_brick(brick)
         for ball in self.balls:
