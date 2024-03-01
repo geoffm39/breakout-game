@@ -118,7 +118,7 @@ class GameScreen(Canvas):
 
     def check_laser_for_brick_collision(self, laser: Laser):
         laser_bbox = laser.get_bbox()
-        for brick in self.bricks:
+        for brick in self.bricks.copy():
             brick_bbox = brick.get_bbox()
             if self.laser_hit_brick(laser_bbox, brick_bbox):
                 brick.hideturtle()
@@ -278,7 +278,7 @@ class GameScreen(Canvas):
 
     def check_for_brick_collision(self, ball: Ball):
         ball_bbox = ball.get_bbox()
-        for brick in self.bricks:
+        for brick in self.bricks.copy():
             brick_bbox = brick.get_bbox()
             if self.ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
                 self.handle_brick_collision(brick)
