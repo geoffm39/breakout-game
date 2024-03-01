@@ -165,6 +165,13 @@ class GameScreen(Canvas):
         self.balls.append(ball)
         self.add_ball_animation(ball)
 
+    def add_quicker_ball(self, top_ball_speed):
+        quicker_ball = Ball(self.screen)
+        quicker_ball.set_speed(top_ball_speed)
+        quicker_ball.increase_speed()
+        self.balls.append(quicker_ball)
+        self.add_ball_animation(quicker_ball)
+
     def add_ball_animation(self, ball: Ball):
         if ball.is_fireball():
             frame = self.game_images.get_fireball_frame()
@@ -363,6 +370,7 @@ class GameScreen(Canvas):
         self.current_level += 1
         if self.current_level >= self.levels.get_number_of_levels():
             self.current_level = 1
+        top_ball_speed = self.get_quickest_ball_speed()
         for brick in self.bricks.copy():
             self.remove_brick(brick)
         for ball in self.balls.copy():
@@ -371,7 +379,15 @@ class GameScreen(Canvas):
             self.remove_powerup(powerup)
         self.reset_paddle()
         self.add_level_bricks()
-        self.add_ball()
+        self.add_quicker_ball(top_ball_speed)
+
+    def get_quickest_ball_speed(self):
+        top_speed = 0
+        for ball in self.balls:
+            speed = ball.get_speed()
+            if speed > top_speed:
+                top_speed = speed
+        return top_speed
 
     def handle_strong_brick_collision(self, brick: Brick):
         brick_index = self.bricks.index(brick)

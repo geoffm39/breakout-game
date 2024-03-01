@@ -150,6 +150,12 @@ class Ball(RawTurtle):
         if self.move_speed > 0.5:
             self.move_speed -= 0.25
 
+    def get_speed(self):
+        return self.move_speed
+
+    def set_speed(self, speed):
+        self.move_speed = speed
+
     def reset_speed(self):
         self.move_speed = DEFAULT_BALL_SPEED
 
