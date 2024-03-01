@@ -363,15 +363,11 @@ class GameScreen(Canvas):
         self.current_level += 1
         if self.current_level >= self.levels.get_number_of_levels():
             self.current_level = 1
-        for brick in self.bricks:
+        for brick in self.bricks.copy():
             self.remove_brick(brick)
-            print(len(self.bricks))
-            print(len(self.brick_images))
-        print(len(self.bricks))
-        print(len(self.brick_images))
-        for ball in self.balls:
+        for ball in self.balls.copy():
             self.remove_ball(ball)
-        for powerup in self.powerups:
+        for powerup in self.powerups.copy():
             self.remove_powerup(powerup)
         self.reset_paddle()
         self.add_level_bricks()
