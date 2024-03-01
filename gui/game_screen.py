@@ -238,7 +238,7 @@ class GameScreen(Canvas):
 
     def update_game_screen(self):
         self.screen.update()
-        for ball in self.balls:
+        for ball in self.balls.copy():
             ball.move()
             self.move_ball_animation(ball)
             self.check_for_ball_collision(ball)
@@ -246,13 +246,13 @@ class GameScreen(Canvas):
                 self.remove_ball(ball)
                 if self.no_more_balls():
                     return
-        for powerup in self.powerups:
+        for powerup in self.powerups.copy():
             powerup.move()
             self.move_powerup_image(powerup)
             self.check_for_powerup_collision(powerup)
         for powerup_type_image in self.powerup_type_images:
             self.move_powerup_type_image(powerup_type_image)
-        for laser in self.lasers:
+        for laser in self.lasers.copy():
             laser.move()
             self.move_laser_image(laser)
             self.check_for_laser_collision(laser)
