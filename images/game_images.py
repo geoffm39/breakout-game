@@ -5,7 +5,7 @@ from brick import Brick
 from paddle import Paddle
 from constants import (
     IMAGE_DIRECTORY, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME, BrickType, PowerupType,
-    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME
+    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME
 )
 
 
@@ -85,6 +85,9 @@ class GameImages:
 
     def get_background(self):
         return self.photo_images[BACKGROUND_FILENAME]
+
+    def get_lives(self):
+        return self.photo_images[LIVES_FILENAME]
 
     def get_powerup(self):
         return self.photo_images[POWERUP_FILENAME]

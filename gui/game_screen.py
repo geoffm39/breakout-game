@@ -14,7 +14,8 @@ from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, PowerupType,
     POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH, LASER_SPEED, LASER_TIME_LIMIT, LASER_FREQUENCY, SCREEN_HEIGHT,
-    POWERUP_IMAGE_TIME_LIMIT, POWERUP_IMAGE_SPEED, BALL_ANIMATION_SPEED, BrickType
+    POWERUP_IMAGE_TIME_LIMIT, POWERUP_IMAGE_SPEED, BALL_ANIMATION_SPEED,
+    BrickType, LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD
 )
 
 
@@ -28,6 +29,7 @@ class GameScreen(Canvas):
 
         self.game_images = GameImages()
         self.apply_background_image()
+        self.apply_lives_image()
 
         self.paddle = Paddle(self.screen)
         self.paddle_canvas_image = None
@@ -57,6 +59,10 @@ class GameScreen(Canvas):
     def apply_background_image(self):
         background = self.game_images.get_background()
         self.create_image(0, 0, image=background)
+
+    def apply_lives_image(self):
+        lives = self.game_images.get_lives()
+        self.create_image(LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD, image=lives)
 
     def set_paddle_image(self):
         image = self.game_images.get_paddle(self.paddle)
