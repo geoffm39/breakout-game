@@ -41,3 +41,12 @@ class Scores(RawTurtle):
         self.write(self.score, align='center', font=GAME_FONT)
         self.setposition(LIVES_POSITION)
         self.write(self.lives, align='right', font=GAME_FONT)
+
+    def increase_score(self, score):
+        self.score += score
+        self.update_scores()
+
+    def check_for_highscore(self):
+        if self.score > self.highscore:
+            self.highscore = self.score
+            self.save_highscore_to_file()

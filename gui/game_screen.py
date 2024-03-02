@@ -254,6 +254,7 @@ class GameScreen(Canvas):
             if self.ball_missed(ball):
                 self.remove_ball(ball)
                 if self.no_more_balls():
+                    self.scores.check_for_highscore()
                     return
         for powerup in self.powerups.copy():
             powerup.move()
@@ -352,8 +353,9 @@ class GameScreen(Canvas):
                 return True
         return False
 
-    def handle_brick_collision(self, brick):
+    def handle_brick_collision(self, brick: Brick):
         if brick.is_normal() or brick.is_broken():
+            self.scores.increase_score(brick.get_score())
             self.remove_brick(brick)
         elif brick.is_strong():
             self.handle_strong_brick_collision(brick)

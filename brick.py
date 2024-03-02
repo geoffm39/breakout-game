@@ -2,7 +2,7 @@ from turtle import RawTurtle
 
 from constants import (
     TYPE, BRICK_COLOR, BRICK_SHAPE,
-    BRICK_WIDTH, BRICK_LENGTH, BrickType
+    BRICK_WIDTH, BRICK_LENGTH, BrickType, NORMAL_BRICK_SCORE, BROKEN_BRICK_SCORE, STRONG_BRICK_SCORE
 )
 
 
@@ -14,6 +14,7 @@ class Brick(RawTurtle):
         self.brick_color = brick_attributes[BRICK_COLOR].value
         self.brick_length = None
         self.brick_location = None
+        self.score = self.set_score()
 
         self.set_properties()
 
@@ -24,6 +25,19 @@ class Brick(RawTurtle):
         self.brick_length = BRICK_WIDTH * BRICK_LENGTH
         self.color(self.brick_color)
         self.hideturtle()
+
+    def set_score(self):
+        if self.is_normal():
+            return NORMAL_BRICK_SCORE
+        elif self.is_broken():
+            return BROKEN_BRICK_SCORE
+        elif self.is_strong():
+            return STRONG_BRICK_SCORE
+        else:
+            return 0
+
+    def get_score(self):
+        return self.score
 
     def set_location(self, brick_left_x, brick_top_y):
         brick_x = brick_left_x + self.brick_length / 2
