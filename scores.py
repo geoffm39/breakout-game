@@ -51,8 +51,8 @@ class Scores(RawTurtle):
             self.highscore = self.score
             self.save_highscore_to_file()
 
-    def get_lives(self):
-        return self.lives
+    def no_more_lives(self):
+        return self.lives == 0
 
     def decrease_lives(self):
         self.lives -= 1

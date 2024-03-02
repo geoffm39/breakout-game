@@ -254,8 +254,12 @@ class GameScreen(Canvas):
             if self.ball_missed(ball):
                 self.remove_ball(ball)
                 if self.no_more_balls():
-                    self.scores.check_for_highscore()
-                    return
+                    self.scores.decrease_lives()
+                    if self.scores.no_more_lives():
+                        self.handle_game_over()
+                        return
+                    else:
+                        self.handle_life_lost()
         for powerup in self.powerups.copy():
             powerup.move()
             self.move_powerup_image(powerup)
@@ -384,6 +388,15 @@ class GameScreen(Canvas):
         self.reset_paddle()
         self.add_level_bricks()
         self.add_quicker_ball(top_ball_speed)
+
+    def handle_game_over(self):
+        self.scores.check_for_highscore()
+
+    def handle_life_lost(self):
+        for powerup in self.powerups.copy():
+            self.remove_powerup(powerup)
+        self.reset_paddle()
+        self.add_ball()
 
     def get_quickest_ball_speed(self):
         top_speed = 0
