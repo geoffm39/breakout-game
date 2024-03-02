@@ -382,7 +382,7 @@ class GameScreen(Canvas):
 
     def progress_to_next_level(self):
         self.current_level += 1
-        if self.current_level >= self.levels.get_number_of_levels():
+        if self.current_level > self.levels.get_number_of_levels():
             self.current_level = 1
         top_ball_speed = self.get_quickest_ball_speed()
         for brick in self.bricks.copy():
