@@ -302,12 +302,18 @@ class GameScreen(Canvas):
             brick_bbox = brick.get_bbox()
             if self.ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
                 self.handle_brick_collision(brick)
-                if not ball.is_fireball():
+                if ball.is_fireball():
+                    if brick.is_barrier():
+                        ball.bounce(HORIZONTAL_SURFACE)
+                else:
                     ball.bounce(HORIZONTAL_SURFACE)
                 break
             if self.ball_hit_left_or_right_of_brick(ball_bbox, brick_bbox):
                 self.handle_brick_collision(brick)
-                if not ball.is_fireball():
+                if ball.is_fireball():
+                    if brick.is_barrier():
+                        ball.bounce(VERTICAL_SURFACE)
+                else:
                     ball.bounce(VERTICAL_SURFACE)
                 break
 
