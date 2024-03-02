@@ -1,7 +1,7 @@
 from turtle import RawTurtle
 
 from constants import (
-    HIGHSCORE_FILENAME, YELLOW, SCORE_POSITION, LIVES_POSITION, HIGHSCORE_POSITION, STARTING_LIVES, GAME_FONT
+    HIGHSCORE_FILENAME, YELLOW, SCORE_POSITION, LIVES_POSITION, HIGHSCORE_POSITION, STARTING_LIVES, MAX_LIVES, GAME_FONT
 )
 
 
@@ -50,3 +50,22 @@ class Scores(RawTurtle):
         if self.score > self.highscore:
             self.highscore = self.score
             self.save_highscore_to_file()
+
+    def get_lives(self):
+        return self.lives
+
+    def decrease_lives(self):
+        self.lives -= 1
+        self.update_scores()
+
+    def increase_lives(self):
+        self.lives += 1
+        if self.lives > MAX_LIVES:
+            self.lives = MAX_LIVES
+        self.update_scores()
+
+    def reset_scores(self):
+        self.lives = STARTING_LIVES
+        self.score = 0
+        self.highscore = self.load_highscore_from_file()
+        self.update_scores()

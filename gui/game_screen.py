@@ -524,4 +524,4 @@ class GameScreen(Canvas):
         self.update_paddle_image()
 
     def activate_extra_life(self):
-        pass
+        self.scores.increase_lives()
