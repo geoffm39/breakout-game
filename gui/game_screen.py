@@ -27,6 +27,7 @@ class GameScreen(Canvas):
         self.configure_screen()
 
         self.game_images = GameImages()
+        self.apply_background_image()
 
         self.paddle = Paddle(self.screen)
         self.paddle_canvas_image = None
@@ -45,7 +46,7 @@ class GameScreen(Canvas):
         self.current_level = 1
 
         self.apply_mouse_controls()
-        self.apply_background_image()
+
         self.set_paddle_image()
 
     def apply_mouse_controls(self):
