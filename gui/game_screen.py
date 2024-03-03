@@ -12,7 +12,7 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, DEFAULT_BALL_SPEED, PowerupType,
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType,
     POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH, LASER_SPEED, LASER_TIME_LIMIT, LASER_FREQUENCY, SCREEN_HEIGHT,
     POWERUP_IMAGE_TIME_LIMIT, POWERUP_IMAGE_SPEED, BALL_ANIMATION_SPEED,
     BrickType, LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD
@@ -45,7 +45,7 @@ class GameScreen(Canvas):
         self.lasers = []
         self.laser_images = []
 
-        self.current_level = 1
+        self.current_level = 3
 
         self.apply_mouse_controls()
 
@@ -139,7 +139,7 @@ class GameScreen(Canvas):
         laser_y1 = laser_bbox[1]
         brick_x1, _, brick_x2, brick_y2 = brick_bbox
         if (brick_x1 - BRICK_SPACING / 2 <= laser_x <= brick_x2 + BRICK_SPACING / 2 and
-                brick_y2 <= laser_y1 <= brick_y2 + DEFAULT_BALL_SPEED):
+                brick_y2 <= laser_y1 <= brick_y2 + LASER_SPEED):
             return True
         return False
 
@@ -297,10 +297,11 @@ class GameScreen(Canvas):
                 ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
 
     def check_for_brick_collision(self, ball: Ball):
-        ball_bbox = ball.get_bbox()
         for brick in self.bricks.copy():
             brick_bbox = brick.get_bbox()
-            if self.ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
+            # if self.ball_is_inside_brick(ball, brick_bbox):
+            #     break
+            if self.ball_hit_top_or_bottom_of_brick(ball, brick_bbox):
                 self.handle_brick_collision(brick)
                 if ball.is_fireball():
                     if brick.is_barrier():
@@ -308,7 +309,7 @@ class GameScreen(Canvas):
                 else:
                     ball.bounce(HORIZONTAL_SURFACE)
                 break
-            if self.ball_hit_left_or_right_of_brick(ball_bbox, brick_bbox):
+            if self.ball_hit_left_or_right_of_brick(ball, brick_bbox):
                 self.handle_brick_collision(brick)
                 if ball.is_fireball():
                     if brick.is_barrier():
@@ -328,7 +329,7 @@ class GameScreen(Canvas):
         ball_x = ball.xcor()
         ball_bottom_y = ball.ycor() - BALL_RADIUS
         paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
-        return paddle_y1 >= ball_bottom_y >= paddle_y1 - DEFAULT_BALL_SPEED and paddle_x1 <= ball_x <= paddle_x2
+        return paddle_y1 >= ball_bottom_y >= paddle_y1 - ball.get_speed() and paddle_x1 <= ball_x <= paddle_x2
 
     @staticmethod
     def ball_missed(ball: Ball):
@@ -346,26 +347,36 @@ class GameScreen(Canvas):
         return len(self.balls) == 0
 
     @staticmethod
-    def ball_hit_top_or_bottom_of_brick(ball_bbox, brick_bbox):
-        ball_x = ball_bbox[0] + BALL_RADIUS
-        ball_y1, ball_y2 = ball_bbox[1::2]
+    def ball_is_inside_brick(ball: Ball, brick_bbox):
+        ball_x, ball_y = ball.get_location()
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
-        if brick_x1 - BRICK_SPACING / 2 <= ball_x <= brick_x2 + BRICK_SPACING / 2:
-            if brick_y1 >= ball_y2 >= brick_y1 - DEFAULT_BALL_SPEED:
-                return True
-            if brick_y2 <= ball_y1 <= brick_y2 + DEFAULT_BALL_SPEED:
+        ball_speed = ball.get_speed()
+        if brick_x1 + ball_speed <= ball_x <= brick_x2 - ball_speed:
+            if brick_y1 - ball_speed >= ball_y >= brick_y2 + ball_speed:
                 return True
         return False
 
     @staticmethod
-    def ball_hit_left_or_right_of_brick(ball_bbox, brick_bbox):
-        ball_y = ball_bbox[1] - BALL_RADIUS
-        ball_x1, ball_x2 = ball_bbox[::2]
+    def ball_hit_top_or_bottom_of_brick(ball: Ball, brick_bbox):
+        ball_x1, ball_y1, _, ball_y2 = ball.get_bbox()
+        ball_x = ball_x1 + BALL_RADIUS
+        brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
+        if brick_x1 - BRICK_SPACING / 2 <= ball_x <= brick_x2 + BRICK_SPACING / 2:
+            if brick_y1 >= ball_y2 >= brick_y1 - ball.get_speed():
+                return True
+            if brick_y2 <= ball_y1 <= brick_y2 + ball.get_speed():
+                return True
+        return False
+
+    @staticmethod
+    def ball_hit_left_or_right_of_brick(ball: Ball, brick_bbox):
+        ball_x1, ball_y1, ball_x2, _ = ball.get_bbox()
+        ball_y = ball_y1 - BALL_RADIUS
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
         if brick_y1 + BRICK_SPACING / 2 >= ball_y >= brick_y2 - BRICK_SPACING / 2:
-            if brick_x1 <= ball_x2 <= brick_x1 + DEFAULT_BALL_SPEED:
+            if brick_x1 <= ball_x2 <= brick_x1 + ball.get_speed():
                 return True
-            if brick_x2 >= ball_x1 >= brick_x2 - DEFAULT_BALL_SPEED:
+            if brick_x2 >= ball_x1 >= brick_x2 - ball.get_speed():
                 return True
         return False
 
