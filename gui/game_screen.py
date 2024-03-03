@@ -83,7 +83,7 @@ class GameScreen(Canvas):
 
     def reset_paddle(self):
         self.paddle.reset_size()
-        image = self.game_images.set_paddle_images()
+        image = self.game_images.get_paddle(self.paddle)
         self.itemconfig(self.paddle_canvas_image, image=image)
 
     def fire_paddle_lasers(self):
