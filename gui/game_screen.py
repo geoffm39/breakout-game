@@ -45,7 +45,9 @@ class GameScreen(Canvas):
         self.lasers = []
         self.laser_images = []
 
-        self.current_level = 3
+        self.latest_collision_brick = None
+
+        self.current_level = 1
 
         self.apply_mouse_controls()
 
@@ -299,24 +301,38 @@ class GameScreen(Canvas):
     def check_for_brick_collision(self, ball: Ball):
         for brick in self.bricks.copy():
             brick_bbox = brick.get_bbox()
-            # if self.ball_is_inside_brick(ball, brick_bbox):
-            #     break
             if self.ball_hit_top_or_bottom_of_brick(ball, brick_bbox):
                 self.handle_brick_collision(brick)
-                if ball.is_fireball():
-                    if brick.is_barrier():
-                        ball.bounce(HORIZONTAL_SURFACE)
-                else:
+                if brick.is_barrier():
+                    if self.brick_is_latest_collision_brick(brick):
+                        self.set_latest_collision_brick(None)
+                        break
                     ball.bounce(HORIZONTAL_SURFACE)
+                    self.set_latest_collision_brick(brick)
+                    break
+                if ball.is_fireball():
+                    break
+                ball.bounce(HORIZONTAL_SURFACE)
                 break
             if self.ball_hit_left_or_right_of_brick(ball, brick_bbox):
                 self.handle_brick_collision(brick)
-                if ball.is_fireball():
-                    if brick.is_barrier():
-                        ball.bounce(VERTICAL_SURFACE)
-                else:
+                if brick.is_barrier():
+                    if self.brick_is_latest_collision_brick(brick):
+                        self.set_latest_collision_brick(None)
+                        break
                     ball.bounce(VERTICAL_SURFACE)
+                    self.set_latest_collision_brick(brick)
+                    break
+                if ball.is_fireball():
+                    break
+                ball.bounce(VERTICAL_SURFACE)
                 break
+
+    def set_latest_collision_brick(self, brick):
+        self.latest_collision_brick = brick
+
+    def brick_is_latest_collision_brick(self, brick):
+        return brick == self.latest_collision_brick
 
     def check_for_powerup_collision(self, powerup: Powerup):
         if self.powerup_hit_paddle(powerup):
@@ -346,15 +362,15 @@ class GameScreen(Canvas):
     def no_more_balls(self):
         return len(self.balls) == 0
 
-    @staticmethod
-    def ball_is_inside_brick(ball: Ball, brick_bbox):
-        ball_x, ball_y = ball.get_location()
-        brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
-        ball_speed = ball.get_speed()
-        if brick_x1 + ball_speed <= ball_x <= brick_x2 - ball_speed:
-            if brick_y1 - ball_speed >= ball_y >= brick_y2 + ball_speed:
-                return True
-        return False
+    # @staticmethod
+    # def ball_is_inside_brick(ball: Ball, brick_bbox):
+    #     ball_x, ball_y = ball.get_location()
+    #     brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
+    #     ball_speed = ball.get_speed()
+    #     if brick_x1 + ball_speed <= ball_x <= brick_x2 - ball_speed:
+    #         if brick_y1 - ball_speed >= ball_y >= brick_y2 + ball_speed:
+    #             return True
+    #     return False
 
     @staticmethod
     def ball_hit_top_or_bottom_of_brick(ball: Ball, brick_bbox):
