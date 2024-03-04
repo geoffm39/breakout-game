@@ -30,7 +30,6 @@ class GameScreen(Canvas):
         self.game_images.apply_lives_image()
 
         self.paddle = Paddle(self.screen)
-        self.paddle_canvas_image = None
         self.levels = Levels()
         self.scores = Scores(self.screen)
         self.bricks = []
@@ -54,25 +53,10 @@ class GameScreen(Canvas):
         self.bind('<Enter>', self.hide_mouse_cursor)
         self.bind('<Leave>', self.show_mouse_cursor)
 
-    def set_paddle_image(self):
-        image = self.game_images.get_paddle(self.paddle)
-        screen_x, screen_y = self.paddle.get_location()
-        canvas_x = screen_x
-        canvas_y = screen_y * -1
-        self.paddle_canvas_image = self.create_image(canvas_x, canvas_y, image=image)
-
-    def move_paddle_image(self):
-        paddle_x, paddle_y = self.paddle.get_location()
-        self.coords(self.paddle_canvas_image, (paddle_x, paddle_y * -1))
-
-    def update_paddle_image(self):
-        updated_image = self.game_images.get_paddle(self.paddle)
-        self.itemconfig(self.paddle_canvas_image, image=updated_image)
-
     def reset_paddle(self):
         self.paddle.reset_size()
-        image = self.game_images.get_paddle(self.paddle)
-        self.itemconfig(self.paddle_canvas_image, image=image)
+        self.paddle.deactivate_lasers()
+        self.game_images.update_paddle_image(self.paddle)
 
     def fire_paddle_lasers(self):
         paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
@@ -141,7 +125,7 @@ class GameScreen(Canvas):
     def track_player_movement(self, event):
         x = event.x
         self.paddle.move_to(x)
-        self.move_paddle_image()
+        self.game_images.move_object_image(self.paddle)
 
     def hide_mouse_cursor(self, event):
         self.config(cursor='none')
@@ -542,21 +526,21 @@ class GameScreen(Canvas):
 
     def activate_lasers(self):
         self.paddle.activate_lasers()
-        self.update_paddle_image()
+        self.game_images.update_paddle_image(self.paddle)
         self.fire_paddle_lasers()
         self.after(LaserAttributes.TIME_LIMIT, self.deactivate_lasers)
 
     def deactivate_lasers(self):
         self.paddle.deactivate_lasers()
-        self.update_paddle_image()
+        self.game_images.update_paddle_image(self.paddle)
 
     def activate_small_paddle(self):
         self.paddle.decrease_size()
-        self.update_paddle_image()
+        self.game_images.update_paddle_image(self.paddle)
 
     def activate_big_paddle(self):
         self.paddle.increase_size()
-        self.update_paddle_image()
+        self.game_images.update_paddle_image(self.paddle)
 
     def activate_extra_life(self):
         self.scores.increase_lives()

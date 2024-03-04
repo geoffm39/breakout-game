@@ -74,6 +74,14 @@ class GameImages:
         canvas_image = self.canvas.create_image(canvas_x, canvas_y, image=image)
         game_object.set_image(canvas_image)
 
+    def move_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup]):
+        object_x, object_y = game_object.get_location()
+        self.canvas.coords(game_object.get_image(), (object_x, object_y * -1))
+
+    def update_paddle_image(self, paddle: Paddle):
+        updated_image = self.get_paddle(paddle)
+        self.canvas.itemconfig(paddle.get_image(), image=updated_image)
+
     def get_paddle(self, paddle: Paddle):
         paddle_width = PaddleAttributes.WIDTH
         paddle_pixel_length = paddle.get_length() * paddle_width
