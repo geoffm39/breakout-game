@@ -12,6 +12,7 @@ class Brick(RawTurtle):
         self.brick_length = None
         self.brick_location = None
         self.score = self.set_score()
+        self.image = None
 
         self.set_properties()
 
@@ -22,6 +23,9 @@ class Brick(RawTurtle):
         self.brick_length = BrickAttributes.WIDTH * BrickAttributes.LENGTH
         self.color(self.brick_color)
         self.hideturtle()
+
+    def set_image(self, canvas_image):
+        self.image = canvas_image
 
     def set_score(self):
         if self.is_normal():

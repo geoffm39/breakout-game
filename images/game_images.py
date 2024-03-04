@@ -1,16 +1,24 @@
 from PIL import Image, ImageTk, ImageSequence
+from tkinter import Canvas
+from turtle import RawTurtle
+from typing import Union
 import os
 
 from brick import Brick
 from paddle import Paddle
+from laser import Laser
+from ball import Ball
+from powerup import Powerup
 from constants import (
     IMAGE_DIRECTORY, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME, BrickType, PowerupType,
-    PaddleAttributes, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME
+    PaddleAttributes, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME,
+    LIVES_IMAGE_Y_COORD, LIVES_IMAGE_X_COORD
 )
 
 
 class GameImages:
-    def __init__(self):
+    def __init__(self, canvas: Canvas):
+        self.canvas = canvas
         self.photo_images = {}
         self.paddle_image = None
         self.laser_paddle_image = None
@@ -36,6 +44,35 @@ class GameImages:
         laser_paddle_image_path = os.path.join(IMAGE_DIRECTORY, PADDLE_LASERS_FILENAME)
         with Image.open(laser_paddle_image_path) as image:
             self.laser_paddle_image = image.copy()
+
+    def apply_background_image(self):
+        background = self.get_background()
+        self.canvas.create_image(0, 0, image=background)
+
+    def apply_lives_image(self):
+        lives = self.get_lives()
+        self.canvas.create_image(LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD, image=lives)
+
+    def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup], frame_index=0):
+        object_type = game_object.__class__
+        if object_type == Paddle:
+            image = self.get_paddle(game_object)
+        elif object_type == Ball:
+            if game_object.is_fireball():
+                image = self.get_fireball_frame(frame_index)
+            else:
+                image = self.get_ball_frame(frame_index)
+        elif object_type == Laser:
+            image = self.get_laser()
+        elif object_type == Powerup:
+            image = self.get_powerup()
+        else:
+            image = None
+        screen_x, screen_y = game_object.get_location()
+        canvas_x = screen_x
+        canvas_y = screen_y * -1
+        canvas_image = self.canvas.create_image(canvas_x, canvas_y, image=image)
+        game_object.set_image(canvas_image)
 
     def get_paddle(self, paddle: Paddle):
         paddle_width = PaddleAttributes.WIDTH

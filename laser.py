@@ -8,6 +8,7 @@ class Laser(RawTurtle):
         super().__init__(canvas, **kwargs)
 
         self.location = location
+        self.image = None
 
         self.set_default_laser()
 
@@ -18,6 +19,9 @@ class Laser(RawTurtle):
         self.setheading(NORTH)
         self.setposition(self.location)
         self.hideturtle()
+
+    def set_image(self, canvas_image):
+        self.image = canvas_image
 
     def move(self):
         self.forward(LaserAttributes.SPEED)

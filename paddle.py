@@ -9,6 +9,7 @@ class Paddle(RawTurtle):
 
         self.paddle_length = PaddleAttributes.DEFAULT_LENGTH
         self.lasers = False
+        self.image = None
 
         self.set_default_paddle()
 
@@ -28,6 +29,9 @@ class Paddle(RawTurtle):
         self.shapesize(stretch_len=self.paddle_length)
         self.setposition(PaddleAttributes.START_POSITION)
         self.hideturtle()
+
+    def set_image(self, canvas_image):
+        self.image = canvas_image
 
     def get_x_coordinates(self, x_coord=None):
         if x_coord:

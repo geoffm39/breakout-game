@@ -25,9 +25,9 @@ class GameScreen(Canvas):
         self.screen = TurtleScreen(self)
         self.configure_screen()
 
-        self.game_images = GameImages()
-        self.apply_background_image()
-        self.apply_lives_image()
+        self.game_images = GameImages(self)
+        self.game_images.apply_background_image()
+        self.game_images.apply_lives_image()
 
         self.paddle = Paddle(self.screen)
         self.paddle_canvas_image = None
@@ -53,14 +53,6 @@ class GameScreen(Canvas):
         self.bind('<Motion>', self.track_player_movement)
         self.bind('<Enter>', self.hide_mouse_cursor)
         self.bind('<Leave>', self.show_mouse_cursor)
-
-    def apply_background_image(self):
-        background = self.game_images.get_background()
-        self.create_image(0, 0, image=background)
-
-    def apply_lives_image(self):
-        lives = self.game_images.get_lives()
-        self.create_image(LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD, image=lives)
 
     def set_paddle_image(self):
         image = self.game_images.get_paddle(self.paddle)

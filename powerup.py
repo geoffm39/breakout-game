@@ -9,6 +9,7 @@ class Powerup(RawTurtle):
 
         self.type = powerup_type
         self.location = location
+        self.image = None
 
         self.set_default_powerup()
 
@@ -19,6 +20,9 @@ class Powerup(RawTurtle):
         self.setheading(SOUTH)
         self.setposition(self.location)
         self.hideturtle()
+
+    def set_image(self, canvas_image):
+        self.image = canvas_image
 
     def move(self):
         self.forward(PowerupAttributes.SPEED)
