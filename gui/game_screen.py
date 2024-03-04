@@ -423,10 +423,6 @@ class GameScreen(Canvas):
         self.powerups.remove(powerup)
         del powerup
 
-    def move_powerup_image(self, powerup: Powerup):
-        powerup_index = self.powerups.index(powerup)
-        self.move(self.powerup_images[powerup_index], 0, PowerupAttributes.SPEED)
-
     def powerup_hit_paddle(self, powerup: Powerup):
         powerup_x = powerup.xcor()
         powerup_bottom_y = powerup.ycor() - PowerupAttributes.WIDTH / 2
