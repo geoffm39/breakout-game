@@ -33,7 +33,6 @@ class GameScreen(Canvas):
         self.levels = Levels()
         self.scores = Scores(self.screen)
         self.bricks = []
-        self.brick_images = []
         self.balls = []
         self.ball_animations = []
         self.powerups = []
@@ -194,19 +193,11 @@ class GameScreen(Canvas):
                     new_brick = Brick(self.screen, item)
                     new_brick.set_location(x_location, y_location)
                     self.bricks.append(new_brick)
-                    self.add_brick_image(new_brick)
+                    self.game_images.create_object_image(new_brick)
                     x_location += new_brick.get_length()
                     x_location += BrickAttributes.SPACING
             y_location -= BrickAttributes.WIDTH
             y_location -= BrickAttributes.SPACING
-
-    def add_brick_image(self, brick: Brick):
-        image = self.game_images.get_brick(brick)
-        screen_x, screen_y = brick.get_location()
-        canvas_x = screen_x
-        canvas_y = screen_y * -1
-        canvas_image = self.create_image(canvas_x, canvas_y, image=image)
-        self.brick_images.append(canvas_image)
 
     @staticmethod
     def is_spacing(position):
@@ -407,7 +398,7 @@ class GameScreen(Canvas):
         brick.hideturtle()
         self.check_powerup_drop(brick)
         brick_index = self.bricks.index(brick)
-        self.delete(self.brick_images[brick_index])
+        self.game_images.delete_object_image(brick)
         self.brick_images.pop(brick_index)
         self.bricks.remove(brick)
         del brick
