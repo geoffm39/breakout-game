@@ -5,7 +5,7 @@ from brick import Brick
 from paddle import Paddle
 from constants import (
     IMAGE_DIRECTORY, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME, BrickType, PowerupType,
-    PADDLE_WIDTH, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME
+    PaddleAttributes, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME
 )
 
 
@@ -38,12 +38,13 @@ class GameImages:
             self.laser_paddle_image = image.copy()
 
     def get_paddle(self, paddle: Paddle):
-        paddle_pixel_length = paddle.get_length() * PADDLE_WIDTH
+        paddle_width = PaddleAttributes.WIDTH
+        paddle_pixel_length = paddle.get_length() * paddle_width
         if paddle.is_laser_paddle():
             image = self.laser_paddle_image.copy()
         else:
             image = self.paddle_image.copy()
-        image = image.resize((paddle_pixel_length, PADDLE_WIDTH))
+        image = image.resize((paddle_pixel_length, paddle_width))
         self.photo_images[PADDLE_FILENAME] = ImageTk.PhotoImage(image)
         return self.photo_images[PADDLE_FILENAME]
 

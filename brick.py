@@ -1,9 +1,6 @@
 from turtle import RawTurtle
 
-from constants import (
-    TYPE, BRICK_COLOR, BRICK_SHAPE,
-    BRICK_WIDTH, BRICK_LENGTH, BrickType, NORMAL_BRICK_SCORE, BROKEN_BRICK_SCORE, STRONG_BRICK_SCORE
-)
+from constants import TYPE, BRICK_COLOR, BrickAttributes, BrickType
 
 
 class Brick(RawTurtle):
@@ -20,19 +17,19 @@ class Brick(RawTurtle):
 
     def set_properties(self):
         self.penup()
-        self.shape(BRICK_SHAPE)
-        self.shapesize(stretch_len=BRICK_LENGTH)
-        self.brick_length = BRICK_WIDTH * BRICK_LENGTH
+        self.shape(BrickAttributes.SHAPE)
+        self.shapesize(stretch_len=BrickAttributes.LENGTH)
+        self.brick_length = BrickAttributes.WIDTH * BrickAttributes.LENGTH
         self.color(self.brick_color)
         self.hideturtle()
 
     def set_score(self):
         if self.is_normal():
-            return NORMAL_BRICK_SCORE
+            return BrickAttributes.NORMAL_SCORE
         elif self.is_broken():
-            return BROKEN_BRICK_SCORE
+            return BrickAttributes.BROKEN_SCORE
         elif self.is_strong():
-            return STRONG_BRICK_SCORE
+            return BrickAttributes.STRONG_SCORE
         else:
             return 0
 
@@ -41,7 +38,7 @@ class Brick(RawTurtle):
 
     def set_location(self, brick_left_x, brick_top_y):
         brick_x = brick_left_x + self.brick_length / 2
-        brick_y = brick_top_y - BRICK_WIDTH / 2
+        brick_y = brick_top_y - BrickAttributes.WIDTH / 2
         self.brick_location = (brick_x, brick_y)
         self.setposition(self.brick_location)
 
@@ -58,8 +55,8 @@ class Brick(RawTurtle):
         brick_x, brick_y = self.brick_location
         brick_left_x = brick_x - self.brick_length / 2
         brick_right_x = brick_x + self.brick_length / 2
-        brick_top_y = brick_y + BRICK_WIDTH / 2
-        brick_bottom_y = brick_y - BRICK_WIDTH / 2
+        brick_top_y = brick_y + BrickAttributes.WIDTH / 2
+        brick_bottom_y = brick_y - BrickAttributes.WIDTH / 2
         return brick_left_x, brick_top_y, brick_right_x, brick_bottom_y
 
     def get_type(self):

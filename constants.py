@@ -25,38 +25,39 @@ LIVES_IMAGE_X_COORD = SCREEN_RIGHT_EDGE - 105
 LIVES_IMAGE_Y_COORD = (SCREEN_TOP_EDGE + 26) * -1
 SCORE_POSITION = (0, SCREEN_HEIGHT / 2 - 50)
 HIGHSCORE_POSITION = (SCREEN_LEFT_EDGE + 50, SCREEN_HEIGHT / 2 - 50)
+GAME_FONT = ('Courier', 32, 'bold')
+
 STARTING_LIVES = 3
 MAX_LIVES = 5
-GAME_FONT = ('Courier', 32, 'bold')
-NORMAL_BRICK_SCORE = 10
-BROKEN_BRICK_SCORE = 30
-STRONG_BRICK_SCORE = 50
-
-PADDLE_WIDTH = 20
-DEFAULT_PADDLE_LENGTH = 5
-MIN_PADDLE_ANGLE = 15
-MAX_PADDLE_ANGLE = 165
-PADDLE_COLOR = 'yellow'
-PADDLE_LASER_COLOR = 'red'
-PADDLE_SHAPE = 'square'
-PADDLE_START_POSITION = (0, SCREEN_BOTTOM_EDGE + PADDLE_WIDTH)
-
-BALL_ANIMATION_SPEED = 50
-DEFAULT_BALL_SPEED = 1
-BALL_SIZE = 20
-BALL_RADIUS = BALL_SIZE / 2
-BALL_COLOR = 'white'
-BALL_SHAPE = 'circle'
-BALL_START_POSITION = (0, SCREEN_BOTTOM_EDGE + PADDLE_WIDTH + BALL_SIZE)
 
 SPACING = 'spacing'
 SPACE_SIZE = 'space_size'
-
 TYPE = 'type'
-NORMAL = 'normal'
-STRONG = 'strong'
-BROKEN = 'broken'
-BARRIER = 'barrier'
+BRICK_COLOR = 'brick_color'
+VERTICAL_SURFACE = 'vertical'
+HORIZONTAL_SURFACE = 'horizontal'
+
+EAST = 0
+NORTH = 90
+WEST = 180
+SOUTH = 270
+COMPLETE_ANGLE = 360
+
+
+class Color(Enum):
+    BLUE = 'blue'
+    RED = 'red'
+    YELLOW = 'yellow'
+    ORANGE = 'orange'
+    GREEN = 'green'
+    PURPLE = 'purple'
+    WHITE = 'white'
+
+
+class Shape(Enum):
+    SQUARE = 'square'
+    CIRCLE = 'circle'
+    ARROW = 'arrow'
 
 
 class BrickType(Enum):
@@ -64,52 +65,6 @@ class BrickType(Enum):
     STRONG = 'strong'
     BROKEN = 'broken'
     BARRIER = 'barrier'
-
-
-class BrickColor(Enum):
-    BLUE = 'blue'
-    RED = 'red'
-    YELLOW = 'yellow'
-    ORANGE = 'orange'
-    GREEN = 'green'
-    PURPLE = 'purple'
-
-
-BRICK_COLOR = 'brick_color'
-BLUE = 'blue'
-RED = 'red'
-YELLOW = 'yellow'
-ORANGE = 'orange'
-GREEN = 'green'
-PURPLE = 'purple'
-
-BRICK_SHAPE = 'square'
-BRICK_WIDTH = 20
-BRICK_LENGTH = 3
-
-BRICK_SPACING = 5
-
-VERTICAL_SURFACE = 'vertical'
-HORIZONTAL_SURFACE = 'horizontal'
-EAST = 0
-NORTH = 90
-WEST = 180
-SOUTH = 270
-COMPLETE_ANGLE = 360
-
-POWERUP_SHAPE = 'arrow'
-POWERUP_COLOR = 'white'
-POWERUP_SPEED = 1.5
-POWERUP_WIDTH = 20
-POWERUP_IMAGE_TIME_LIMIT = 750
-POWERUP_IMAGE_SPEED = -1
-
-LASER_SHAPE = 'arrow'
-LASER_COLOR = 'white'
-LASER_SPEED = 1.5
-LASER_WIDTH = 20
-LASER_TIME_LIMIT = 20000
-LASER_FREQUENCY = 2000
 
 
 class PowerupType(Enum):
@@ -121,3 +76,52 @@ class PowerupType(Enum):
     SMALL_PADDLE = 'small_paddle'
     BIG_PADDLE = 'big_paddle'
     EXTRA_LIFE = 'extra_life'
+
+
+class BrickAttributes:
+    SHAPE = Shape.SQUARE.value
+    WIDTH = 20
+    LENGTH = 3
+    SPACING = 5
+    NORMAL_SCORE = 10
+    BROKEN_SCORE = 30
+    STRONG_SCORE = 50
+
+
+class PaddleAttributes:
+    WIDTH = 20
+    DEFAULT_LENGTH = 5
+    MIN_ANGLE = 15
+    MAX_ANGLE = 165
+    COLOR = Color.YELLOW.value
+    LASER_PADDLE_COLOR = Color.RED.value
+    SHAPE = Shape.SQUARE.value
+    START_POSITION = (0, SCREEN_BOTTOM_EDGE + WIDTH)
+
+
+class BallAttributes:
+    ANIMATION_SPEED = 50
+    DEFAULT_SPEED = 1
+    SIZE = 20
+    RADIUS = SIZE / 2
+    COLOR = Color.WHITE.value
+    SHAPE = Shape.CIRCLE.value
+    START_POSITION = (0, SCREEN_BOTTOM_EDGE + PaddleAttributes.WIDTH + SIZE)
+
+
+class PowerupAttributes:
+    SHAPE = Shape.ARROW.value
+    COLOR = Color.YELLOW.value
+    SPEED = 1.5
+    WIDTH = 20
+    IMAGE_TIME_LIMIT = 750
+    IMAGE_SPEED = -1
+
+
+class LaserAttributes:
+    SHAPE = Shape.ARROW.value
+    COLOR = Color.ORANGE.value
+    SPEED = 1.5
+    WIDTH = 20
+    TIME_LIMIT = 20000
+    FREQUENCY = 2000

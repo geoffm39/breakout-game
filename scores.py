@@ -1,7 +1,7 @@
 from turtle import RawTurtle
 
 from constants import (
-    HIGHSCORE_FILENAME, YELLOW, SCORE_POSITION, LIVES_POSITION, HIGHSCORE_POSITION, STARTING_LIVES, MAX_LIVES, GAME_FONT
+    HIGHSCORE_FILENAME, Color, SCORE_POSITION, LIVES_POSITION, HIGHSCORE_POSITION, STARTING_LIVES, MAX_LIVES, GAME_FONT
 )
 
 
@@ -16,7 +16,7 @@ class Scores(RawTurtle):
         self.set_properties()
 
     def set_properties(self):
-        self.color(YELLOW)
+        self.color(Color.YELLOW.value)
         self.penup()
         self.hideturtle()
 

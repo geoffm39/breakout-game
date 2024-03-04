@@ -1,8 +1,6 @@
 from turtle import RawTurtle
 
-from constants import (
-   PowerupType, POWERUP_SHAPE, POWERUP_COLOR, POWERUP_SPEED, SOUTH
-)
+from constants import PowerupType, SOUTH, PowerupAttributes
 
 
 class Powerup(RawTurtle):
@@ -16,14 +14,14 @@ class Powerup(RawTurtle):
 
     def set_default_powerup(self):
         self.penup()
-        self.shape(POWERUP_SHAPE)
-        self.color(POWERUP_COLOR)
+        self.shape(PowerupAttributes.SHAPE)
+        self.color(PowerupAttributes.COLOR)
         self.setheading(SOUTH)
         self.setposition(self.location)
         self.hideturtle()
 
     def move(self):
-        self.forward(POWERUP_SPEED)
+        self.forward(PowerupAttributes.SPEED)
 
     def remove(self):
         self.hideturtle()

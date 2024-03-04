@@ -2,8 +2,8 @@ from turtle import RawTurtle
 from random import randint
 
 from constants import (
-    BALL_START_POSITION, VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_COLOR, BALL_SHAPE, BALL_RADIUS,
-    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, MIN_PADDLE_ANGLE, MAX_PADDLE_ANGLE, DEFAULT_BALL_SPEED, RED
+    BallAttributes, VERTICAL_SURFACE, HORIZONTAL_SURFACE,
+    NORTH, SOUTH, EAST, WEST, COMPLETE_ANGLE, PaddleAttributes, Color
 )
 
 
@@ -11,7 +11,7 @@ class Ball(RawTurtle):
     def __init__(self, canvas, **kwargs):
         super().__init__(canvas, **kwargs)
 
-        self.move_speed = DEFAULT_BALL_SPEED
+        self.move_speed = BallAttributes.DEFAULT_SPEED
         self.fireball = False
         self.latest_barrier_hit = None
 
@@ -19,9 +19,9 @@ class Ball(RawTurtle):
 
     def set_default_ball(self):
         self.penup()
-        self.color(BALL_COLOR)
-        self.shape(BALL_SHAPE)
-        self.setposition(BALL_START_POSITION)
+        self.color(BallAttributes.COLOR)
+        self.shape(BallAttributes.SHAPE)
+        self.setposition(BallAttributes.START_POSITION)
         self.set_random_starting_direction()
         self.hideturtle()
 
@@ -36,7 +36,8 @@ class Ball(RawTurtle):
 
     def get_bbox(self):
         ball_x, ball_y = self.xcor(), self.ycor()
-        return ball_x - BALL_RADIUS, ball_y + BALL_RADIUS, ball_x + BALL_RADIUS, ball_y - BALL_RADIUS
+        ball_radius = BallAttributes.RADIUS
+        return ball_x - ball_radius, ball_y + ball_radius, ball_x + ball_radius, ball_y - ball_radius
 
     def get_location(self):
         ball_x, ball_y = self.xcor(), self.ycor()
@@ -76,7 +77,7 @@ class Ball(RawTurtle):
 
     @staticmethod
     def clamp_angle_to_reflection_range(angle):
-        return max(min(angle, MAX_PADDLE_ANGLE), MIN_PADDLE_ANGLE)
+        return max(min(angle, PaddleAttributes.MAX_ANGLE), PaddleAttributes.MIN_ANGLE)
 
     @staticmethod
     def is_moving_vertically(direction):
@@ -167,11 +168,11 @@ class Ball(RawTurtle):
         self.move_speed = speed
 
     def reset_speed(self):
-        self.move_speed = DEFAULT_BALL_SPEED
+        self.move_speed = BallAttributes.DEFAULT_SPEED
 
     def activate_fireball(self):
         self.fireball = True
-        self.color(RED)
+        self.color(Color.RED.value)
 
     def is_fireball(self):
         return self.fireball

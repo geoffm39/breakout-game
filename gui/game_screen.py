@@ -11,11 +11,9 @@ from scores import Scores
 from levels import Levels
 from images.game_images import GameImages
 from constants import (
-    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BALL_RADIUS, BRICK_SPACING, TYPE, SPACING, SPACE_SIZE, BRICK_WIDTH,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType,
-    POWERUP_WIDTH, POWERUP_SPEED, LASER_WIDTH, LASER_SPEED, LASER_TIME_LIMIT, LASER_FREQUENCY, SCREEN_HEIGHT,
-    POWERUP_IMAGE_TIME_LIMIT, POWERUP_IMAGE_SPEED, BALL_ANIMATION_SPEED,
-    BrickType, LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD
+    VERTICAL_SURFACE, HORIZONTAL_SURFACE, BallAttributes, TYPE, SPACING, SPACE_SIZE, BrickAttributes, PowerupAttributes,
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType, LaserAttributes,
+    SCREEN_HEIGHT, BrickType, LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD
 )
 
 
@@ -45,7 +43,7 @@ class GameScreen(Canvas):
         self.lasers = []
         self.laser_images = []
 
-        self.current_level = 4
+        self.current_level = 1
 
         self.apply_mouse_controls()
 
@@ -86,9 +84,10 @@ class GameScreen(Canvas):
 
     def fire_paddle_lasers(self):
         paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
-        laser_y = paddle_y1 + LASER_WIDTH / 2
-        left_laser_x = paddle_x1 + LASER_WIDTH / 2
-        right_laser_x = paddle_x2 - LASER_WIDTH / 2
+        laser_width = LaserAttributes.WIDTH
+        laser_y = paddle_y1 + laser_width / 2
+        left_laser_x = paddle_x1 + laser_width / 2
+        right_laser_x = paddle_x2 - laser_width / 2
         left_laser = Laser(self.screen, (left_laser_x, laser_y))
         self.lasers.append(left_laser)
         self.add_laser_image(left_laser)
@@ -97,7 +96,7 @@ class GameScreen(Canvas):
         self.add_laser_image(right_laser)
         if not self.paddle.is_laser_paddle():
             return
-        self.after(LASER_FREQUENCY, self.fire_paddle_lasers)
+        self.after(LaserAttributes.FREQUENCY, self.fire_paddle_lasers)
 
     def add_laser_image(self, laser: Laser):
         image = self.game_images.get_laser()
@@ -117,7 +116,7 @@ class GameScreen(Canvas):
 
     def move_laser_image(self, laser: Laser):
         laser_index = self.lasers.index(laser)
-        self.move(self.laser_images[laser_index], 0, LASER_SPEED * -1)
+        self.move(self.laser_images[laser_index], 0, LaserAttributes.SPEED * -1)
 
     def check_for_laser_collision(self, laser: Laser):
         self.check_laser_for_brick_collision(laser)
@@ -135,17 +134,17 @@ class GameScreen(Canvas):
 
     @staticmethod
     def laser_hit_brick(laser_bbox, brick_bbox):
-        laser_x = laser_bbox[0] + LASER_WIDTH / 2
+        laser_x = laser_bbox[0] + LaserAttributes.WIDTH / 2
         laser_y1 = laser_bbox[1]
         brick_x1, _, brick_x2, brick_y2 = brick_bbox
-        if (brick_x1 - BRICK_SPACING / 2 <= laser_x <= brick_x2 + BRICK_SPACING / 2 and
-                brick_y2 <= laser_y1 <= brick_y2 + LASER_SPEED):
+        if (brick_x1 - BrickAttributes.SPACING / 2 <= laser_x <= brick_x2 + BrickAttributes.SPACING / 2 and
+                brick_y2 <= laser_y1 <= brick_y2 + LaserAttributes.SPEED):
             return True
         return False
 
     @staticmethod
     def laser_hit_top_wall(laser: Laser):
-        return laser.ycor() >= SCREEN_TOP_EDGE - LASER_WIDTH / 2
+        return laser.ycor() >= SCREEN_TOP_EDGE - LaserAttributes.WIDTH / 2
 
     def track_player_movement(self, event):
         x = event.x
@@ -206,7 +205,7 @@ class GameScreen(Canvas):
             else:
                 frame = self.game_images.get_ball_frame(frame_index)
             self.itemconfig(self.ball_animations[ball_index], image=frame)
-            self.after(BALL_ANIMATION_SPEED, self.cycle_ball_animation_frames, ball, frame_index)
+            self.after(BallAttributes.ANIMATION_SPEED, self.cycle_ball_animation_frames, ball, frame_index)
 
     def move_ball_animation(self, ball: Ball):
         if ball in self.balls:
@@ -223,22 +222,22 @@ class GameScreen(Canvas):
 
     def add_level_bricks(self):
         level_data = self.levels.get_level(self.current_level)
-        y_location = SCREEN_TOP_EDGE - BRICK_SPACING
+        y_location = SCREEN_TOP_EDGE - BrickAttributes.SPACING
         for row in level_data:
-            x_location = SCREEN_LEFT_EDGE + BRICK_SPACING
+            x_location = SCREEN_LEFT_EDGE + BrickAttributes.SPACING
             for item in row:
                 if self.is_spacing(item):
                     x_location += item[SPACE_SIZE]
-                    x_location += BRICK_SPACING
+                    x_location += BrickAttributes.SPACING
                 else:
                     new_brick = Brick(self.screen, item)
                     new_brick.set_location(x_location, y_location)
                     self.bricks.append(new_brick)
                     self.add_brick_image(new_brick)
                     x_location += new_brick.get_length()
-                    x_location += BRICK_SPACING
-            y_location -= BRICK_WIDTH
-            y_location -= BRICK_SPACING
+                    x_location += BrickAttributes.SPACING
+            y_location -= BrickAttributes.WIDTH
+            y_location -= BrickAttributes.SPACING
 
     def add_brick_image(self, brick: Brick):
         image = self.game_images.get_brick(brick)
@@ -314,7 +313,7 @@ class GameScreen(Canvas):
                 if ball.is_fireball():
                     ball.clear_latest_barrier_hit()
                     break
-                ball.clear_latest_barrier_hit()
+                ball.set_latest_barrier_hit(brick)
                 ball.bounce(HORIZONTAL_SURFACE)
                 break
             elif self.ball_hit_left_or_right_of_brick(ball, brick_bbox):
@@ -344,21 +343,22 @@ class GameScreen(Canvas):
 
     def ball_hit_paddle(self, ball: Ball):
         ball_x = ball.xcor()
-        ball_bottom_y = ball.ycor() - BALL_RADIUS
+        ball_bottom_y = ball.ycor() - BallAttributes.RADIUS
         paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
         return paddle_y1 >= ball_bottom_y >= paddle_y1 - ball.get_speed() and paddle_x1 <= ball_x <= paddle_x2
 
     @staticmethod
     def ball_missed(ball: Ball):
-        return ball.ycor() <= SCREEN_BOTTOM_EDGE + BALL_RADIUS
+        return ball.ycor() <= SCREEN_BOTTOM_EDGE + BallAttributes.RADIUS
 
     @staticmethod
     def ball_hit_top_wall(ball: Ball):
-        return ball.ycor() >= SCREEN_TOP_EDGE - BALL_RADIUS
+        return ball.ycor() >= SCREEN_TOP_EDGE - BallAttributes.RADIUS
 
     @staticmethod
     def ball_hit_side_wall(ball: Ball):
-        return ball.xcor() >= SCREEN_RIGHT_EDGE - BALL_RADIUS or ball.xcor() <= SCREEN_LEFT_EDGE + BALL_RADIUS
+        ball_radius = BallAttributes.RADIUS
+        return ball.xcor() >= SCREEN_RIGHT_EDGE - ball_radius or ball.xcor() <= SCREEN_LEFT_EDGE + ball_radius
 
     def no_more_balls(self):
         return len(self.balls) == 0
@@ -366,9 +366,9 @@ class GameScreen(Canvas):
     @staticmethod
     def ball_hit_top_or_bottom_of_brick(ball: Ball, brick_bbox):
         ball_x1, ball_y1, _, ball_y2 = ball.get_bbox()
-        ball_x = ball_x1 + BALL_RADIUS
+        ball_x = ball_x1 + BallAttributes.RADIUS
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
-        if brick_x1 - BRICK_SPACING / 2 <= ball_x <= brick_x2 + BRICK_SPACING / 2:
+        if brick_x1 - BrickAttributes.SPACING / 2 <= ball_x <= brick_x2 + BrickAttributes.SPACING / 2:
             if brick_y1 >= ball_y2 >= brick_y1 - ball.get_speed():
                 return True
             if brick_y2 <= ball_y1 <= brick_y2 + ball.get_speed():
@@ -378,9 +378,9 @@ class GameScreen(Canvas):
     @staticmethod
     def ball_hit_left_or_right_of_brick(ball: Ball, brick_bbox):
         ball_x1, ball_y1, ball_x2, _ = ball.get_bbox()
-        ball_y = ball_y1 - BALL_RADIUS
+        ball_y = ball_y1 - BallAttributes.RADIUS
         brick_x1, brick_y1, brick_x2, brick_y2 = brick_bbox
-        if brick_y1 + BRICK_SPACING / 2 >= ball_y >= brick_y2 - BRICK_SPACING / 2:
+        if brick_y1 + BrickAttributes.SPACING / 2 >= ball_y >= brick_y2 - BrickAttributes.SPACING / 2:
             if brick_x1 <= ball_x2 <= brick_x1 + ball.get_speed():
                 return True
             if brick_x2 >= ball_x1 >= brick_x2 - ball.get_speed():
@@ -488,17 +488,17 @@ class GameScreen(Canvas):
 
     def move_powerup_image(self, powerup: Powerup):
         powerup_index = self.powerups.index(powerup)
-        self.move(self.powerup_images[powerup_index], 0, POWERUP_SPEED)
+        self.move(self.powerup_images[powerup_index], 0, PowerupAttributes.SPEED)
 
     def powerup_hit_paddle(self, powerup: Powerup):
         powerup_x = powerup.xcor()
-        powerup_bottom_y = powerup.ycor() - POWERUP_WIDTH / 2
+        powerup_bottom_y = powerup.ycor() - PowerupAttributes.WIDTH / 2
         paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
-        return paddle_y1 >= powerup_bottom_y >= paddle_y1 - POWERUP_SPEED and paddle_x1 <= powerup_x <= paddle_x2
+        return paddle_y1 >= powerup_bottom_y >= paddle_y1 - PowerupAttributes.SPEED and paddle_x1 <= powerup_x <= paddle_x2
 
     @staticmethod
     def powerup_missed(powerup: Powerup):
-        return powerup.ycor() <= SCREEN_BOTTOM_EDGE + POWERUP_WIDTH / 2
+        return powerup.ycor() <= SCREEN_BOTTOM_EDGE + PowerupAttributes.WIDTH / 2
 
     def activate_powerup(self, powerup: Powerup):
         powerup_type = powerup.get_type()
@@ -522,11 +522,11 @@ class GameScreen(Canvas):
         canvas_y = SCREEN_HEIGHT / 2 - 50
         canvas_image = self.create_image(canvas_x, canvas_y, image=image)
         self.powerup_type_images.append(canvas_image)
-        self.after(POWERUP_IMAGE_TIME_LIMIT, lambda: self.remove_powerup_type_image(canvas_image))
+        self.after(PowerupAttributes.IMAGE_TIME_LIMIT, lambda: self.remove_powerup_type_image(canvas_image))
 
     def move_powerup_type_image(self, canvas_image):
         if canvas_image:
-            self.move(canvas_image, 0, POWERUP_IMAGE_SPEED)
+            self.move(canvas_image, 0, PowerupAttributes.IMAGE_SPEED)
 
     def remove_powerup_type_image(self, canvas_image):
         self.delete(canvas_image)
@@ -552,7 +552,7 @@ class GameScreen(Canvas):
         self.paddle.activate_lasers()
         self.update_paddle_image()
         self.fire_paddle_lasers()
-        self.after(LASER_TIME_LIMIT, self.deactivate_lasers)
+        self.after(LaserAttributes.TIME_LIMIT, self.deactivate_lasers)
 
     def deactivate_lasers(self):
         self.paddle.deactivate_lasers()

@@ -1,8 +1,6 @@
 from turtle import RawTurtle
 
-from constants import (
-    LASER_COLOR, LASER_SHAPE, LASER_SPEED, LASER_WIDTH, NORTH
-)
+from constants import NORTH, LaserAttributes
 
 
 class Laser(RawTurtle):
@@ -15,14 +13,14 @@ class Laser(RawTurtle):
 
     def set_default_laser(self):
         self.penup()
-        self.color(LASER_COLOR)
-        self.shape(LASER_SHAPE)
+        self.color(LaserAttributes.COLOR)
+        self.shape(LaserAttributes.SHAPE)
         self.setheading(NORTH)
         self.setposition(self.location)
         self.hideturtle()
 
     def move(self):
-        self.forward(LASER_SPEED)
+        self.forward(LaserAttributes.SPEED)
 
     def remove(self):
         self.hideturtle()
@@ -32,8 +30,9 @@ class Laser(RawTurtle):
 
     def get_bbox(self):
         laser_x, laser_y = self.xcor(), self.ycor()
-        laser_x1 = laser_x - LASER_WIDTH / 4
-        laser_y1 = laser_y + LASER_WIDTH / 2
-        laser_x2 = laser_x + LASER_WIDTH / 4
-        laser_y2 = laser_y - LASER_WIDTH / 2
+        laser_width = LaserAttributes.WIDTH
+        laser_x1 = laser_x - laser_width / 4
+        laser_y1 = laser_y + laser_width / 2
+        laser_x2 = laser_x + laser_width / 4
+        laser_y2 = laser_y - laser_width / 2
         return laser_x1, laser_y1, laser_x2, laser_y2

@@ -1,16 +1,13 @@
 from turtle import RawTurtle
 
-from constants import (
-    SCREEN_WIDTH, PADDLE_START_POSITION, DEFAULT_PADDLE_LENGTH, PADDLE_WIDTH,
-    SCREEN_LEFT_EDGE, SCREEN_RIGHT_EDGE, PADDLE_COLOR, PADDLE_SHAPE, PADDLE_LASER_COLOR
-)
+from constants import SCREEN_WIDTH, PaddleAttributes, SCREEN_LEFT_EDGE, SCREEN_RIGHT_EDGE
 
 
 class Paddle(RawTurtle):
     def __init__(self, canvas, **kwargs):
         super().__init__(canvas, **kwargs)
 
-        self.paddle_length = DEFAULT_PADDLE_LENGTH
+        self.paddle_length = PaddleAttributes.DEFAULT_LENGTH
         self.lasers = False
 
         self.set_default_paddle()
@@ -26,10 +23,10 @@ class Paddle(RawTurtle):
 
     def set_default_paddle(self):
         self.penup()
-        self.color(PADDLE_COLOR)
-        self.shape(PADDLE_SHAPE)
+        self.color(PaddleAttributes.COLOR)
+        self.shape(PaddleAttributes.SHAPE)
         self.shapesize(stretch_len=self.paddle_length)
-        self.setposition(PADDLE_START_POSITION)
+        self.setposition(PaddleAttributes.START_POSITION)
         self.hideturtle()
 
     def get_x_coordinates(self, x_coord=None):
@@ -37,15 +34,16 @@ class Paddle(RawTurtle):
             paddle_x_loc = x_coord
         else:
             paddle_x_loc = self.xcor()
-        paddle_pixel_length = PADDLE_WIDTH * self.paddle_length
+        paddle_pixel_length = PaddleAttributes.WIDTH * self.paddle_length
         left_x_loc = paddle_x_loc - paddle_pixel_length / 2
         right_x_loc = paddle_x_loc + paddle_pixel_length / 2
         return left_x_loc, right_x_loc
 
     def get_bbox(self):
         paddle_x, paddle_y = self.xcor(), self.ycor()
+        paddle_width = PaddleAttributes.WIDTH
         paddle_left_x, paddle_right_x = self.get_x_coordinates()
-        paddle_bbox = (paddle_left_x, paddle_y + PADDLE_WIDTH / 2, paddle_right_x, paddle_y - PADDLE_WIDTH / 2)
+        paddle_bbox = (paddle_left_x, paddle_y + paddle_width / 2, paddle_right_x, paddle_y - paddle_width / 2)
         return paddle_bbox
 
     def get_location(self) -> tuple:
@@ -58,18 +56,18 @@ class Paddle(RawTurtle):
 
     def activate_lasers(self):
         self.lasers = True
-        self.color(PADDLE_LASER_COLOR)
+        self.color(PaddleAttributes.LASER_PADDLE_COLOR)
 
     def deactivate_lasers(self):
         self.lasers = False
-        self.color(PADDLE_COLOR)
+        self.color(PaddleAttributes.COLOR)
 
     def is_laser_paddle(self):
         return self.lasers
 
     def get_modifier_angle(self, paddle_collision_x_coord):
         paddle_x1, _, paddle_x2, _ = self.get_bbox()
-        paddle_pixel_length = self.paddle_length * PADDLE_WIDTH
+        paddle_pixel_length = self.paddle_length * PaddleAttributes.WIDTH
         paddle_centre_x = paddle_x1 + paddle_pixel_length/2
         relative_position = paddle_centre_x - paddle_collision_x_coord
         normalised_position = relative_position / (paddle_pixel_length / 2)
@@ -87,5 +85,5 @@ class Paddle(RawTurtle):
         self.shapesize(stretch_len=self.paddle_length)
 
     def reset_size(self):
-        self.paddle_length = DEFAULT_PADDLE_LENGTH
+        self.paddle_length = PaddleAttributes.DEFAULT_LENGTH
         self.shapesize(stretch_len=self.paddle_length)
