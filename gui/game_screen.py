@@ -54,7 +54,7 @@ class GameScreen(Canvas):
     def reset_paddle(self):
         self.paddle.reset_size()
         self.paddle.deactivate_lasers()
-        self.game_images.update_paddle_image(self.paddle)
+        self.game_images.update_object_image(self.paddle)
 
     def fire_paddle_lasers(self):
         paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
@@ -389,17 +389,13 @@ class GameScreen(Canvas):
         return top_speed
 
     def handle_strong_brick_collision(self, brick: Brick):
-        brick_index = self.bricks.index(brick)
         brick.set_type(BrickType.BROKEN)
-        updated_image = self.game_images.get_brick(brick)
-        self.itemconfig(self.brick_images[brick_index], image=updated_image)
+        self.game_images.update_object_image(brick)
 
     def remove_brick(self, brick: Brick):
         brick.hideturtle()
         self.check_powerup_drop(brick)
-        brick_index = self.bricks.index(brick)
         self.game_images.delete_object_image(brick)
-        self.brick_images.pop(brick_index)
         self.bricks.remove(brick)
         del brick
 
@@ -502,21 +498,21 @@ class GameScreen(Canvas):
 
     def activate_lasers(self):
         self.paddle.activate_lasers()
-        self.game_images.update_paddle_image(self.paddle)
+        self.game_images.update_object_image(self.paddle)
         self.fire_paddle_lasers()
         self.after(LaserAttributes.TIME_LIMIT, self.deactivate_lasers)
 
     def deactivate_lasers(self):
         self.paddle.deactivate_lasers()
-        self.game_images.update_paddle_image(self.paddle)
+        self.game_images.update_object_image(self.paddle)
 
     def activate_small_paddle(self):
         self.paddle.decrease_size()
-        self.game_images.update_paddle_image(self.paddle)
+        self.game_images.update_object_image(self.paddle)
 
     def activate_big_paddle(self):
         self.paddle.increase_size()
-        self.game_images.update_paddle_image(self.paddle)
+        self.game_images.update_object_image(self.paddle)
 
     def activate_extra_life(self):
         self.scores.increase_lives()

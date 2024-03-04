@@ -54,6 +54,25 @@ class GameImages:
         self.canvas.create_image(LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD, image=lives)
 
     def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick], frame_index=0):
+        image = self.get_object_image(game_object)
+        screen_x, screen_y = game_object.get_location()
+        canvas_x = screen_x
+        canvas_y = screen_y * -1
+        canvas_image = self.canvas.create_image(canvas_x, canvas_y, image=image)
+        game_object.set_image(canvas_image)
+
+    def move_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
+        object_x, object_y = game_object.get_location()
+        self.canvas.coords(game_object.get_image(), (object_x, object_y * -1))
+
+    def delete_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
+        self.canvas.delete(game_object.get_image())
+
+    def update_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
+        updated_image = self.get_object_image(game_object)
+        self.canvas.itemconfig(game_object.get_image(), image=updated_image)
+
+    def get_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick], frame_index=0):
         object_type = game_object.__class__
         if object_type == Paddle:
             image = self.get_paddle(game_object)
@@ -70,26 +89,7 @@ class GameImages:
             image = self.get_brick(game_object)
         else:
             image = None
-        screen_x, screen_y = game_object.get_location()
-        canvas_x = screen_x
-        canvas_y = screen_y * -1
-        canvas_image = self.canvas.create_image(canvas_x, canvas_y, image=image)
-        game_object.set_image(canvas_image)
-
-    def move_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
-        object_x, object_y = game_object.get_location()
-        self.canvas.coords(game_object.get_image(), (object_x, object_y * -1))
-
-    def delete_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
-        self.canvas.delete(game_object.get_image())
-
-    def update_paddle_image(self, paddle: Paddle):
-        updated_image = self.get_paddle(paddle)
-        self.canvas.itemconfig(paddle.get_image(), image=updated_image)
-
-    def update_brick_image(self, brick: Brick):
-        updated_image = self.get_brick(brick)
-        self.canvas.itemconfig(brick.get_image(), image=updated_image)
+        return image
 
     def get_paddle(self, paddle: Paddle):
         paddle_width = PaddleAttributes.WIDTH
