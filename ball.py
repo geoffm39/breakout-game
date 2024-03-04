@@ -13,6 +13,7 @@ class Ball(RawTurtle):
 
         self.move_speed = DEFAULT_BALL_SPEED
         self.fireball = False
+        self.latest_barrier_hit = None
 
         self.set_default_ball()
 
@@ -63,6 +64,15 @@ class Ball(RawTurtle):
             modified_paddle_angle = reflection_angle + paddle_angle_modifier
             reflection_angle = self.clamp_angle_to_reflection_range(modified_paddle_angle)
         self.set_direction(reflection_angle)
+
+    def set_latest_barrier_hit(self, brick):
+        self.latest_barrier_hit = brick
+
+    def get_latest_barrier_hit(self):
+        return self.latest_barrier_hit
+
+    def clear_latest_barrier_hit(self):
+        self.latest_barrier_hit = None
 
     @staticmethod
     def clamp_angle_to_reflection_range(angle):

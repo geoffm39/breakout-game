@@ -45,7 +45,7 @@ class GameScreen(Canvas):
         self.lasers = []
         self.laser_images = []
 
-        self.current_level = 1
+        self.current_level = 4
 
         self.apply_mouse_controls()
 
@@ -287,8 +287,10 @@ class GameScreen(Canvas):
     def check_for_wall_collision(self, ball: Ball):
         if self.ball_hit_side_wall(ball):
             ball.bounce(VERTICAL_SURFACE)
+            ball.clear_latest_barrier_hit()
         if self.ball_hit_top_wall(ball):
             ball.bounce(HORIZONTAL_SURFACE)
+            ball.clear_latest_barrier_hit()
 
     def check_for_paddle_collision(self, ball: Ball):
         ball_direction = ball.get_direction()
@@ -296,28 +298,42 @@ class GameScreen(Canvas):
             if self.ball_hit_paddle(ball):
                 paddle_angle_modifier = self.paddle.get_modifier_angle(ball.xcor())
                 ball.bounce(HORIZONTAL_SURFACE, paddle_angle_modifier)
+                ball.clear_latest_barrier_hit()
 
     def check_for_brick_collision(self, ball: Ball):
-        for brick in self.bricks.copy():
+        for brick in self.bricks:
             brick_bbox = brick.get_bbox()
             if self.ball_hit_top_or_bottom_of_brick(ball, brick_bbox):
                 self.handle_brick_collision(brick)
                 if brick.is_barrier():
+                    if self.ball_stuck_inside_brick(ball, brick):
+                        break
+                    ball.set_latest_barrier_hit(brick)
                     ball.bounce(HORIZONTAL_SURFACE)
                     break
                 if ball.is_fireball():
+                    ball.clear_latest_barrier_hit()
                     break
+                ball.clear_latest_barrier_hit()
                 ball.bounce(HORIZONTAL_SURFACE)
                 break
             elif self.ball_hit_left_or_right_of_brick(ball, brick_bbox):
                 self.handle_brick_collision(brick)
                 if brick.is_barrier():
+                    if self.ball_stuck_inside_brick(ball, brick):
+                        break
+                    ball.set_latest_barrier_hit(brick)
                     ball.bounce(VERTICAL_SURFACE)
                     break
                 if ball.is_fireball():
                     break
                 ball.bounce(VERTICAL_SURFACE)
                 break
+
+    @staticmethod
+    def ball_stuck_inside_brick(ball: Ball, brick: Brick):
+        latest_brick = ball.get_latest_barrier_hit()
+        return latest_brick == brick
 
     def check_for_powerup_collision(self, powerup: Powerup):
         if self.powerup_hit_paddle(powerup):
