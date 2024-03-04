@@ -13,7 +13,7 @@ from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BallAttributes, TYPE, SPACING, SPACE_SIZE, BrickAttributes, PowerupAttributes,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType, LaserAttributes,
-    SCREEN_HEIGHT, BrickType, LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD
+    SCREEN_HEIGHT, BrickType
 )
 
 
@@ -40,7 +40,6 @@ class GameScreen(Canvas):
         self.powerup_images = []
         self.powerup_type_images = []
         self.lasers = []
-        self.laser_images = []
 
         self.current_level = 1
 
@@ -66,33 +65,19 @@ class GameScreen(Canvas):
         right_laser_x = paddle_x2 - laser_width / 2
         left_laser = Laser(self.screen, (left_laser_x, laser_y))
         self.lasers.append(left_laser)
-        self.add_laser_image(left_laser)
+        self.game_images.create_object_image(left_laser)
         right_laser = Laser(self.screen, (right_laser_x, laser_y))
         self.lasers.append(right_laser)
-        self.add_laser_image(right_laser)
+        self.game_images.create_object_image(right_laser)
         if not self.paddle.is_laser_paddle():
             return
         self.after(LaserAttributes.FREQUENCY, self.fire_paddle_lasers)
 
-    def add_laser_image(self, laser: Laser):
-        image = self.game_images.get_laser()
-        screen_x, screen_y = laser.get_location()
-        canvas_x = screen_x
-        canvas_y = screen_y * -1
-        canvas_image = self.create_image(canvas_x, canvas_y, image=image)
-        self.laser_images.append(canvas_image)
-
     def remove_laser(self, laser: Laser):
         if laser in self.lasers:
-            laser_index = self.lasers.index(laser)
-            self.delete(self.laser_images[laser_index])
-            self.laser_images.pop(laser_index)
+            self.game_images.delete_object_image(laser)
             self.lasers.remove(laser)
             del laser
-
-    def move_laser_image(self, laser: Laser):
-        laser_index = self.lasers.index(laser)
-        self.move(self.laser_images[laser_index], 0, LaserAttributes.SPEED * -1)
 
     def check_for_laser_collision(self, laser: Laser):
         self.check_laser_for_brick_collision(laser)
@@ -250,7 +235,7 @@ class GameScreen(Canvas):
             self.move_powerup_type_image(powerup_type_image)
         for laser in self.lasers.copy():
             laser.move()
-            self.move_laser_image(laser)
+            self.game_images.move_object_image(laser)
             self.check_for_laser_collision(laser)
         self.after(3, self.update_game_screen)
 

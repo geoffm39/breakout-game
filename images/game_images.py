@@ -78,6 +78,9 @@ class GameImages:
         object_x, object_y = game_object.get_location()
         self.canvas.coords(game_object.get_image(), (object_x, object_y * -1))
 
+    def delete_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup]):
+        self.canvas.delete(game_object.get_image())
+
     def update_paddle_image(self, paddle: Paddle):
         updated_image = self.get_paddle(paddle)
         self.canvas.itemconfig(paddle.get_image(), image=updated_image)

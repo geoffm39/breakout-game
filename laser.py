@@ -33,7 +33,7 @@ class Laser(RawTurtle):
         self.hideturtle()
 
     def get_location(self):
-        return self.location
+        return self.xcor(), self.ycor()
 
     def get_bbox(self):
         laser_x, laser_y = self.xcor(), self.ycor()
