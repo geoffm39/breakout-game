@@ -27,6 +27,9 @@ class Brick(RawTurtle):
     def set_image(self, canvas_image):
         self.image = canvas_image
 
+    def get_image(self):
+        return self.image
+
     def set_score(self):
         if self.is_normal():
             return BrickAttributes.NORMAL_SCORE

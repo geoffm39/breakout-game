@@ -23,6 +23,9 @@ class Laser(RawTurtle):
     def set_image(self, canvas_image):
         self.image = canvas_image
 
+    def get_image(self):
+        return self.image
+
     def move(self):
         self.forward(LaserAttributes.SPEED)
 

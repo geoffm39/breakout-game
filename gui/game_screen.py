@@ -47,7 +47,7 @@ class GameScreen(Canvas):
 
         self.apply_mouse_controls()
 
-        self.set_paddle_image()
+        self.game_images.create_object_image(self.paddle)
 
     def apply_mouse_controls(self):
         self.bind('<Motion>', self.track_player_movement)

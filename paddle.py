@@ -33,6 +33,9 @@ class Paddle(RawTurtle):
     def set_image(self, canvas_image):
         self.image = canvas_image
 
+    def get_image(self):
+        return self.image
+
     def get_x_coordinates(self, x_coord=None):
         if x_coord:
             paddle_x_loc = x_coord

@@ -29,6 +29,9 @@ class Ball(RawTurtle):
     def set_image(self, canvas_image):
         self.image = canvas_image
 
+    def get_image(self):
+        return self.image
+
     def set_random_starting_direction(self):
         min_angle = EAST + 20
         max_angle = WEST - 20
