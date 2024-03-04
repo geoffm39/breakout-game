@@ -8,17 +8,16 @@ class Powerup(RawTurtle):
         super().__init__(canvas, **kwargs)
 
         self.type = powerup_type
-        self.location = location
         self.image = None
 
-        self.set_default_powerup()
+        self.set_default_powerup(location)
 
-    def set_default_powerup(self):
+    def set_default_powerup(self, location):
         self.penup()
         self.shape(PowerupAttributes.SHAPE)
         self.color(PowerupAttributes.COLOR)
         self.setheading(SOUTH)
-        self.setposition(self.location)
+        self.setposition(location)
         self.hideturtle()
 
     def set_image(self, canvas_image):
@@ -37,4 +36,4 @@ class Powerup(RawTurtle):
         return self.type
 
     def get_location(self):
-        return self.location
+        return self.xcor(), self.ycor()

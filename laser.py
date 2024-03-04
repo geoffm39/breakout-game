@@ -10,14 +10,14 @@ class Laser(RawTurtle):
         self.location = location
         self.image = None
 
-        self.set_default_laser()
+        self.set_default_laser(location)
 
-    def set_default_laser(self):
+    def set_default_laser(self, location):
         self.penup()
         self.color(LaserAttributes.COLOR)
         self.shape(LaserAttributes.SHAPE)
         self.setheading(NORTH)
-        self.setposition(self.location)
+        self.setposition(location)
         self.hideturtle()
 
     def set_image(self, canvas_image):

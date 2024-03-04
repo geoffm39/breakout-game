@@ -36,7 +36,6 @@ class GameScreen(Canvas):
         self.balls = []
         self.ball_animations = []
         self.powerups = []
-        self.powerup_images = []
         self.powerup_type_images = []
         self.lasers = []
 
@@ -220,7 +219,7 @@ class GameScreen(Canvas):
                         self.handle_life_lost()
         for powerup in self.powerups.copy():
             powerup.move()
-            self.move_powerup_image(powerup)
+            self.game_images.move_object_image(powerup)
             self.check_for_powerup_collision(powerup)
         for powerup_type_image in self.powerup_type_images:
             self.move_powerup_type_image(powerup_type_image)
@@ -417,20 +416,10 @@ class GameScreen(Canvas):
     def add_powerup(self, powerup_type, location):
         new_powerup = Powerup(self.screen, powerup_type, location)
         self.powerups.append(new_powerup)
-        self.add_powerup_image(new_powerup)
-
-    def add_powerup_image(self, powerup: Powerup):
-        image = self.game_images.get_powerup()
-        screen_x, screen_y = powerup.get_location()
-        canvas_x = screen_x
-        canvas_y = screen_y * -1
-        canvas_image = self.create_image(canvas_x, canvas_y, image=image)
-        self.powerup_images.append(canvas_image)
+        self.game_images.create_object_image(new_powerup)
 
     def remove_powerup(self, powerup: Powerup):
-        powerup_index = self.powerups.index(powerup)
-        self.delete(self.powerup_images[powerup_index])
-        self.powerup_images.pop(powerup_index)
+        self.game_images.delete_object_image(powerup)
         self.powerups.remove(powerup)
         del powerup
 
