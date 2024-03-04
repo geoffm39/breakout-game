@@ -14,7 +14,6 @@ class Scores(RawTurtle):
         self.highscore = self.load_highscore_from_file()
 
         self.set_properties()
-        self.update_scores()
 
     def set_properties(self):
         self.color(YELLOW)
