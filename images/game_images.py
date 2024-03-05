@@ -12,7 +12,7 @@ from powerup import Powerup
 from constants import (
     IMAGE_DIRECTORY, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME, BrickType, PowerupType,
     PaddleAttributes, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME,
-    LIVES_IMAGE_Y_COORD, LIVES_IMAGE_X_COORD, SCREEN_HEIGHT, PowerupAttributes
+    LIVES_IMAGE_Y_COORD, LIVES_IMAGE_X_COORD, SCREEN_HEIGHT, PowerupAttributes, BallAttributes
 )
 
 
@@ -79,7 +79,14 @@ class GameImages:
 
     def cycle_ball_animation_frames(self, ball: Ball, frame_index=0):
         if ball:
-            pass
+            if ball.is_fireball():
+                frame_index = (frame_index + 1) % self.get_number_of_fireball_frames()
+                frame = self.get_fireball_frame(frame_index)
+            else:
+                frame_index = (frame_index + 1) % self.get_number_of_ball_frames()
+                frame = self.get_ball_frame(frame_index)
+            self.canvas.itemconfig(ball.get_image(), image=frame)
+            self.canvas.after(BallAttributes.ANIMATION_SPEED, self.cycle_ball_animation_frames, ball, frame_index)
 
     def get_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
         object_type = game_object.__class__
