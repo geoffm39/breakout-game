@@ -12,8 +12,7 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BallAttributes, TYPE, SPACING, SPACE_SIZE, BrickAttributes, PowerupAttributes,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType, LaserAttributes,
-    SCREEN_HEIGHT, BrickType
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType, LaserAttributes, BrickType
 )
 
 
@@ -148,19 +147,20 @@ class GameScreen(Canvas):
         canvas_y = screen_y * -1
         canvas_image = self.create_image(canvas_x, canvas_y, image=frame)
         self.ball_animations.append(canvas_image)
-        self.cycle_ball_animation_frames(ball, 0)
+        self.cycle_ball_animation_frames(ball)
 
     def set_fireball_animation(self, ball: Ball):
         ball_index = self.balls.index(ball)
         self.itemconfig(self.ball_animations[ball_index], image=self.game_images.get_fireball_frame())
 
-    def cycle_ball_animation_frames(self, ball: Ball, frame_index):
+    def cycle_ball_animation_frames(self, ball: Ball, frame_index=0):
         if ball in self.balls:
-            frame_index = (frame_index + 1) % self.game_images.get_number_of_fireball_frames()
             ball_index = self.balls.index(ball)
             if ball.is_fireball():
+                frame_index = (frame_index + 1) % self.game_images.get_number_of_fireball_frames()
                 frame = self.game_images.get_fireball_frame(frame_index)
             else:
+                frame_index = (frame_index + 1) % self.game_images.get_number_of_ball_frames()
                 frame = self.game_images.get_ball_frame(frame_index)
             self.itemconfig(self.ball_animations[ball_index], image=frame)
             self.after(BallAttributes.ANIMATION_SPEED, self.cycle_ball_animation_frames, ball, frame_index)

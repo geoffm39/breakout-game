@@ -54,7 +54,7 @@ class GameImages:
         lives = self.get_lives()
         self.canvas.create_image(LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD, image=lives)
 
-    def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick], frame_index=0):
+    def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
         image = self.get_object_image(game_object)
         screen_x, screen_y = game_object.get_location()
         canvas_x = screen_x
@@ -73,15 +73,23 @@ class GameImages:
         updated_image = self.get_object_image(game_object)
         self.canvas.itemconfig(game_object.get_image(), image=updated_image)
 
-    def get_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick], frame_index=0):
+    def add_ball_animation(self, ball: Ball):
+        self.create_object_image(ball)
+        self.cycle_ball_animation_frames(ball)
+
+    def cycle_ball_animation_frames(self, ball: Ball, frame_index=0):
+        if ball:
+            pass
+
+    def get_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
         object_type = game_object.__class__
         if object_type == Paddle:
             image = self.get_paddle(game_object)
         elif object_type == Ball:
             if game_object.is_fireball():
-                image = self.get_fireball_frame(frame_index)
+                image = self.get_fireball_frame()
             else:
-                image = self.get_ball_frame(frame_index)
+                image = self.get_ball_frame()
         elif object_type == Laser:
             image = self.get_laser()
         elif object_type == Powerup:
