@@ -36,7 +36,6 @@ class GameScreen(Canvas):
         self.balls = []
         self.ball_animations = []
         self.powerups = []
-        self.powerup_type_images = []
         self.lasers = []
 
         self.current_level = 1
@@ -221,8 +220,8 @@ class GameScreen(Canvas):
             powerup.move()
             self.game_images.move_object_image(powerup)
             self.check_for_powerup_collision(powerup)
-        for powerup_type_image in self.powerup_type_images:
-            self.move_powerup_type_image(powerup_type_image)
+        for powerup_type_image in self.game_images.get_powerup_type_images():
+            self.game_images.move_powerup_type_image(powerup_type_image)
         for laser in self.lasers.copy():
             laser.move()
             self.game_images.move_object_image(laser)
@@ -427,7 +426,8 @@ class GameScreen(Canvas):
         powerup_x = powerup.xcor()
         powerup_bottom_y = powerup.ycor() - PowerupAttributes.WIDTH / 2
         paddle_x1, paddle_y1, paddle_x2 = self.paddle.get_bbox()[:3]
-        return paddle_y1 >= powerup_bottom_y >= paddle_y1 - PowerupAttributes.SPEED and paddle_x1 <= powerup_x <= paddle_x2
+        return (paddle_y1 >= powerup_bottom_y >= paddle_y1 - PowerupAttributes.SPEED and
+                paddle_x1 <= powerup_x <= paddle_x2)
 
     @staticmethod
     def powerup_missed(powerup: Powerup):
@@ -447,23 +447,11 @@ class GameScreen(Canvas):
         }
         if powerup_type in powerup_actions:
             powerup_actions[powerup_type]()
-            self.add_powerup_type_image(powerup_type)
-
-    def add_powerup_type_image(self, powerup_type: PowerupType):
-        image = self.game_images.get_powerup_type(powerup_type)
-        canvas_x = self.paddle.xcor()
-        canvas_y = SCREEN_HEIGHT / 2 - 50
-        canvas_image = self.create_image(canvas_x, canvas_y, image=image)
-        self.powerup_type_images.append(canvas_image)
-        self.after(PowerupAttributes.IMAGE_TIME_LIMIT, lambda: self.remove_powerup_type_image(canvas_image))
+            self.game_images.add_powerup_type_image(powerup_type, self.paddle)
 
     def move_powerup_type_image(self, canvas_image):
         if canvas_image:
             self.move(canvas_image, 0, PowerupAttributes.IMAGE_SPEED)
-
-    def remove_powerup_type_image(self, canvas_image):
-        self.delete(canvas_image)
-        self.powerup_type_images.remove(canvas_image)
 
     def activate_multiball(self):
         self.add_ball()

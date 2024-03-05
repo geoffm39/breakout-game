@@ -12,7 +12,7 @@ from powerup import Powerup
 from constants import (
     IMAGE_DIRECTORY, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME, BrickType, PowerupType,
     PaddleAttributes, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME,
-    LIVES_IMAGE_Y_COORD, LIVES_IMAGE_X_COORD
+    LIVES_IMAGE_Y_COORD, LIVES_IMAGE_X_COORD, SCREEN_HEIGHT, PowerupAttributes
 )
 
 
@@ -24,6 +24,7 @@ class GameImages:
         self.laser_paddle_image = None
         self.ball_frames = []
         self.fireball_frames = []
+        self.powerup_type_images = []
 
         self.load_images()
 
@@ -90,6 +91,25 @@ class GameImages:
         else:
             image = None
         return image
+
+    def add_powerup_type_image(self, powerup_type: PowerupType, paddle: Paddle):
+        image = self.get_powerup_type(powerup_type)
+        canvas_x = paddle.xcor()
+        canvas_y = SCREEN_HEIGHT / 2 - 50
+        canvas_image = self.canvas.create_image(canvas_x, canvas_y, image=image)
+        self.powerup_type_images.append(canvas_image)
+        self.canvas.after(PowerupAttributes.IMAGE_TIME_LIMIT, lambda: self.remove_powerup_type_image(canvas_image))
+
+    def move_powerup_type_image(self, canvas_image):
+        if canvas_image:
+            self.canvas.move(canvas_image, 0, PowerupAttributes.IMAGE_SPEED)
+
+    def remove_powerup_type_image(self, canvas_image):
+        self.canvas.delete(canvas_image)
+        self.powerup_type_images.remove(canvas_image)
+
+    def get_powerup_type_images(self):
+        return self.powerup_type_images
 
     def get_paddle(self, paddle: Paddle):
         paddle_width = PaddleAttributes.WIDTH
