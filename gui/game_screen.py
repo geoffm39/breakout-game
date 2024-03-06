@@ -334,6 +334,7 @@ class GameScreen(Canvas):
 
     def handle_game_over(self):
         self.scores.check_for_highscore()
+        self.game_images.show_game_over_image()
 
     def handle_life_lost(self):
         for powerup in self.powerups.copy():

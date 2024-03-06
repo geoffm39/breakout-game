@@ -11,6 +11,7 @@ FIREBALL_FILENAME = 'fireball.gif'
 BALL_FILENAME = 'ball.gif'
 LIVES_FILENAME = 'lives.png'
 HIGHSCORE_FILENAME = 'highscore.txt'
+GAME_OVER_FILENAME = 'game-over.png'
 
 SCREEN_HEIGHT = 720
 SCREEN_WIDTH = 1080

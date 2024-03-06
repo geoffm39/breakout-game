@@ -11,7 +11,7 @@ from powerup import Powerup
 from constants import (
     IMAGE_DIRECTORY, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME, BrickType, PowerupType,
     PaddleAttributes, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME,
-    LIVES_IMAGE_Y_COORD, LIVES_IMAGE_X_COORD, SCREEN_HEIGHT, PowerupAttributes, BallAttributes
+    LIVES_IMAGE_Y_COORD, LIVES_IMAGE_X_COORD, SCREEN_HEIGHT, PowerupAttributes, BallAttributes, GAME_OVER_FILENAME
 )
 
 
@@ -52,6 +52,10 @@ class GameImages:
     def apply_lives_image(self):
         lives = self.get_lives()
         self.canvas.create_image(LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD, image=lives)
+
+    def show_game_over_image(self):
+        game_over_image = self.get_game_over()
+        self.canvas.create_image(0, 0, image=game_over_image)
 
     def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
         image = self.get_object_image(game_object)
@@ -177,6 +181,9 @@ class GameImages:
 
     def get_lives(self):
         return self.photo_images[LIVES_FILENAME]
+
+    def get_game_over(self):
+        return self.photo_images[GAME_OVER_FILENAME]
 
     def get_powerup(self):
         return self.photo_images[POWERUP_FILENAME]
