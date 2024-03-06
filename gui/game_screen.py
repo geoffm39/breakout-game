@@ -33,7 +33,6 @@ class GameScreen(Canvas):
         self.scores = Scores(self.screen)
         self.bricks = []
         self.balls = []
-        self.ball_animations = []
         self.powerups = []
         self.lasers = []
 
@@ -128,54 +127,18 @@ class GameScreen(Canvas):
     def add_ball(self):
         ball = Ball(self.screen)
         self.balls.append(ball)
-        self.add_ball_animation(ball)
+        self.game_images.add_ball_animation(ball)
 
     def add_quicker_ball(self, top_ball_speed):
         quicker_ball = Ball(self.screen)
         quicker_ball.set_speed(top_ball_speed)
         quicker_ball.increase_speed()
         self.balls.append(quicker_ball)
-        self.add_ball_animation(quicker_ball)
-
-    def add_ball_animation(self, ball: Ball):
-        if ball.is_fireball():
-            frame = self.game_images.get_fireball_frame()
-        else:
-            frame = self.game_images.get_ball_frame()
-        screen_x, screen_y = ball.get_location()
-        canvas_x = screen_x
-        canvas_y = screen_y * -1
-        canvas_image = self.create_image(canvas_x, canvas_y, image=frame)
-        self.ball_animations.append(canvas_image)
-        self.cycle_ball_animation_frames(ball)
-
-    def set_fireball_animation(self, ball: Ball):
-        ball_index = self.balls.index(ball)
-        self.itemconfig(self.ball_animations[ball_index], image=self.game_images.get_fireball_frame())
-
-    def cycle_ball_animation_frames(self, ball: Ball, frame_index=0):
-        if ball in self.balls:
-            ball_index = self.balls.index(ball)
-            if ball.is_fireball():
-                frame_index = (frame_index + 1) % self.game_images.get_number_of_fireball_frames()
-                frame = self.game_images.get_fireball_frame(frame_index)
-            else:
-                frame_index = (frame_index + 1) % self.game_images.get_number_of_ball_frames()
-                frame = self.game_images.get_ball_frame(frame_index)
-            self.itemconfig(self.ball_animations[ball_index], image=frame)
-            self.after(BallAttributes.ANIMATION_SPEED, self.cycle_ball_animation_frames, ball, frame_index)
-
-    def move_ball_animation(self, ball: Ball):
-        if ball in self.balls:
-            ball_x, ball_y = ball.get_location()
-            ball_index = self.balls.index(ball)
-            self.coords(self.ball_animations[ball_index], (ball_x, ball_y * -1))
+        self.game_images.add_ball_animation(quicker_ball)
 
     def remove_ball(self, ball: Ball):
-        ball_index = self.balls.index(ball)
-        self.delete(self.ball_animations[ball_index])
+        self.game_images.delete_object_image(ball)
         self.balls.remove(ball)
-        self.ball_animations.pop(ball_index)
         del ball
 
     def add_level_bricks(self):
@@ -205,7 +168,7 @@ class GameScreen(Canvas):
         self.screen.update()
         for ball in self.balls.copy():
             ball.move()
-            self.move_ball_animation(ball)
+            self.game_images.move_object_image(ball)
             self.check_for_ball_collision(ball)
             if self.ball_missed(ball):
                 self.remove_ball(ball)
@@ -391,7 +354,6 @@ class GameScreen(Canvas):
         self.game_images.update_object_image(brick)
 
     def remove_brick(self, brick: Brick):
-        brick.hideturtle()
         self.check_powerup_drop(brick)
         self.game_images.delete_object_image(brick)
         self.bricks.remove(brick)
@@ -459,7 +421,7 @@ class GameScreen(Canvas):
     def activate_fireball(self):
         for ball in self.balls:
             ball.activate_fireball()
-            self.set_fireball_animation(ball)
+            self.game_images.update_object_image(ball)
 
     def activate_slow_ball(self):
         for ball in self.balls:
