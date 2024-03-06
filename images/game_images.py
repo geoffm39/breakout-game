@@ -1,6 +1,5 @@
 from PIL import Image, ImageTk, ImageSequence
 from tkinter import Canvas
-from turtle import RawTurtle
 from typing import Union
 import os
 
