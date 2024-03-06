@@ -14,6 +14,7 @@ class Ball(RawTurtle):
         self.move_speed = BallAttributes.DEFAULT_SPEED
         self.fireball = False
         self.latest_barrier_hit = None
+        self.image = None
 
         self.set_default_ball()
 
@@ -24,6 +25,12 @@ class Ball(RawTurtle):
         self.setposition(BallAttributes.START_POSITION)
         self.set_random_starting_direction()
         self.hideturtle()
+
+    def set_image(self, canvas_image):
+        self.image = canvas_image
+
+    def get_image(self):
+        return self.image
 
     def set_random_starting_direction(self):
         min_angle = EAST + 20

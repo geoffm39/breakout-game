@@ -1,21 +1,30 @@
 from PIL import Image, ImageTk, ImageSequence
+from tkinter import Canvas
+from turtle import RawTurtle
+from typing import Union
 import os
 
 from brick import Brick
 from paddle import Paddle
+from laser import Laser
+from ball import Ball
+from powerup import Powerup
 from constants import (
     IMAGE_DIRECTORY, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME, BrickType, PowerupType,
-    PaddleAttributes, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME
+    PaddleAttributes, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME,
+    LIVES_IMAGE_Y_COORD, LIVES_IMAGE_X_COORD, SCREEN_HEIGHT, PowerupAttributes, BallAttributes
 )
 
 
 class GameImages:
-    def __init__(self):
+    def __init__(self, canvas: Canvas):
+        self.canvas = canvas
         self.photo_images = {}
         self.paddle_image = None
         self.laser_paddle_image = None
         self.ball_frames = []
         self.fireball_frames = []
+        self.powerup_type_images = []
 
         self.load_images()
 
@@ -36,6 +45,86 @@ class GameImages:
         laser_paddle_image_path = os.path.join(IMAGE_DIRECTORY, PADDLE_LASERS_FILENAME)
         with Image.open(laser_paddle_image_path) as image:
             self.laser_paddle_image = image.copy()
+
+    def apply_background_image(self):
+        background = self.get_background()
+        self.canvas.create_image(0, 0, image=background)
+
+    def apply_lives_image(self):
+        lives = self.get_lives()
+        self.canvas.create_image(LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD, image=lives)
+
+    def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
+        image = self.get_object_image(game_object)
+        screen_x, screen_y = game_object.get_location()
+        canvas_x = screen_x
+        canvas_y = screen_y * -1
+        canvas_image = self.canvas.create_image(canvas_x, canvas_y, image=image)
+        game_object.set_image(canvas_image)
+
+    def move_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
+        object_x, object_y = game_object.get_location()
+        self.canvas.coords(game_object.get_image(), (object_x, object_y * -1))
+
+    def delete_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
+        self.canvas.delete(game_object.get_image())
+
+    def update_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
+        updated_image = self.get_object_image(game_object)
+        self.canvas.itemconfig(game_object.get_image(), image=updated_image)
+
+    def add_ball_animation(self, ball: Ball):
+        self.create_object_image(ball)
+        self.cycle_ball_animation_frames(ball)
+
+    def cycle_ball_animation_frames(self, ball: Ball, frame_index=0):
+        if ball:
+            if ball.is_fireball():
+                frame_index = (frame_index + 1) % self.get_number_of_fireball_frames()
+                frame = self.get_fireball_frame(frame_index)
+            else:
+                frame_index = (frame_index + 1) % self.get_number_of_ball_frames()
+                frame = self.get_ball_frame(frame_index)
+            self.canvas.itemconfig(ball.get_image(), image=frame)
+            self.canvas.after(BallAttributes.ANIMATION_SPEED, self.cycle_ball_animation_frames, ball, frame_index)
+
+    def get_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
+        object_type = game_object.__class__
+        if object_type == Paddle:
+            image = self.get_paddle(game_object)
+        elif object_type == Ball:
+            if game_object.is_fireball():
+                image = self.get_fireball_frame()
+            else:
+                image = self.get_ball_frame()
+        elif object_type == Laser:
+            image = self.get_laser()
+        elif object_type == Powerup:
+            image = self.get_powerup()
+        elif object_type == Brick:
+            image = self.get_brick(game_object)
+        else:
+            image = None
+        return image
+
+    def add_powerup_type_image(self, powerup_type: PowerupType, paddle: Paddle):
+        image = self.get_powerup_type(powerup_type)
+        canvas_x = paddle.xcor()
+        canvas_y = SCREEN_HEIGHT / 2 - 50
+        canvas_image = self.canvas.create_image(canvas_x, canvas_y, image=image)
+        self.powerup_type_images.append(canvas_image)
+        self.canvas.after(PowerupAttributes.IMAGE_TIME_LIMIT, lambda: self.remove_powerup_type_image(canvas_image))
+
+    def move_powerup_type_image(self, canvas_image):
+        if canvas_image:
+            self.canvas.move(canvas_image, 0, PowerupAttributes.IMAGE_SPEED)
+
+    def remove_powerup_type_image(self, canvas_image):
+        self.canvas.delete(canvas_image)
+        self.powerup_type_images.remove(canvas_image)
+
+    def get_powerup_type_images(self):
+        return self.powerup_type_images
 
     def get_paddle(self, paddle: Paddle):
         paddle_width = PaddleAttributes.WIDTH
