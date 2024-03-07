@@ -38,14 +38,19 @@ class GameScreen(Canvas):
 
         self.current_level = 1
 
-        self.apply_mouse_controls()
+        self.apply_paddle_mouse_control()
 
         self.game_images.create_object_image(self.paddle)
 
-    def apply_mouse_controls(self):
+    def apply_paddle_mouse_control(self):
         self.bind('<Motion>', self.track_player_movement)
         self.bind('<Enter>', self.hide_mouse_cursor)
         self.bind('<Leave>', self.show_mouse_cursor)
+
+    def stop_paddle_mouse_control(self):
+        self.unbind('<Motion>')
+        self.unbind('<Enter>')
+        self.unbind('<Leave>')
 
     def reset_paddle(self):
         self.paddle.reset_size()
@@ -110,7 +115,7 @@ class GameScreen(Canvas):
     def hide_mouse_cursor(self, event):
         self.config(cursor='none')
 
-    def show_mouse_cursor(self, event):
+    def show_mouse_cursor(self, event=None):
         self.config(cursor='')
 
     def configure_screen(self):
@@ -335,6 +340,8 @@ class GameScreen(Canvas):
     def handle_game_over(self):
         self.scores.check_for_highscore()
         self.game_images.show_game_over_image()
+        self.stop_paddle_mouse_control()
+        self.show_mouse_cursor()
 
     def handle_life_lost(self):
         for powerup in self.powerups.copy():
