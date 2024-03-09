@@ -47,7 +47,7 @@ class Scores(RawTurtle):
         self.update_scores()
 
     def check_for_highscore(self):
-        self.show_game_over_score()
+        self.show_game_over_text()
         if self.is_highscore():
             self.highscore = self.score
             self.save_highscore_to_file()
@@ -71,17 +71,15 @@ class Scores(RawTurtle):
         self.highscore = self.load_highscore_from_file()
         self.update_scores()
 
-    def show_game_over_score(self):
+    def show_game_over_text(self):
         if self.is_highscore():
-            text = TextAttributes.HIGHSCORE_NOTIFICATION_TEXT
+            text = f'{TextAttributes.HIGHSCORE_NOTIFICATION_TEXT}  {self.score}'
         else:
-            text = TextAttributes.SCORE_NOTIFICATION_TEXT
+            text = f'{TextAttributes.SCORE_NOTIFICATION_TEXT} {self.score}'
         self.setposition(TextAttributes.HIGHSCORE_NOTIFICATION_TEXT_POSITION)
-        self.write(text,
-                   align='center',
-                   font=TextAttributes.GAME_FONT)
-        self.setposition(TextAttributes.HIGHSCORE_NOTIFICATION_VALUE_POSITION)
-        self.write(self.score, align='center', font=TextAttributes.GAME_FONT)
+        self.write(text, align='center', font=TextAttributes.GAME_FONT)
+        self.setposition(TextAttributes.QUIT_GAME_TEXT_POSITION)
+        self.write(TextAttributes.QUIT_GAME_TEXT, align='left', font=TextAttributes.GAME_FONT)
 
     def is_highscore(self):
         return self.score > self.highscore
