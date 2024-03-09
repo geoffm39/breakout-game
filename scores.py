@@ -25,7 +25,7 @@ class Scores(RawTurtle):
         try:
             with open(FilePaths.HIGHSCORE, 'r') as file:
                 return int(file.read())
-        except FileNotFoundError:
+        except (FileNotFoundError, ValueError):
             return 0
 
     def save_highscore_to_file(self):
