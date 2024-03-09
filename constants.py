@@ -35,6 +35,7 @@ class Color(Enum):
     GREEN = 'green'
     PURPLE = 'purple'
     WHITE = 'white'
+    BLACK = 'black'
 
 
 class Shape(Enum):

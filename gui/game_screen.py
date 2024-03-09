@@ -12,14 +12,15 @@ from levels import Levels
 from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BallAttributes, TYPE, SPACING, SPACE_SIZE, BrickAttributes, PowerupAttributes,
-    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType, LaserAttributes, BrickType
+    SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType, LaserAttributes,
+    BrickType, Color
 )
 
 
 class GameScreen(Canvas):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, **kwargs)
-        self.configure(background='black')
+        self.configure(background=Color.BLACK.value)
 
         self.screen = TurtleScreen(self)
         self.configure_screen()
@@ -120,7 +121,7 @@ class GameScreen(Canvas):
 
     def configure_screen(self):
         self.screen.tracer(0)
-        self.screen.bgcolor('black')
+        self.screen.bgcolor(Color.BLACK.value)
         self.screen.listen()
 
     def start_game(self):
