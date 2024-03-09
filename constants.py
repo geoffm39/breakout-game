@@ -86,6 +86,7 @@ class TextAttributes:
     SCORE_NOTIFICATION_TEXT = 'Score:'
     QUIT_GAME_TEXT_POSITION = (-250, -200)
     QUIT_GAME_TEXT = 'Quit?'
+    QUIT_GAME_FONT = ('Verdana', 24, 'bold')
     GAME_FONT = ('Verdana', 30, 'bold')
 
 

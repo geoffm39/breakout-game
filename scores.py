@@ -79,7 +79,7 @@ class Scores(RawTurtle):
         self.setposition(TextAttributes.HIGHSCORE_NOTIFICATION_TEXT_POSITION)
         self.write(text, align='center', font=TextAttributes.GAME_FONT)
         self.setposition(TextAttributes.QUIT_GAME_TEXT_POSITION)
-        self.write(TextAttributes.QUIT_GAME_TEXT, align='left', font=TextAttributes.GAME_FONT)
+        self.write(TextAttributes.QUIT_GAME_TEXT, align='left', font=TextAttributes.QUIT_GAME_FONT)
 
     def is_highscore(self):
         return self.score > self.highscore
