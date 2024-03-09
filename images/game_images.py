@@ -9,9 +9,8 @@ from laser import Laser
 from ball import Ball
 from powerup import Powerup
 from constants import (
-    IMAGE_DIRECTORY, BACKGROUND_FILENAME, POWERUP_FILENAME, PADDLE_FILENAME, BrickType, PowerupType,
-    PaddleAttributes, PADDLE_LASERS_FILENAME, LASER_FILENAME, FIREBALL_FILENAME, BALL_FILENAME, LIVES_FILENAME,
-    LIVES_IMAGE_Y_COORD, LIVES_IMAGE_X_COORD, SCREEN_HEIGHT, PowerupAttributes, BallAttributes, GAME_OVER_FILENAME
+    BrickType, PowerupType, FilePaths, PaddleAttributes, BallAttributes, PowerupAttributes,
+    TextAttributes, SCREEN_HEIGHT
 )
 
 
@@ -28,8 +27,8 @@ class GameImages:
         self.load_images()
 
     def load_images(self):
-        for filename in os.listdir(IMAGE_DIRECTORY):
-            image_path = os.path.join(IMAGE_DIRECTORY, filename)
+        for filename in os.listdir(FilePaths.IMAGE_DIRECTORY):
+            image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, filename)
             with Image.open(image_path) as image:
                 photo_image = ImageTk.PhotoImage(image)
             self.photo_images[filename] = photo_image
@@ -38,10 +37,10 @@ class GameImages:
         self.set_fireball_frames()
 
     def set_paddle_images(self):
-        paddle_image_path = os.path.join(IMAGE_DIRECTORY, PADDLE_FILENAME)
+        paddle_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.PADDLE_FILENAME)
         with Image.open(paddle_image_path) as image:
             self.paddle_image = image.copy()
-        laser_paddle_image_path = os.path.join(IMAGE_DIRECTORY, PADDLE_LASERS_FILENAME)
+        laser_paddle_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.PADDLE_LASERS_FILENAME)
         with Image.open(laser_paddle_image_path) as image:
             self.laser_paddle_image = image.copy()
 
@@ -51,7 +50,9 @@ class GameImages:
 
     def apply_lives_image(self):
         lives = self.get_lives()
-        self.canvas.create_image(LIVES_IMAGE_X_COORD, LIVES_IMAGE_Y_COORD, image=lives)
+        self.canvas.create_image(TextAttributes.LIVES_IMAGE_X_COORD,
+                                 TextAttributes.LIVES_IMAGE_Y_COORD,
+                                 image=lives)
 
     def show_game_over_image(self):
         game_over_image = self.get_game_over()
@@ -137,8 +138,8 @@ class GameImages:
         else:
             image = self.paddle_image.copy()
         image = image.resize((paddle_pixel_length, paddle_width))
-        self.photo_images[PADDLE_FILENAME] = ImageTk.PhotoImage(image)
-        return self.photo_images[PADDLE_FILENAME]
+        self.photo_images[FilePaths.PADDLE_FILENAME] = ImageTk.PhotoImage(image)
+        return self.photo_images[FilePaths.PADDLE_FILENAME]
 
     def get_brick(self, brick: Brick):
         brick_type = brick.get_type()
@@ -149,12 +150,12 @@ class GameImages:
         return self.photo_images[image_key]
 
     def set_ball_frames(self):
-        ball_image_path = os.path.join(IMAGE_DIRECTORY, BALL_FILENAME)
+        ball_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.BALL_FILENAME)
         with Image.open(ball_image_path) as image:
             self.ball_frames = [ImageTk.PhotoImage(frame.convert('RGBA')) for frame in ImageSequence.Iterator(image)]
 
     def set_fireball_frames(self):
-        fireball_image_path = os.path.join(IMAGE_DIRECTORY, FIREBALL_FILENAME)
+        fireball_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.FIREBALL_FILENAME)
         with Image.open(fireball_image_path) as image:
             self.fireball_frames = [ImageTk.PhotoImage(frame.convert('RGBA')) for frame in ImageSequence.Iterator(image)]
 
@@ -177,16 +178,16 @@ class GameImages:
         return self.photo_images[image_key]
 
     def get_background(self):
-        return self.photo_images[BACKGROUND_FILENAME]
+        return self.photo_images[FilePaths.BACKGROUND_FILENAME]
 
     def get_lives(self):
-        return self.photo_images[LIVES_FILENAME]
+        return self.photo_images[FilePaths.LIVES_FILENAME]
 
     def get_game_over(self):
-        return self.photo_images[GAME_OVER_FILENAME]
+        return self.photo_images[FilePaths.GAME_OVER_FILENAME]
 
     def get_powerup(self):
-        return self.photo_images[POWERUP_FILENAME]
+        return self.photo_images[FilePaths.POWERUP_FILENAME]
 
     def get_laser(self):
-        return self.photo_images[LASER_FILENAME]
+        return self.photo_images[FilePaths.LASER_FILENAME]

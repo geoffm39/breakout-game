@@ -1,7 +1,7 @@
 from turtle import RawTurtle
 
 from constants import (
-    HIGHSCORE_FILENAME, Color, SCORE_POSITION, LIVES_POSITION, HIGHSCORE_POSITION, STARTING_LIVES, MAX_LIVES, GAME_FONT
+    Color, TextAttributes, FilePaths, STARTING_LIVES, MAX_LIVES
 )
 
 
@@ -23,23 +23,24 @@ class Scores(RawTurtle):
     @staticmethod
     def load_highscore_from_file():
         try:
-            with open(HIGHSCORE_FILENAME, 'r') as file:
+            with open(FilePaths.HIGHSCORE_FILENAME, 'r') as file:
                 return int(file.read())
         except FileNotFoundError:
             return 0
 
     def save_highscore_to_file(self):
-        with open(HIGHSCORE_FILENAME, 'w') as file:
+        with open(FilePaths.HIGHSCORE_FILENAME, 'w') as file:
             file.write(str(self.highscore))
 
     def update_scores(self):
         self.clear()
-        self.setposition(HIGHSCORE_POSITION)
-        self.write(self.highscore, align='left', font=GAME_FONT)
-        self.setposition(SCORE_POSITION)
-        self.write(self.score, align='center', font=GAME_FONT)
-        self.setposition(LIVES_POSITION)
-        self.write(self.lives, align='right', font=GAME_FONT)
+        font = TextAttributes.GAME_FONT
+        self.setposition(TextAttributes.HIGHSCORE_POSITION)
+        self.write(self.highscore, align='left', font=font)
+        self.setposition(TextAttributes.SCORE_POSITION)
+        self.write(self.score, align='center', font=font)
+        self.setposition(TextAttributes.LIVES_POSITION)
+        self.write(self.lives, align='right', font=font)
 
     def increase_score(self, score):
         self.score += score

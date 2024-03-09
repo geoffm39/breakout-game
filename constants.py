@@ -1,18 +1,6 @@
 from enum import Enum
 
 
-IMAGE_DIRECTORY = 'images/image-files'
-BACKGROUND_FILENAME = 'background.jpg'
-POWERUP_FILENAME = 'powerup.png'
-PADDLE_FILENAME = 'paddle.png'
-PADDLE_LASERS_FILENAME = 'paddle-lasers.png'
-LASER_FILENAME = 'laser.png'
-FIREBALL_FILENAME = 'fireball.gif'
-BALL_FILENAME = 'ball.gif'
-LIVES_FILENAME = 'lives.png'
-HIGHSCORE_FILENAME = 'highscore.txt'
-GAME_OVER_FILENAME = 'game-over.png'
-
 SCREEN_HEIGHT = 720
 SCREEN_WIDTH = 1080
 
@@ -21,12 +9,11 @@ SCREEN_RIGHT_EDGE = SCREEN_WIDTH / 2
 SCREEN_TOP_EDGE = SCREEN_HEIGHT / 2 - 50
 SCREEN_BOTTOM_EDGE = -SCREEN_HEIGHT / 2
 
-LIVES_POSITION = (SCREEN_RIGHT_EDGE - 50, SCREEN_HEIGHT / 2 - 46)
-LIVES_IMAGE_X_COORD = SCREEN_RIGHT_EDGE - 105
-LIVES_IMAGE_Y_COORD = (SCREEN_TOP_EDGE + 26) * -1
-SCORE_POSITION = (0, SCREEN_HEIGHT / 2 - 46)
-HIGHSCORE_POSITION = (SCREEN_LEFT_EDGE + 50, SCREEN_HEIGHT / 2 - 46)
-GAME_FONT = ('Verdana', 30, 'bold')
+EAST = 0
+NORTH = 90
+WEST = 180
+SOUTH = 270
+COMPLETE_ANGLE = 360
 
 STARTING_LIVES = 3
 MAX_LIVES = 5
@@ -37,12 +24,6 @@ TYPE = 'type'
 BRICK_COLOR = 'brick_color'
 VERTICAL_SURFACE = 'vertical'
 HORIZONTAL_SURFACE = 'horizontal'
-
-EAST = 0
-NORTH = 90
-WEST = 180
-SOUTH = 270
-COMPLETE_ANGLE = 360
 
 
 class Color(Enum):
@@ -77,6 +58,29 @@ class PowerupType(Enum):
     SMALL_PADDLE = 'small_paddle'
     BIG_PADDLE = 'big_paddle'
     EXTRA_LIFE = 'extra_life'
+
+
+class FilePaths:
+    IMAGE_DIRECTORY = 'images/image-files'
+    BACKGROUND_FILENAME = 'background.jpg'
+    POWERUP_FILENAME = 'powerup.png'
+    PADDLE_FILENAME = 'paddle.png'
+    PADDLE_LASERS_FILENAME = 'paddle-lasers.png'
+    LASER_FILENAME = 'laser.png'
+    FIREBALL_FILENAME = 'fireball.gif'
+    BALL_FILENAME = 'ball.gif'
+    LIVES_FILENAME = 'lives.png'
+    HIGHSCORE_FILENAME = 'highscore.txt'
+    GAME_OVER_FILENAME = 'game-over.png'
+
+
+class TextAttributes:
+    LIVES_POSITION = (SCREEN_RIGHT_EDGE - 50, SCREEN_HEIGHT / 2 - 46)
+    LIVES_IMAGE_X_COORD = SCREEN_RIGHT_EDGE - 105
+    LIVES_IMAGE_Y_COORD = (SCREEN_TOP_EDGE + 26) * -1
+    SCORE_POSITION = (0, SCREEN_HEIGHT / 2 - 46)
+    HIGHSCORE_POSITION = (SCREEN_LEFT_EDGE + 50, SCREEN_HEIGHT / 2 - 46)
+    GAME_FONT = ('Verdana', 30, 'bold')
 
 
 class BrickAttributes:
