@@ -10,7 +10,7 @@ from ball import Ball
 from powerup import Powerup
 from constants import (
     BrickType, PowerupType, FilePaths, PaddleAttributes, BallAttributes, PowerupAttributes,
-    TextAttributes, SCREEN_HEIGHT
+    TextAttributes, SCREEN_HEIGHT, SCREEN_CENTER
 )
 
 
@@ -46,7 +46,8 @@ class GameImages:
 
     def apply_background_image(self):
         background = self.get_background()
-        self.canvas.create_image(0, 0, image=background)
+        x, y = SCREEN_CENTER
+        self.canvas.create_image(x, y, image=background)
 
     def apply_lives_image(self):
         lives = self.get_lives()
@@ -56,7 +57,8 @@ class GameImages:
 
     def show_game_over_image(self):
         game_over_image = self.get_game_over()
-        self.canvas.create_image(0, 0, image=game_over_image)
+        x, y = SCREEN_CENTER
+        self.canvas.create_image(x, y, image=game_over_image)
 
     def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
         image = self.get_object_image(game_object)
