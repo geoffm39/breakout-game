@@ -23,13 +23,13 @@ class Scores(RawTurtle):
     @staticmethod
     def load_highscore_from_file():
         try:
-            with open(FilePaths.HIGHSCORE_FILENAME, 'r') as file:
+            with open(FilePaths.HIGHSCORE, 'r') as file:
                 return int(file.read())
         except FileNotFoundError:
             return 0
 
     def save_highscore_to_file(self):
-        with open(FilePaths.HIGHSCORE_FILENAME, 'w') as file:
+        with open(FilePaths.HIGHSCORE, 'w') as file:
             file.write(str(self.highscore))
 
     def update_scores(self):

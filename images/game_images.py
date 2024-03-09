@@ -37,10 +37,10 @@ class GameImages:
         self.set_fireball_frames()
 
     def set_paddle_images(self):
-        paddle_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.PADDLE_FILENAME)
+        paddle_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.PADDLE)
         with Image.open(paddle_image_path) as image:
             self.paddle_image = image.copy()
-        laser_paddle_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.PADDLE_LASERS_FILENAME)
+        laser_paddle_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.PADDLE_LASERS)
         with Image.open(laser_paddle_image_path) as image:
             self.laser_paddle_image = image.copy()
 
@@ -138,8 +138,8 @@ class GameImages:
         else:
             image = self.paddle_image.copy()
         image = image.resize((paddle_pixel_length, paddle_width))
-        self.photo_images[FilePaths.PADDLE_FILENAME] = ImageTk.PhotoImage(image)
-        return self.photo_images[FilePaths.PADDLE_FILENAME]
+        self.photo_images[FilePaths.PADDLE] = ImageTk.PhotoImage(image)
+        return self.photo_images[FilePaths.PADDLE]
 
     def get_brick(self, brick: Brick):
         brick_type = brick.get_type()
@@ -150,12 +150,12 @@ class GameImages:
         return self.photo_images[image_key]
 
     def set_ball_frames(self):
-        ball_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.BALL_FILENAME)
+        ball_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.BALL)
         with Image.open(ball_image_path) as image:
             self.ball_frames = [ImageTk.PhotoImage(frame.convert('RGBA')) for frame in ImageSequence.Iterator(image)]
 
     def set_fireball_frames(self):
-        fireball_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.FIREBALL_FILENAME)
+        fireball_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.FIREBALL)
         with Image.open(fireball_image_path) as image:
             self.fireball_frames = [ImageTk.PhotoImage(frame.convert('RGBA')) for frame in ImageSequence.Iterator(image)]
 
@@ -178,16 +178,16 @@ class GameImages:
         return self.photo_images[image_key]
 
     def get_background(self):
-        return self.photo_images[FilePaths.BACKGROUND_FILENAME]
+        return self.photo_images[FilePaths.BACKGROUND]
 
     def get_lives(self):
-        return self.photo_images[FilePaths.LIVES_FILENAME]
+        return self.photo_images[FilePaths.LIVES]
 
     def get_game_over(self):
-        return self.photo_images[FilePaths.GAME_OVER_FILENAME]
+        return self.photo_images[FilePaths.GAME_OVER]
 
     def get_powerup(self):
-        return self.photo_images[FilePaths.POWERUP_FILENAME]
+        return self.photo_images[FilePaths.POWERUP]
 
     def get_laser(self):
-        return self.photo_images[FilePaths.LASER_FILENAME]
+        return self.photo_images[FilePaths.LASER]

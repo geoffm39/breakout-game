@@ -62,16 +62,16 @@ class PowerupType(Enum):
 
 class FilePaths:
     IMAGE_DIRECTORY = 'images/image-files'
-    BACKGROUND_FILENAME = 'background.jpg'
-    POWERUP_FILENAME = 'powerup.png'
-    PADDLE_FILENAME = 'paddle.png'
-    PADDLE_LASERS_FILENAME = 'paddle-lasers.png'
-    LASER_FILENAME = 'laser.png'
-    FIREBALL_FILENAME = 'fireball.gif'
-    BALL_FILENAME = 'ball.gif'
-    LIVES_FILENAME = 'lives.png'
-    HIGHSCORE_FILENAME = 'highscore.txt'
-    GAME_OVER_FILENAME = 'game-over.png'
+    BACKGROUND = 'background.jpg'
+    POWERUP = 'powerup.png'
+    PADDLE = 'paddle.png'
+    PADDLE_LASERS = 'paddle-lasers.png'
+    LASER = 'laser.png'
+    FIREBALL = 'fireball.gif'
+    BALL = 'ball.gif'
+    LIVES = 'lives.png'
+    HIGHSCORE = 'highscore.txt'
+    GAME_OVER = 'game-over.png'
 
 
 class TextAttributes:
@@ -80,6 +80,8 @@ class TextAttributes:
     LIVES_IMAGE_Y_COORD = (SCREEN_TOP_EDGE + 26) * -1
     SCORE_POSITION = (0, SCREEN_HEIGHT / 2 - 46)
     HIGHSCORE_POSITION = (SCREEN_LEFT_EDGE + 50, SCREEN_HEIGHT / 2 - 46)
+    HIGHSCORE_NOTIFICATION_TEXT_POSITION = None
+    HIGHSCORE_NOTIFICATION_VALUE_POSITION = None
     GAME_FONT = ('Verdana', 30, 'bold')
 
 
