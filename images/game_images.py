@@ -55,10 +55,21 @@ class GameImages:
                                  TextAttributes.LIVES_IMAGE_Y_COORD,
                                  image=lives)
 
+    def handle_game_over_images(self):
+        self.show_game_over_image()
+        self.show_quit_button_images()
+
     def show_game_over_image(self):
         game_over_image = self.get_game_over()
         x, y = SCREEN_CENTER
         self.canvas.create_image(x, y, image=game_over_image)
+
+    def show_quit_button_images(self):
+        button_image = self.get_button_outline()
+        yes_x, yes_y = TextAttributes.YES_BUTTON_OUTLINE_POSITION
+        no_x, no_y = TextAttributes.NO_BUTTON_OUTLINE_POSITION
+        self.canvas.create_image(yes_x, yes_y, image=button_image, anchor='s')
+        self.canvas.create_image(no_x, no_y, image=button_image, anchor='s')
 
     def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
         image = self.get_object_image(game_object)
@@ -193,3 +204,6 @@ class GameImages:
 
     def get_laser(self):
         return self.photo_images[FilePaths.LASER]
+
+    def get_button_outline(self):
+        return self.photo_images[FilePaths.BUTTON_OUTLINE]

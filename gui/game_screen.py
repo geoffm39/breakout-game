@@ -339,8 +339,8 @@ class GameScreen(Canvas):
         self.add_quicker_ball(top_ball_speed)
 
     def handle_game_over(self):
+        self.game_images.handle_game_over_images()
         self.scores.check_for_highscore()
-        self.game_images.show_game_over_image()
         self.stop_paddle_mouse_control()
         self.show_mouse_cursor()
 

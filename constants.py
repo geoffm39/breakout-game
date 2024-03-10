@@ -74,6 +74,7 @@ class FilePaths:
     LIVES = 'lives.png'
     HIGHSCORE = 'highscore.txt'
     GAME_OVER = 'game-over.png'
+    BUTTON_OUTLINE = 'button-outline.png'
 
 
 class TextAttributes:
@@ -85,9 +86,16 @@ class TextAttributes:
     HIGHSCORE_NOTIFICATION_TEXT_POSITION = (0, -100)
     HIGHSCORE_NOTIFICATION_TEXT = 'High Score!'
     SCORE_NOTIFICATION_TEXT = 'Score:'
-    QUIT_GAME_TEXT_POSITION = (-250, -200)
+    QUIT_GAME_TEXT_POSITION = (-200, -200)
     QUIT_GAME_TEXT = 'Quit?'
-    QUIT_GAME_FONT = ('Verdana', 24, 'bold')
+    QUIT_GAME_FONT = ('Verdana', 21, 'bold')
+    YES_BUTTON_POSITION = (0, -200)
+    YES_BUTTON_OUTLINE_POSITION = (0, 200)
+    YES_BUTTON_TEXT = 'Yes'
+    NO_BUTTON_TEXT = 'No'
+    NO_BUTTON_POSITION = (200, -200)
+    NO_BUTTON_OUTLINE_POSITION = (180, 200)
+    BUTTON_FONT = ('Verdana', 18, 'bold')
     GAME_FONT = ('Verdana', 30, 'bold')
 
 
