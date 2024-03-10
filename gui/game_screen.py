@@ -340,9 +340,23 @@ class GameScreen(Canvas):
 
     def handle_game_over(self):
         self.game_images.handle_game_over_images()
+        self.apply_quit_button_bindings()
         self.scores.check_for_highscore()
         self.stop_paddle_mouse_control()
         self.show_mouse_cursor()
+
+    def apply_quit_button_bindings(self):
+        yes_button = self.game_images.get_yes_button_image()
+        yes_bbox = self.bbox(yes_button)
+
+    def on_button_click(self, event):
+        pass
+
+    def quit_game(self, event):
+        print('quit')
+
+    def restart_game(self, event):
+        print('restart')
 
     def handle_life_lost(self):
         for powerup in self.powerups.copy():

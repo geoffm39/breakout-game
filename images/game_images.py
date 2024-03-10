@@ -24,6 +24,10 @@ class GameImages:
         self.fireball_frames = []
         self.powerup_type_images = []
 
+        self.start_game_button = None
+        self.quit_yes_button = None
+        self.quit_no_button = None
+
         self.load_images()
 
     def load_images(self):
@@ -65,11 +69,24 @@ class GameImages:
         self.canvas.create_image(x, y, image=game_over_image)
 
     def show_quit_button_images(self):
+        self.set_yes_button_image()
+        self.set_no_button_image()
+
+    def set_yes_button_image(self):
         button_image = self.get_button_outline()
         yes_x, yes_y = TextAttributes.YES_BUTTON_OUTLINE_POSITION
+        self.quit_yes_button = self.canvas.create_image(yes_x, yes_y, image=button_image, anchor='s')
+
+    def set_no_button_image(self):
+        button_image = self.get_button_outline()
         no_x, no_y = TextAttributes.NO_BUTTON_OUTLINE_POSITION
-        self.canvas.create_image(yes_x, yes_y, image=button_image, anchor='s')
-        self.canvas.create_image(no_x, no_y, image=button_image, anchor='s')
+        self.quit_no_button = self.canvas.create_image(no_x, no_y, image=button_image, anchor='s')
+
+    def get_yes_button_image(self):
+        return self.quit_yes_button
+
+    def get_no_button_image(self):
+        return self.quit_no_button
 
     def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
         image = self.get_object_image(game_object)
