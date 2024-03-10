@@ -371,7 +371,7 @@ class GameScreen(Canvas):
         return button_bbox[0] < x < button_bbox[2] and button_bbox[1] < y < button_bbox[3]
 
     def quit_game(self):
-        print('quit')
+        self.quit()
 
     def restart_game(self):
         print('restart')
