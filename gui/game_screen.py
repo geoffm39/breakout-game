@@ -43,6 +43,9 @@ class GameScreen(Canvas):
 
         self.game_images.create_object_image(self.paddle)
 
+    def apply_introduction_screen(self):
+        pass
+
     def apply_paddle_mouse_control(self):
         self.bind('<Motion>', self.track_player_movement)
         self.bind('<Enter>', self.hide_mouse_cursor)
