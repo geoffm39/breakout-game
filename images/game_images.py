@@ -88,6 +88,15 @@ class GameImages:
     def get_no_button_image(self):
         return self.quit_no_button
 
+    def delete_quit_button_images(self):
+        self.canvas.delete(self.quit_yes_button)
+        self.quit_yes_button = None
+        self.canvas.delete(self.quit_no_button)
+        self.quit_no_button = None
+
+    def get_start_game_button_image(self):
+        return self.start_game_button
+
     def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
         image = self.get_object_image(game_object)
         screen_x, screen_y = game_object.get_location()

@@ -13,7 +13,7 @@ from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BallAttributes, TYPE, SPACING, SPACE_SIZE, BrickAttributes, PowerupAttributes,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType, LaserAttributes,
-    BrickType, Color
+    BrickType, Color, SCREEN_HEIGHT, SCREEN_WIDTH
 )
 
 
@@ -340,22 +340,40 @@ class GameScreen(Canvas):
 
     def handle_game_over(self):
         self.game_images.handle_game_over_images()
-        self.apply_quit_button_bindings()
+        self.apply_on_mouse_click_binding()
         self.scores.check_for_highscore()
         self.stop_paddle_mouse_control()
         self.show_mouse_cursor()
 
-    def apply_quit_button_bindings(self):
-        yes_button = self.game_images.get_yes_button_image()
-        yes_bbox = self.bbox(yes_button)
+    def apply_on_mouse_click_binding(self):
+        self.bind('<Button-1>', self.check_for_button_clicks)
 
-    def on_button_click(self, event):
+    def check_for_button_clicks(self, event):
+        yes_button = self.game_images.get_yes_button_image()
+        no_button = self.game_images.get_no_button_image()
+        start_game_button = self.game_images.get_start_game_button_image()
+        if yes_button is not None:
+            bbox = self.bbox(yes_button)
+            if self.mouse_click_on_button((event.x, event.y), bbox):
+                self.quit_game()
+        if no_button is not None:
+            bbox = self.bbox(no_button)
+            if self.mouse_click_on_button((event.x, event.y), bbox):
+                self.restart_game()
+        if start_game_button is not None:
+            bbox = self.bbox(start_game_button)
         pass
 
-    def quit_game(self, event):
+    @staticmethod
+    def mouse_click_on_button(click_location: tuple, button_bbox: tuple):
+        x = click_location[0] - SCREEN_WIDTH / 2
+        y = click_location[1] - SCREEN_HEIGHT / 2
+        return button_bbox[0] < x < button_bbox[2] and button_bbox[1] < y < button_bbox[3]
+
+    def quit_game(self):
         print('quit')
 
-    def restart_game(self, event):
+    def restart_game(self):
         print('restart')
 
     def handle_life_lost(self):
