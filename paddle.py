@@ -18,6 +18,20 @@ class Paddle(RawTurtle):
         if not self.paddle_reached_screen_edge(screen_x_coord):
             self.setx(screen_x_coord)
 
+    def move_left(self):
+        x_coord = self.xcor() - 20
+        if not self.paddle_reached_screen_edge(x_coord):
+            self.setx(x_coord)
+        else:
+            self.setx(SCREEN_LEFT_EDGE + self.paddle_length * PaddleAttributes.WIDTH / 2)
+
+    def move_right(self):
+        x_coord = self.xcor() + 20
+        if not self.paddle_reached_screen_edge(x_coord):
+            self.setx(x_coord)
+        else:
+            self.setx(SCREEN_RIGHT_EDGE - self.paddle_length * PaddleAttributes.WIDTH / 2)
+
     def paddle_reached_screen_edge(self, x_coord):
         left_x_loc, right_x_loc = self.get_x_coordinates(x_coord)
         return left_x_loc < SCREEN_LEFT_EDGE or right_x_loc > SCREEN_RIGHT_EDGE

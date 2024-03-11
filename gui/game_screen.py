@@ -43,8 +43,12 @@ class GameScreen(Canvas):
 
         self.game_images.create_object_image(self.paddle)
 
-    def apply_introduction_screen(self):
+    def show_options_screen(self):
         pass
+
+    def apply_keyboard_control(self):
+        self.screen.onkeypress(fun=self.move_paddle_left, key='Left')
+        self.screen.onkeypress(fun=self.move_paddle_right, key='Right')
 
     def apply_paddle_mouse_control(self):
         self.bind('<Motion>', self.track_player_movement)
@@ -55,6 +59,14 @@ class GameScreen(Canvas):
         self.unbind('<Motion>')
         self.unbind('<Enter>')
         self.unbind('<Leave>')
+
+    def move_paddle_left(self):
+        self.paddle.move_left()
+        self.game_images.move_object_image(self.paddle)
+
+    def move_paddle_right(self):
+        self.paddle.move_right()
+        self.game_images.move_object_image(self.paddle)
 
     def reset_paddle(self):
         self.paddle.reset_size()
