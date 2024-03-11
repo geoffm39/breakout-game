@@ -64,15 +64,18 @@ class GameImages:
     def remove_lives_image(self):
         self.canvas.delete(self.lives_image)
 
-    def handle_game_over_images(self):
+    def handle_game_over_images(self, paddle: Paddle):
         self.show_game_over_image()
         self.show_quit_button_images()
+        self.delete_object_image(paddle)
 
-    def remove_images_on_game_over(self, paddle: Paddle):
+    def remove_images_on_restart_game(self):
         self.remove_game_over_image()
         self.delete_quit_button_images()
         self.remove_lives_image()
-        self.delete_object_image(paddle)
+
+    def remove_images_on_start_game(self):
+        self.remove_start_game_button_image()
 
     def show_game_over_image(self):
         game_over_image = self.get_game_over()
@@ -95,6 +98,18 @@ class GameImages:
         button_image = self.get_button_outline()
         no_x, no_y = TextAttributes.NO_BUTTON_OUTLINE_POSITION
         self.quit_no_button = self.canvas.create_image(no_x, no_y, image=button_image, anchor='s')
+
+    def show_options_screen_images(self):
+        self.show_start_game_button_image()
+
+    def show_start_game_button_image(self):
+        button_image = self.get_start_button_outline()
+        x, y = TextAttributes.START_GAME_BUTTON_POSITION
+        self.start_game_button = self.canvas.create_image(x, y, image=button_image)
+
+    def remove_start_game_button_image(self):
+        self.canvas.delete(self.start_game_button)
+        self.start_game_button = None
 
     def get_yes_button_image(self):
         return self.quit_yes_button
@@ -248,3 +263,6 @@ class GameImages:
 
     def get_button_outline(self):
         return self.photo_images[FilePaths.BUTTON_OUTLINE]
+
+    def get_start_button_outline(self):
+        return self.photo_images[FilePaths.START_GAME_BUTTON_OUTLINE]

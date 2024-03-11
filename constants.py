@@ -75,6 +75,7 @@ class FilePaths:
     HIGHSCORE = 'highscore.txt'
     GAME_OVER = 'game-over.png'
     BUTTON_OUTLINE = 'button-outline.png'
+    START_GAME_BUTTON_OUTLINE = 'start-game-button.png'
 
 
 class TextAttributes:
@@ -97,6 +98,9 @@ class TextAttributes:
     NO_BUTTON_OUTLINE_POSITION = (180, 200)
     BUTTON_FONT = ('Verdana', 18, 'bold')
     GAME_FONT = ('Verdana', 30, 'bold')
+    START_GAME_BUTTON_FONT = ('Verdana', 24, 'bold')
+    START_GAME_BUTTON_TEXT = 'Start Game'
+    START_GAME_BUTTON_POSITION = (0, -8)
 
 
 class BrickAttributes:

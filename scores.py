@@ -20,6 +20,10 @@ class Scores(RawTurtle):
         self.penup()
         self.hideturtle()
 
+    def show_options_screen_text(self):
+        self.setposition(TextAttributes.START_GAME_BUTTON_POSITION)
+        self.write(TextAttributes.START_GAME_BUTTON_TEXT, align='center', font=TextAttributes.START_GAME_BUTTON_FONT)
+
     def reset_scores(self):
         self.lives = STARTING_LIVES
         self.score = 0
@@ -72,12 +76,6 @@ class Scores(RawTurtle):
         self.lives += 1
         if self.lives > MAX_LIVES:
             self.lives = MAX_LIVES
-        self.update_scores()
-
-    def reset_scores(self):
-        self.lives = STARTING_LIVES
-        self.score = 0
-        self.highscore = self.load_highscore_from_file()
         self.update_scores()
 
     def show_game_over_text(self):

@@ -38,11 +38,13 @@ class GameScreen(Canvas):
 
         self.current_level = 1
 
-        self.apply_paddle_mouse_control()
+        # self.apply_paddle_mouse_control()
         # self.apply_keyboard_control()
+        self.show_options_screen()
 
     def show_options_screen(self):
-        pass
+        self.game_images.show_options_screen_images()
+        self.scores.show_options_screen_text()
 
     def track_player_movement(self, event):
         x = event.x
@@ -59,8 +61,10 @@ class GameScreen(Canvas):
         self.screen.tracer(0)
         self.screen.bgcolor(Color.BLACK.value)
         self.screen.listen()
+        self.apply_on_mouse_click_binding()
 
     def start_game(self):
+        self.game_images.remove_images_on_start_game()
         self.game_images.apply_lives_image()
         self.paddle = Paddle(self.screen)
         self.game_images.create_object_image(self.paddle)
@@ -365,8 +369,7 @@ class GameScreen(Canvas):
 
     def handle_game_over(self):
         self.reset_game_screen()
-        self.game_images.handle_game_over_images()
-        self.apply_on_mouse_click_binding()
+        self.game_images.handle_game_over_images(self.paddle)
         self.scores.check_for_highscore()
         self.stop_paddle_mouse_control()
         self.stop_paddle_keyboard_control()
@@ -389,6 +392,8 @@ class GameScreen(Canvas):
                 self.restart_game()
         if start_game_button is not None:
             bbox = self.bbox(start_game_button)
+            if self.mouse_click_on_button((event.x, event.y), bbox):
+                self.start_game()
         pass
 
     @staticmethod
@@ -401,8 +406,8 @@ class GameScreen(Canvas):
         self.quit()
 
     def restart_game(self):
-        self.scores.clear_text()
-        self.game_images.remove_images_on_game_over(self.paddle)
+        self.scores.reset_scores()
+        self.game_images.remove_images_on_restart_game()
 
     def handle_life_lost(self):
         for powerup in self.powerups.copy():

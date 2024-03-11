@@ -17,6 +17,3 @@ class MainWindow:
 
         self.game_screen = GameScreen(mainframe, width=SCREEN_WIDTH, height=SCREEN_HEIGHT)
         self.game_screen.grid(column=0, row=0)
-
-        self.game_screen.start_game()
-
