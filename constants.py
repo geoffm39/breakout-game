@@ -101,6 +101,13 @@ class TextAttributes:
     START_GAME_BUTTON_FONT = ('Verdana', 24, 'bold')
     START_GAME_BUTTON_TEXT = 'Start Game'
     START_GAME_BUTTON_POSITION = (0, -8)
+    CONTROLS_TEXT = 'Controls:'
+    CONTROLS_TEXT_FONT = ('Verdana', 21, 'bold')
+    KEYBOARD_BUTTON_TEXT = 'Keyboard'
+    MOUSE_BUTTON_TEXT = 'Mouse'
+    CONTROLS_TEXT_POSITION = (-300, -130)
+    KEYBOARD_BUTTON_POSITION = (0, -130)
+    MOUSE_BUTTON_POSITION = (300, -130)
 
 
 class BrickAttributes:

@@ -23,6 +23,12 @@ class Scores(RawTurtle):
     def show_options_screen_text(self):
         self.setposition(TextAttributes.START_GAME_BUTTON_POSITION)
         self.write(TextAttributes.START_GAME_BUTTON_TEXT, align='center', font=TextAttributes.START_GAME_BUTTON_FONT)
+        self.setposition(TextAttributes.CONTROLS_TEXT_POSITION)
+        self.write(TextAttributes.CONTROLS_TEXT, align='left', font=TextAttributes.CONTROLS_TEXT_FONT)
+        self.setposition(TextAttributes.KEYBOARD_BUTTON_POSITION)
+        self.write(TextAttributes.KEYBOARD_BUTTON_TEXT, align='center', font=TextAttributes.BUTTON_FONT)
+        self.setposition(TextAttributes.MOUSE_BUTTON_POSITION)
+        self.write(TextAttributes.MOUSE_BUTTON_TEXT, align='right', font=TextAttributes.BUTTON_FONT)
 
     def reset_scores(self):
         self.lives = STARTING_LIVES
