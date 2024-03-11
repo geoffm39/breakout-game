@@ -72,6 +72,7 @@ class GameScreen(Canvas):
             bbox = self.bbox(start_game_button)
             if self.mouse_click_on_button((event.x, event.y), bbox):
                 self.start_game()
+                return
         if keyboard_button is not None:
             bbox = self.bbox(keyboard_button)
             if self.mouse_click_on_button((event.x, event.y), bbox):
