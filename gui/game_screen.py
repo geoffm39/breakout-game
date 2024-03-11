@@ -37,21 +37,71 @@ class GameScreen(Canvas):
         self.lasers = []
 
         self.current_level = 1
+        self.keyboard_control = True
 
-        # self.apply_paddle_mouse_control()
-        # self.apply_keyboard_control()
         self.show_options_screen()
 
     def show_options_screen(self):
         self.game_images.show_options_screen_images()
         self.scores.show_options_screen_text()
 
+    def handle_keyboard_control_button_press(self):
+        self.keyboard_control = True
+
+    def handle_mouse_control_button_press(self):
+        self.keyboard_control = False
+
+    def apply_on_mouse_click_binding(self):
+        self.bind('<Button-1>', self.check_for_button_clicks)
+
+    def check_for_button_clicks(self, event):
+        yes_button = self.game_images.get_yes_button()
+        no_button = self.game_images.get_no_button()
+        start_game_button = self.game_images.get_start_game_button()
+        keyboard_button = self.game_images.get_keyboard_control_button()
+        mouse_button = self.game_images.get_mouse_control_button()
+        if yes_button is not None:
+            bbox = self.bbox(yes_button)
+            if self.mouse_click_on_button((event.x, event.y), bbox):
+                self.quit_game()
+        if no_button is not None:
+            bbox = self.bbox(no_button)
+            if self.mouse_click_on_button((event.x, event.y), bbox):
+                self.restart_game()
+        if start_game_button is not None:
+            bbox = self.bbox(start_game_button)
+            if self.mouse_click_on_button((event.x, event.y), bbox):
+                self.start_game()
+        if keyboard_button is not None:
+            bbox = self.bbox(keyboard_button)
+            if self.mouse_click_on_button((event.x, event.y), bbox):
+                self.handle_keyboard_control_button_press()
+        if mouse_button is not None:
+            bbox = self.bbox(mouse_button)
+            if self.mouse_click_on_button((event.x, event.y), bbox):
+                self.handle_mouse_control_button_press()
+        pass
+
+    @staticmethod
+    def mouse_click_on_button(click_location: tuple, button_bbox: tuple):
+        x = click_location[0] - SCREEN_WIDTH / 2
+        y = click_location[1] - SCREEN_HEIGHT / 2
+        return button_bbox[0] < x < button_bbox[2] and button_bbox[1] < y < button_bbox[3]
+
+    def quit_game(self):
+        self.quit()
+
+    def restart_game(self):
+        self.scores.reset_scores()
+        self.game_images.remove_images_on_restart_game()
+        self.show_options_screen()
+
     def track_player_movement(self, event):
         x = event.x
         self.paddle.move_to(x)
         self.game_images.move_object_image(self.paddle)
 
-    def hide_mouse_cursor(self, event):
+    def hide_mouse_cursor(self, event=None):
         self.config(cursor='none')
 
     def show_mouse_cursor(self, event=None):
@@ -64,6 +114,7 @@ class GameScreen(Canvas):
         self.apply_on_mouse_click_binding()
 
     def start_game(self):
+        self.hide_mouse_cursor()
         self.game_images.remove_images_on_start_game()
         self.game_images.apply_lives_image()
         self.paddle = Paddle(self.screen)
@@ -71,9 +122,13 @@ class GameScreen(Canvas):
         self.scores.update_scores()
         self.add_level_bricks()
         self.add_ball()
+        if self.keyboard_control:
+            self.apply_paddle_keyboard_control()
+        else:
+            self.apply_paddle_mouse_control()
         self.update_game_screen()
 
-    def apply_keyboard_control(self):
+    def apply_paddle_keyboard_control(self):
         self.screen.onkeypress(fun=self.move_paddle_left, key='Left')
         self.screen.onkeypress(fun=self.move_paddle_right, key='Right')
 
@@ -374,40 +429,6 @@ class GameScreen(Canvas):
         self.stop_paddle_mouse_control()
         self.stop_paddle_keyboard_control()
         self.show_mouse_cursor()
-
-    def apply_on_mouse_click_binding(self):
-        self.bind('<Button-1>', self.check_for_button_clicks)
-
-    def check_for_button_clicks(self, event):
-        yes_button = self.game_images.get_yes_button_image()
-        no_button = self.game_images.get_no_button_image()
-        start_game_button = self.game_images.get_start_game_button_image()
-        if yes_button is not None:
-            bbox = self.bbox(yes_button)
-            if self.mouse_click_on_button((event.x, event.y), bbox):
-                self.quit_game()
-        if no_button is not None:
-            bbox = self.bbox(no_button)
-            if self.mouse_click_on_button((event.x, event.y), bbox):
-                self.restart_game()
-        if start_game_button is not None:
-            bbox = self.bbox(start_game_button)
-            if self.mouse_click_on_button((event.x, event.y), bbox):
-                self.start_game()
-        pass
-
-    @staticmethod
-    def mouse_click_on_button(click_location: tuple, button_bbox: tuple):
-        x = click_location[0] - SCREEN_WIDTH / 2
-        y = click_location[1] - SCREEN_HEIGHT / 2
-        return button_bbox[0] < x < button_bbox[2] and button_bbox[1] < y < button_bbox[3]
-
-    def quit_game(self):
-        self.quit()
-
-    def restart_game(self):
-        self.scores.reset_scores()
-        self.game_images.remove_images_on_restart_game()
 
     def handle_life_lost(self):
         for powerup in self.powerups.copy():

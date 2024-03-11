@@ -135,10 +135,16 @@ class GameImages:
         self.canvas.delete(self.mouse_button)
         self.mouse_button = None
 
-    def get_yes_button_image(self):
+    def get_keyboard_control_button(self):
+        return self.keyboard_button
+
+    def get_mouse_control_button(self):
+        return self.mouse_button
+
+    def get_yes_button(self):
         return self.quit_yes_button
 
-    def get_no_button_image(self):
+    def get_no_button(self):
         return self.quit_no_button
 
     def remove_quit_button_images(self):
@@ -147,7 +153,7 @@ class GameImages:
         self.canvas.delete(self.quit_no_button)
         self.quit_no_button = None
 
-    def get_start_game_button_image(self):
+    def get_start_game_button(self):
         return self.start_game_button
 
     def create_object_image(self, game_object: Union[Paddle, Ball, Laser, Powerup, Brick]):
