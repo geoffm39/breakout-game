@@ -87,6 +87,33 @@ class GameScreen(Canvas):
         self.screen.onkeypress(fun=None, key='Left')
         self.screen.onkeypress(fun=None, key='Right')
 
+    def update_game_screen(self):
+        self.screen.update()
+        for ball in self.balls.copy():
+            ball.move()
+            self.game_images.move_object_image(ball)
+            self.check_for_ball_collision(ball)
+            if self.ball_missed(ball):
+                self.remove_ball(ball)
+                if self.no_more_balls():
+                    self.scores.decrease_lives()
+                    if self.scores.no_more_lives():
+                        self.handle_game_over()
+                        return
+                    else:
+                        self.handle_life_lost()
+        for powerup in self.powerups.copy():
+            powerup.move()
+            self.game_images.move_object_image(powerup)
+            self.check_for_powerup_collision(powerup)
+        for powerup_type_image in self.game_images.get_powerup_type_images():
+            self.game_images.move_powerup_type_image(powerup_type_image)
+        for laser in self.lasers.copy():
+            laser.move()
+            self.game_images.move_object_image(laser)
+            self.check_for_laser_collision(laser)
+        self.after(3, self.update_game_screen)
+
     def move_paddle_left(self):
         self.paddle.move_left()
         self.game_images.move_object_image(self.paddle)
@@ -189,33 +216,6 @@ class GameScreen(Canvas):
     @staticmethod
     def is_spacing(position):
         return position[TYPE] == SPACING
-
-    def update_game_screen(self):
-        self.screen.update()
-        for ball in self.balls.copy():
-            ball.move()
-            self.game_images.move_object_image(ball)
-            self.check_for_ball_collision(ball)
-            if self.ball_missed(ball):
-                self.remove_ball(ball)
-                if self.no_more_balls():
-                    self.scores.decrease_lives()
-                    if self.scores.no_more_lives():
-                        self.handle_game_over()
-                        return
-                    else:
-                        self.handle_life_lost()
-        for powerup in self.powerups.copy():
-            powerup.move()
-            self.game_images.move_object_image(powerup)
-            self.check_for_powerup_collision(powerup)
-        for powerup_type_image in self.game_images.get_powerup_type_images():
-            self.game_images.move_powerup_type_image(powerup_type_image)
-        for laser in self.lasers.copy():
-            laser.move()
-            self.game_images.move_object_image(laser)
-            self.check_for_laser_collision(laser)
-        self.after(3, self.update_game_screen)
 
     def check_for_ball_collision(self, ball: Ball):
         self.check_for_paddle_collision(ball)
@@ -348,17 +348,23 @@ class GameScreen(Canvas):
         if self.current_level > self.levels.get_number_of_levels():
             self.current_level = 1
         top_ball_speed = self.get_quickest_ball_speed()
+        self.reset_game_screen()
+        self.add_level_bricks()
+        self.add_quicker_ball(top_ball_speed)
+
+    def reset_game_screen(self):
         for brick in self.bricks.copy():
             self.remove_brick(brick)
         for ball in self.balls.copy():
             self.remove_ball(ball)
         for powerup in self.powerups.copy():
             self.remove_powerup(powerup)
+        for laser in self.lasers.copy():
+            self.remove_laser(laser)
         self.reset_paddle()
-        self.add_level_bricks()
-        self.add_quicker_ball(top_ball_speed)
 
     def handle_game_over(self):
+        self.reset_game_screen()
         self.game_images.handle_game_over_images()
         self.apply_on_mouse_click_binding()
         self.scores.check_for_highscore()
