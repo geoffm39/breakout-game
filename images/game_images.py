@@ -26,6 +26,8 @@ class GameImages:
         self.lives_image = None
 
         self.start_game_button = None
+        self.keyboard_button = None
+        self.mouse_button = None
         self.quit_yes_button = None
         self.quit_no_button = None
         self.game_over_image = None
@@ -71,11 +73,12 @@ class GameImages:
 
     def remove_images_on_restart_game(self):
         self.remove_game_over_image()
-        self.delete_quit_button_images()
+        self.remove_quit_button_images()
         self.remove_lives_image()
 
     def remove_images_on_start_game(self):
         self.remove_start_game_button_image()
+        self.remove_controls_button_images()
 
     def show_game_over_image(self):
         game_over_image = self.get_game_over()
@@ -101,15 +104,36 @@ class GameImages:
 
     def show_options_screen_images(self):
         self.show_start_game_button_image()
+        self.show_control_button_images()
 
     def show_start_game_button_image(self):
         button_image = self.get_start_button_outline()
         x, y = TextAttributes.START_GAME_BUTTON_POSITION
         self.start_game_button = self.canvas.create_image(x, y, image=button_image)
 
+    def show_control_button_images(self):
+        self.set_keyboard_button_image()
+        self.set_mouse_button_image()
+
+    def set_keyboard_button_image(self):
+        button_image = self.get_controls_button_outline()
+        x, y = TextAttributes.KEYBOARD_BUTTON_OUTLINE_POSITION
+        self.keyboard_button = self.canvas.create_image(x, y, image=button_image, anchor='s')
+
+    def set_mouse_button_image(self):
+        button_image = self.get_controls_button_outline()
+        x, y = TextAttributes.MOUSE_BUTTON_OUTLINE_POSITION
+        self.mouse_button = self.canvas.create_image(x, y, image=button_image, anchor='s')
+
     def remove_start_game_button_image(self):
         self.canvas.delete(self.start_game_button)
         self.start_game_button = None
+
+    def remove_controls_button_images(self):
+        self.canvas.delete(self.keyboard_button)
+        self.keyboard_button = None
+        self.canvas.delete(self.mouse_button)
+        self.mouse_button = None
 
     def get_yes_button_image(self):
         return self.quit_yes_button
@@ -117,7 +141,7 @@ class GameImages:
     def get_no_button_image(self):
         return self.quit_no_button
 
-    def delete_quit_button_images(self):
+    def remove_quit_button_images(self):
         self.canvas.delete(self.quit_yes_button)
         self.quit_yes_button = None
         self.canvas.delete(self.quit_no_button)
@@ -266,3 +290,6 @@ class GameImages:
 
     def get_start_button_outline(self):
         return self.photo_images[FilePaths.START_GAME_BUTTON_OUTLINE]
+
+    def get_controls_button_outline(self):
+        return self.photo_images[FilePaths.CONTROLS_BUTTON_OUTLINE]

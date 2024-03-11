@@ -76,6 +76,7 @@ class FilePaths:
     GAME_OVER = 'game-over.png'
     BUTTON_OUTLINE = 'button-outline.png'
     START_GAME_BUTTON_OUTLINE = 'start-game-button.png'
+    CONTROLS_BUTTON_OUTLINE = 'controls-button-outline.png'
 
 
 class TextAttributes:
@@ -107,7 +108,9 @@ class TextAttributes:
     MOUSE_BUTTON_TEXT = 'Mouse'
     CONTROLS_TEXT_POSITION = (-300, -130)
     KEYBOARD_BUTTON_POSITION = (0, -130)
+    KEYBOARD_BUTTON_OUTLINE_POSITION = (0, 140)
     MOUSE_BUTTON_POSITION = (300, -130)
+    MOUSE_BUTTON_OUTLINE_POSITION = (256, 140)
 
 
 class BrickAttributes:
