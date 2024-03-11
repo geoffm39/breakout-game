@@ -23,10 +23,12 @@ class GameImages:
         self.ball_frames = []
         self.fireball_frames = []
         self.powerup_type_images = []
+        self.lives_image = None
 
         self.start_game_button = None
         self.quit_yes_button = None
         self.quit_no_button = None
+        self.game_over_image = None
 
         self.load_images()
 
@@ -55,18 +57,30 @@ class GameImages:
 
     def apply_lives_image(self):
         lives = self.get_lives()
-        self.canvas.create_image(TextAttributes.LIVES_IMAGE_X_COORD,
-                                 TextAttributes.LIVES_IMAGE_Y_COORD,
-                                 image=lives)
+        self.lives_image = self.canvas.create_image(TextAttributes.LIVES_IMAGE_X_COORD,
+                                                    TextAttributes.LIVES_IMAGE_Y_COORD,
+                                                    image=lives)
+
+    def remove_lives_image(self):
+        self.canvas.delete(self.lives_image)
 
     def handle_game_over_images(self):
         self.show_game_over_image()
         self.show_quit_button_images()
 
+    def remove_images_on_game_over(self, paddle: Paddle):
+        self.remove_game_over_image()
+        self.delete_quit_button_images()
+        self.remove_lives_image()
+        self.delete_object_image(paddle)
+
     def show_game_over_image(self):
         game_over_image = self.get_game_over()
         x, y = SCREEN_CENTER
-        self.canvas.create_image(x, y, image=game_over_image)
+        self.game_over_image = self.canvas.create_image(x, y, image=game_over_image)
+
+    def remove_game_over_image(self):
+        self.canvas.delete(self.game_over_image)
 
     def show_quit_button_images(self):
         self.set_yes_button_image()
@@ -196,7 +210,8 @@ class GameImages:
     def set_fireball_frames(self):
         fireball_image_path = os.path.join(FilePaths.IMAGE_DIRECTORY, FilePaths.FIREBALL)
         with Image.open(fireball_image_path) as image:
-            self.fireball_frames = [ImageTk.PhotoImage(frame.convert('RGBA')) for frame in ImageSequence.Iterator(image)]
+            self.fireball_frames = [ImageTk.PhotoImage(frame.convert('RGBA')) for frame in
+                                    ImageSequence.Iterator(image)]
 
     def get_ball_frame(self, frame_index=0):
         frame_index = frame_index % self.get_number_of_ball_frames()

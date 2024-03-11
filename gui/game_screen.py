@@ -401,7 +401,8 @@ class GameScreen(Canvas):
         self.quit()
 
     def restart_game(self):
-        print('restart')
+        self.scores.clear_text()
+        self.game_images.remove_images_on_game_over(self.paddle)
 
     def handle_life_lost(self):
         for powerup in self.powerups.copy():

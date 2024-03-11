@@ -20,6 +20,15 @@ class Scores(RawTurtle):
         self.penup()
         self.hideturtle()
 
+    def reset_scores(self):
+        self.lives = STARTING_LIVES
+        self.score = 0
+        self.highscore = self.load_highscore_from_file()
+        self.clear_text()
+
+    def clear_text(self):
+        self.clear()
+
     @staticmethod
     def load_highscore_from_file():
         try:
@@ -33,7 +42,7 @@ class Scores(RawTurtle):
             file.write(str(self.highscore))
 
     def update_scores(self):
-        self.clear()
+        self.clear_text()
         font = TextAttributes.GAME_FONT
         self.setposition(TextAttributes.HIGHSCORE_POSITION)
         self.write(self.highscore, align='left', font=font)
