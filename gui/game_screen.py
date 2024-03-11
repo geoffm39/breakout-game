@@ -27,9 +27,8 @@ class GameScreen(Canvas):
 
         self.game_images = GameImages(self)
         self.game_images.apply_background_image()
-        self.game_images.apply_lives_image()
 
-        self.paddle = Paddle(self.screen)
+        self.paddle = None
         self.levels = Levels()
         self.scores = Scores(self.screen)
         self.bricks = []
@@ -40,11 +39,35 @@ class GameScreen(Canvas):
         self.current_level = 1
 
         self.apply_paddle_mouse_control()
-
-        self.game_images.create_object_image(self.paddle)
+        # self.apply_keyboard_control()
 
     def show_options_screen(self):
         pass
+
+    def track_player_movement(self, event):
+        x = event.x
+        self.paddle.move_to(x)
+        self.game_images.move_object_image(self.paddle)
+
+    def hide_mouse_cursor(self, event):
+        self.config(cursor='none')
+
+    def show_mouse_cursor(self, event=None):
+        self.config(cursor='')
+
+    def configure_screen(self):
+        self.screen.tracer(0)
+        self.screen.bgcolor(Color.BLACK.value)
+        self.screen.listen()
+
+    def start_game(self):
+        self.game_images.apply_lives_image()
+        self.paddle = Paddle(self.screen)
+        self.game_images.create_object_image(self.paddle)
+        self.scores.update_scores()
+        self.add_level_bricks()
+        self.add_ball()
+        self.update_game_screen()
 
     def apply_keyboard_control(self):
         self.screen.onkeypress(fun=self.move_paddle_left, key='Left')
@@ -59,6 +82,10 @@ class GameScreen(Canvas):
         self.unbind('<Motion>')
         self.unbind('<Enter>')
         self.unbind('<Leave>')
+
+    def stop_paddle_keyboard_control(self):
+        self.screen.onkeypress(fun=None, key='Left')
+        self.screen.onkeypress(fun=None, key='Right')
 
     def move_paddle_left(self):
         self.paddle.move_left()
@@ -122,28 +149,6 @@ class GameScreen(Canvas):
     @staticmethod
     def laser_hit_top_wall(laser: Laser):
         return laser.ycor() >= SCREEN_TOP_EDGE - LaserAttributes.WIDTH / 2
-
-    def track_player_movement(self, event):
-        x = event.x
-        self.paddle.move_to(x)
-        self.game_images.move_object_image(self.paddle)
-
-    def hide_mouse_cursor(self, event):
-        self.config(cursor='none')
-
-    def show_mouse_cursor(self, event=None):
-        self.config(cursor='')
-
-    def configure_screen(self):
-        self.screen.tracer(0)
-        self.screen.bgcolor(Color.BLACK.value)
-        self.screen.listen()
-
-    def start_game(self):
-        self.scores.update_scores()
-        self.add_level_bricks()
-        self.add_ball()
-        self.update_game_screen()
 
     def add_ball(self):
         ball = Ball(self.screen)
@@ -358,6 +363,7 @@ class GameScreen(Canvas):
         self.apply_on_mouse_click_binding()
         self.scores.check_for_highscore()
         self.stop_paddle_mouse_control()
+        self.stop_paddle_keyboard_control()
         self.show_mouse_cursor()
 
     def apply_on_mouse_click_binding(self):
