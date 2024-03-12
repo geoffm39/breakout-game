@@ -20,15 +20,29 @@ class Scores(RawTurtle):
         self.penup()
         self.hideturtle()
 
-    def show_options_screen_text(self):
+    def show_options_screen_text(self, is_keyboard_controls):
+        self.clear_text()
         self.setposition(TextAttributes.START_GAME_BUTTON_POSITION)
         self.write(TextAttributes.START_GAME_BUTTON_TEXT, align='center', font=TextAttributes.START_GAME_BUTTON_FONT)
         self.setposition(TextAttributes.CONTROLS_TEXT_POSITION)
         self.write(TextAttributes.CONTROLS_TEXT, align='left', font=TextAttributes.CONTROLS_TEXT_FONT)
+        self.show_option_button_text(is_keyboard_controls)
+
+    def show_option_button_text(self, is_keyboard_controls):
         self.setposition(TextAttributes.KEYBOARD_BUTTON_POSITION)
-        self.write(TextAttributes.KEYBOARD_BUTTON_TEXT, align='center', font=TextAttributes.BUTTON_FONT)
-        self.setposition(TextAttributes.MOUSE_BUTTON_POSITION)
-        self.write(TextAttributes.MOUSE_BUTTON_TEXT, align='right', font=TextAttributes.BUTTON_FONT)
+        if is_keyboard_controls:
+            self.color(Color.RED.value)
+            self.write(TextAttributes.KEYBOARD_BUTTON_TEXT, align='center', font=TextAttributes.BUTTON_FONT)
+            self.color(Color.YELLOW.value)
+            self.setposition(TextAttributes.MOUSE_BUTTON_POSITION)
+            self.write(TextAttributes.MOUSE_BUTTON_TEXT, align='right', font=TextAttributes.BUTTON_FONT)
+        else:
+            self.write(TextAttributes.KEYBOARD_BUTTON_TEXT, align='center', font=TextAttributes.BUTTON_FONT)
+            self.setposition(TextAttributes.MOUSE_BUTTON_POSITION)
+            self.color(Color.RED.value)
+            self.setposition(TextAttributes.MOUSE_BUTTON_POSITION)
+            self.write(TextAttributes.MOUSE_BUTTON_TEXT, align='right', font=TextAttributes.BUTTON_FONT)
+            self.color(Color.YELLOW.value)
 
     def reset_scores(self):
         self.lives = STARTING_LIVES

@@ -43,13 +43,18 @@ class GameScreen(Canvas):
 
     def show_options_screen(self):
         self.game_images.show_options_screen_images()
-        self.scores.show_options_screen_text()
+        self.scores.show_options_screen_text(self.is_keyboard_controls())
 
     def handle_keyboard_control_button_press(self):
         self.keyboard_control = True
+        self.scores.show_options_screen_text(self.is_keyboard_controls())
 
     def handle_mouse_control_button_press(self):
         self.keyboard_control = False
+        self.scores.show_options_screen_text(self.is_keyboard_controls())
+
+    def is_keyboard_controls(self):
+        return self.keyboard_control
 
     def apply_on_mouse_click_binding(self):
         self.bind('<Button-1>', self.check_for_button_clicks)
