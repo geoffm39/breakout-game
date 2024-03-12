@@ -78,6 +78,7 @@ class GameImages:
         self.remove_lives_image()
 
     def remove_images_on_start_game(self):
+        self.remove_logo_image()
         self.remove_start_game_button_image()
         self.remove_controls_button_images()
 
@@ -113,6 +114,8 @@ class GameImages:
         x, y = TextAttributes.LOGO_POSITION
         self.logo_image = self.canvas.create_image(x, y, image=logo_image)
 
+    def remove_logo_image(self):
+        self.canvas.delete(self.logo_image)
 
     def show_start_game_button_image(self):
         button_image = self.get_start_button_outline()
