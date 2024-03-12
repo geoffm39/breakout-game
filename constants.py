@@ -77,6 +77,7 @@ class FilePaths:
     BUTTON_OUTLINE = 'button-outline.png'
     START_GAME_BUTTON_OUTLINE = 'start-game-button.png'
     CONTROLS_BUTTON_OUTLINE = 'controls-button-outline.png'
+    LOGO = 'logo.png'
 
 
 class TextAttributes:
@@ -109,8 +110,9 @@ class TextAttributes:
     CONTROLS_TEXT_POSITION = (-300, -130)
     KEYBOARD_BUTTON_POSITION = (0, -130)
     KEYBOARD_BUTTON_OUTLINE_POSITION = (0, 140)
-    MOUSE_BUTTON_POSITION = (300, -130)
-    MOUSE_BUTTON_OUTLINE_POSITION = (256, 140)
+    MOUSE_BUTTON_POSITION = (280, -130)
+    MOUSE_BUTTON_OUTLINE_POSITION = (236, 140)
+    LOGO_POSITION = (0, -130)
 
 
 class BrickAttributes:

@@ -25,6 +25,7 @@ class GameImages:
         self.powerup_type_images = []
         self.lives_image = None
 
+        self.logo_image = None
         self.start_game_button = None
         self.keyboard_button = None
         self.mouse_button = None
@@ -103,8 +104,15 @@ class GameImages:
         self.quit_no_button = self.canvas.create_image(no_x, no_y, image=button_image, anchor='s')
 
     def show_options_screen_images(self):
+        self.show_logo_image()
         self.show_start_game_button_image()
         self.show_control_button_images()
+
+    def show_logo_image(self):
+        logo_image = self.get_logo()
+        x, y = TextAttributes.LOGO_POSITION
+        self.logo_image = self.canvas.create_image(x, y, image=logo_image)
+
 
     def show_start_game_button_image(self):
         button_image = self.get_start_button_outline()
@@ -299,3 +307,6 @@ class GameImages:
 
     def get_controls_button_outline(self):
         return self.photo_images[FilePaths.CONTROLS_BUTTON_OUTLINE]
+
+    def get_logo(self):
+        return self.photo_images[FilePaths.LOGO]
