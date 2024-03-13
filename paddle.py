@@ -4,8 +4,8 @@ from constants import SCREEN_WIDTH, PaddleAttributes, SCREEN_LEFT_EDGE, SCREEN_R
 
 
 class Paddle(RawTurtle):
-    def __init__(self, canvas, **kwargs):
-        super().__init__(canvas, **kwargs)
+    def __init__(self, screen, **kwargs):
+        super().__init__(screen, **kwargs)
 
         self.paddle_length = PaddleAttributes.DEFAULT_LENGTH
         self.lasers = False

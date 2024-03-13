@@ -4,8 +4,8 @@ from constants import PowerupType, SOUTH, PowerupAttributes
 
 
 class Powerup(RawTurtle):
-    def __init__(self, canvas, powerup_type: PowerupType, location, **kwargs):
-        super().__init__(canvas, **kwargs)
+    def __init__(self, screen, powerup_type: PowerupType, location, **kwargs):
+        super().__init__(screen, **kwargs)
 
         self.type = powerup_type
         self.image = None
