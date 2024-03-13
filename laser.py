@@ -4,8 +4,8 @@ from constants import NORTH, LaserAttributes
 
 
 class Laser(RawTurtle):
-    def __init__(self, canvas, location, **kwargs):
-        super().__init__(canvas, **kwargs)
+    def __init__(self, screen, location, **kwargs):
+        super().__init__(screen, **kwargs)
 
         self.location = location
         self.image = None

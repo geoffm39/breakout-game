@@ -8,8 +8,8 @@ from constants import (
 
 
 class Ball(RawTurtle):
-    def __init__(self, canvas, **kwargs):
-        super().__init__(canvas, **kwargs)
+    def __init__(self, screen, **kwargs):
+        super().__init__(screen, **kwargs)
 
         self.move_speed = BallAttributes.DEFAULT_SPEED
         self.fireball = False

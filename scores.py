@@ -6,8 +6,8 @@ from constants import (
 
 
 class Scores(RawTurtle):
-    def __init__(self, canvas, **kwargs):
-        super().__init__(canvas, **kwargs)
+    def __init__(self, screen, **kwargs):
+        super().__init__(screen, **kwargs)
 
         self.lives = STARTING_LIVES
         self.score = 0

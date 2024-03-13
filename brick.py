@@ -4,8 +4,8 @@ from constants import TYPE, BRICK_COLOR, BrickAttributes, BrickType
 
 
 class Brick(RawTurtle):
-    def __init__(self, canvas, brick_attributes: dict, **kwargs):
-        super().__init__(canvas, **kwargs)
+    def __init__(self, screen, brick_attributes: dict, **kwargs):
+        super().__init__(screen, **kwargs)
 
         self.brick_type = brick_attributes[TYPE]
         self.brick_color = brick_attributes[BRICK_COLOR].value
