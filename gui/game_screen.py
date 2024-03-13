@@ -467,7 +467,7 @@ class GameScreen(Canvas):
     @staticmethod
     def brick_has_powerup(brick: Brick):
         if not brick.is_barrier():
-            return randint(1, 1) == 1
+            return randint(1, 6) == 1
         return False
 
     def drop_powerup(self, brick: Brick):
