@@ -1,15 +1,15 @@
 from tkinter import *
 from tkinter import ttk
 
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, TITLE, FilePaths
 from gui.game_screen import GameScreen
 
 
 class MainWindow:
     def __init__(self, root: Tk):
         self.root = root
-        self.root.title('Breakout!')
-        self.root.iconbitmap('gui/arcade_icon.ico')
+        self.root.title(TITLE)
+        self.root.iconbitmap(FilePaths.ICON)
         self.root.resizable(FALSE, FALSE)
 
         mainframe = ttk.Frame(self.root)

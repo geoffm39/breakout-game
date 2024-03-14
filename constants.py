@@ -25,6 +25,7 @@ TYPE = 'type'
 BRICK_COLOR = 'brick_color'
 VERTICAL_SURFACE = 'vertical'
 HORIZONTAL_SURFACE = 'horizontal'
+TITLE = 'Breakout!'
 
 
 class Color(Enum):
@@ -78,6 +79,7 @@ class FilePaths:
     START_GAME_BUTTON_OUTLINE = 'start-game-button.png'
     CONTROLS_BUTTON_OUTLINE = 'controls-button-outline.png'
     LOGO = 'logo.png'
+    ICON = 'gui/arcade_icon.ico'
 
 
 class TextAttributes:
