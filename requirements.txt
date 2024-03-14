@@ -1,0 +1,2 @@
+# Pillow library for image control
+pillow==10.2.0
