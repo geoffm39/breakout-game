@@ -134,6 +134,8 @@ class PaddleAttributes:
     LASER_PADDLE_COLOR = Color.RED.value
     SHAPE = Shape.SQUARE.value
     START_POSITION = (0, SCREEN_BOTTOM_EDGE + WIDTH)
+    SPEED = 10
+    MOVEMENT = 10
 
 
 class BallAttributes:

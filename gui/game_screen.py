@@ -13,7 +13,7 @@ from images.game_images import GameImages
 from constants import (
     VERTICAL_SURFACE, HORIZONTAL_SURFACE, BallAttributes, TYPE, SPACING, SPACE_SIZE, BrickAttributes, PowerupAttributes,
     SCREEN_BOTTOM_EDGE, SCREEN_TOP_EDGE, SCREEN_RIGHT_EDGE, SCREEN_LEFT_EDGE, PowerupType, LaserAttributes,
-    BrickType, Color, SCREEN_HEIGHT, SCREEN_WIDTH
+    BrickType, Color, SCREEN_HEIGHT, SCREEN_WIDTH, PaddleAttributes
 )
 
 
@@ -149,14 +149,16 @@ class GameScreen(Canvas):
         self.paddle.set_moving(False)
 
     def move_paddle_left(self):
-        self.paddle.move_left()
-        self.game_images.move_object_image(self.paddle)
-        self.after(10, self.move_paddle_left)
+        if self.paddle.is_moving():
+            self.paddle.move_left()
+            self.game_images.move_object_image(self.paddle)
+            self.after(PaddleAttributes.SPEED, self.move_paddle_left)
 
     def move_paddle_right(self):
-        self.paddle.move_right()
-        self.game_images.move_object_image(self.paddle)
-        self.after(10, self.move_paddle_right)
+        if self.paddle.is_moving():
+            self.paddle.move_right()
+            self.game_images.move_object_image(self.paddle)
+            self.after(PaddleAttributes.SPEED, self.move_paddle_right)
 
     def apply_paddle_mouse_control(self):
         self.bind('<Motion>', self.track_player_movement)
