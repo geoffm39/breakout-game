@@ -135,10 +135,28 @@ class GameScreen(Canvas):
         self.update_game_screen()
 
     def apply_paddle_keyboard_control(self):
-        self.screen.onkeypress(fun=self.move_paddle_left, key='Left')
-        self.screen.onkeyrelease(self.paddle.stop_moving_paddle, key='Left')
-        self.screen.onkeypress(fun=self.move_paddle_right, key='Right')
-        self.screen.onkeyrelease(self.paddle.stop_moving_paddle, key='Right')
+        self.screen.onkeypress(fun=lambda: self.start_moving_paddle(self.move_paddle_left), key='Left')
+        self.screen.onkeyrelease(self.stop_moving_paddle, key='Left')
+        self.screen.onkeypress(fun=lambda: self.start_moving_paddle(self.move_paddle_right), key='Right')
+        self.screen.onkeyrelease(self.stop_moving_paddle, key='Right')
+
+    def start_moving_paddle(self, paddle_movement_method):
+        if not self.paddle.is_moving():
+            self.paddle.set_moving(True)
+            paddle_movement_method()
+
+    def stop_moving_paddle(self):
+        self.paddle.set_moving(False)
+
+    def move_paddle_left(self):
+        self.paddle.move_left()
+        self.game_images.move_object_image(self.paddle)
+        self.after(10, self.move_paddle_left)
+
+    def move_paddle_right(self):
+        self.paddle.move_right()
+        self.game_images.move_object_image(self.paddle)
+        self.after(10, self.move_paddle_right)
 
     def apply_paddle_mouse_control(self):
         self.bind('<Motion>', self.track_player_movement)
@@ -180,14 +198,6 @@ class GameScreen(Canvas):
             self.game_images.move_object_image(laser)
             self.check_for_laser_collision(laser)
         self.after(3, self.update_game_screen)
-
-    def move_paddle_left(self):
-        self.paddle.start_moving_paddle(self.paddle.move_left)
-        self.game_images.move_object_image(self.paddle)
-
-    def move_paddle_right(self):
-        self.paddle.start_moving_paddle(self.paddle.move_right)
-        self.game_images.move_object_image(self.paddle)
 
     def reset_paddle(self):
         self.paddle.reset_size()

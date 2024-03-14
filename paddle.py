@@ -11,7 +11,7 @@ class Paddle(RawTurtle):
         self.paddle_length = PaddleAttributes.DEFAULT_LENGTH
         self.lasers = False
         self.image = None
-        self.repeat = False
+        self.moving = False
 
         self.set_default_paddle()
 
@@ -21,28 +21,24 @@ class Paddle(RawTurtle):
             self.setx(screen_x_coord)
 
     def move_left(self):
-        x_coord = self.xcor() - 20
+        x_coord = self.xcor() - 10
         if not self.paddle_reached_screen_edge(x_coord):
             self.setx(x_coord)
         else:
             self.setx(SCREEN_LEFT_EDGE + self.paddle_length * PaddleAttributes.WIDTH / 2)
-        self.screen.ontimer(self.move_left, 100)
 
     def move_right(self):
-        x_coord = self.xcor() + 20
+        x_coord = self.xcor() + 10
         if not self.paddle_reached_screen_edge(x_coord):
             self.setx(x_coord)
         else:
             self.setx(SCREEN_RIGHT_EDGE - self.paddle_length * PaddleAttributes.WIDTH / 2)
-        self.screen.ontimer(self.move_right, 100)
 
-    def start_moving_paddle(self, paddle_movement_method):
-        if not self.repeat:
-            self.repeat = True
-            paddle_movement_method()
+    def is_moving(self):
+        return self.moving
 
-    def stop_moving_paddle(self):
-        self.repeat = False
+    def set_moving(self, moving: bool):
+        self.moving = moving
 
     def paddle_reached_screen_edge(self, x_coord):
         left_x_loc, right_x_loc = self.get_x_coordinates(x_coord)
