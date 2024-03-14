@@ -1,4 +1,6 @@
 <h2>Breakout Game</h2>
+<h4>Setup</h4>
+<p>In the console run <code>pip install -r requirements.txt</code></p>
 <p>One of my portfolio projects from 100 Days of Code: The Complete Python Pro Bootcamp </p>
 <img width="824" alt="gameplay1" src="https://github.com/geoffm39/breakout-game/assets/101853042/769a139e-44e8-48f9-b1f3-dbb4aafaf259">
 
