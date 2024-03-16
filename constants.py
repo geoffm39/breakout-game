@@ -142,7 +142,7 @@ class PaddleAttributes:
 
 class BallAttributes:
     ANIMATION_SPEED = 50
-    DEFAULT_SPEED = 1.2
+    DEFAULT_SPEED = 1.3
     SIZE = 20
     RADIUS = SIZE / 2
     COLOR = Color.WHITE.value
